@@ -1,0 +1,19 @@
+{
+  "name": "codex-workflow-core",
+  "version": "0.1.4",
+  "private": true,
+  "description": "Shared-core scaffold for reusable Codex workflow assets.",
+  "type": "module",
+  "scripts": {
+    "validate": "node scripts/tools/validate-shared-core-package.mjs",
+    "check": "node scripts/tools/validate-shared-core-package.mjs",
+    "fingerprint": "node scripts/tools/calculate-package-fingerprint.mjs",
+    "refresh-lock": "node scripts/tools/refresh-consumer-lock.mjs",
+    "validate-consumer": "node scripts/tools/validate-consumer-linkage.mjs",
+    "validate-input-contract": "node scripts/tools/validate-local-input-contract.mjs",
+    "validate-runtime-policy-input-contract": "node scripts/tools/validate-runtime-policy-input-contract.mjs",
+    "init-consumer": "node scripts/tools/init-consumer-overlay.mjs",
+    "scan": "node scripts/tools/repo-structure-scanner.mjs",
+    "diff": "node scripts/tools/git-diff-explainer.mjs"
+  }
+}

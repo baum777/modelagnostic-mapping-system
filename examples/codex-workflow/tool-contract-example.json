@@ -1,0 +1,24 @@
+{
+  "name": "example-tool",
+  "purpose": "Example tool contract for a bounded Codex workflow surface.",
+  "inputs": [
+    {
+      "name": "root",
+      "type": "path",
+      "required": true,
+      "description": "Repository root."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "type": "json",
+      "description": "Structured result."
+    }
+  ],
+  "sideEffects": "read-only",
+  "approvalRequirement": "none",
+  "failureBehavior": "Exit non-zero on malformed input.",
+  "exampleInvocation": "node scripts/tools/repo-structure-scanner.mjs",
+  "implementationStatus": "stub"
+}
