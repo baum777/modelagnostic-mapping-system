@@ -1,0 +1,55 @@
+---
+name: workflow-core-router
+description: Route non-trivial requests into the correct workflow artifact shape (spec, handover, architecture map, checklist, runbook, or implementation plan) with explicit gates.
+version: 1.0.0
+classification: local-only
+requires_repo_inputs: false
+produces_structured_output: true
+safe_to_auto_run: true
+owner: codex-workflow-core
+status: active
+---
+
+# Workflow Core Router
+
+## Trigger
+Use this skill when task scope, artifact shape, or execution path is non-trivial.
+
+## When Not To Use
+- Do not use for small obvious edits with a single direct implementation path.
+- Do not use when a required artifact type is already explicitly requested and scoped.
+
+## Expected Inputs
+- objective and requested outcome
+- risk level and governance sensitivity
+- known constraints and non-goals
+- current evidence available vs missing
+- whether the task is one-off or repeatable
+
+## Routing Logic
+1. If requirements are ambiguous or authority boundaries are unclear, route to `spec`.
+2. If work spans multiple modules or ownership boundaries, route to `architecture-map`.
+3. If work is operationally repeatable, role-based, or incident-facing, route to `runbook`.
+4. If the goal is execution-ready delivery with gates, route to `implementation-plan`.
+5. If the main need is validation coverage or release readiness checks, route to `checklist`.
+6. If the primary need is transfer of in-flight state, route to `handover`.
+7. Allow one primary shape and at most one secondary shape when strictly needed.
+
+## Minimal Output Shapes
+- `spec`: `OBJECTIVE`, `CURRENT TRUTH`, `GAPS`, `CONSTRAINTS`, `DECISIONS NEEDED`, `ACCEPTANCE CRITERIA`
+- `architecture-map`: `SYSTEM BOUNDARY`, `COMPONENTS`, `INTERFACES`, `AUTHORITY`, `RISKS`, `MIGRATION ORDER`
+- `runbook`: `TRIGGER`, `PREREQS`, `STEPS`, `GATES`, `FAILURE HANDLING`, `EVIDENCE`
+- `implementation-plan`: `SCOPE`, `SLICES`, `DEPENDENCIES`, `TESTS`, `ROLLBACK`, `DONE CRITERIA`
+- `checklist`: `CHECK`, `OWNER`, `EVIDENCE`, `PASS/FAIL RULE`
+- `handover`: `CURRENT STATE`, `CHANGES MADE`, `OPEN GAPS`, `NEXT ACTION`, `BLOCKERS`
+
+## Done Criteria
+- A single primary artifact shape is selected and justified.
+- Route is based on observed evidence, not assumptions.
+- Acceptance gates and completion conditions are explicit.
+- Any unresolved ambiguity is called out as a blocker, not hidden.
+
+## Quality Checks
+- Separate observed facts from inference and recommendation.
+- Keep the route decision compact and deterministic.
+- Prefer the lowest-ambiguity shape that enables safe execution.
