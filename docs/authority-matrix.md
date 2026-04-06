@@ -16,6 +16,7 @@ Status values:
 For documentation surfaces, doc class and enforcement status are different fields. Class says what the doc is; enforcement status says whether a script or validator backs the claim.
 For non-document surfaces, doc class is `n/a` and surface kind carries the distinction.
 Skill surfaces are classified separately as `shared-exported-skill`, `contract-bound-skill`, or `repo-local-control-skill`.
+Tool surfaces in this matrix use `runnable`, `validator-backed`, `helper-only`, `contract-only`, `stub`, or `planned` in the enforcement status column. Documentation surfaces keep their prose/status language.
 
 | surface | surface kind | doc class | enforcement status | authority / enforcement path | note |
 | --- | --- | --- | --- | --- | --- |
@@ -32,12 +33,19 @@ Skill surfaces are classified separately as `shared-exported-skill`, `contract-b
 | `docs/eval-baseline.md` | doc | derived | prose-only | derived evidence baseline | not a governance source |
 | `docs/extraction-roadmap.md` | doc | archive | prose-only | historical planning record | not live authority |
 | `CHANGELOG.md` | doc | archive | prose-only | release history | historical record only |
-| `docs/tool-contracts/catalog.json` | config | n/a | partly enforced | catalog schema validated by scaffold script | non-runnable entries remain explicit |
-| `scripts/tools/validate-shared-core-package.mjs` | validator | n/a | implemented | package and plugin validator | validates package metadata, plugin name/version/skills path |
-| `scripts/tools/validate-shared-core-scaffold.mjs` | validator | n/a | implemented | scaffold validator | validates required files/dirs and shared skill contract sections |
-| `scripts/tools/validate-consumer-linkage.mjs` | validator | n/a | implemented | linkage validator | validates shared source, version/fingerprint, overlay files, adopted skills |
-| `scripts/tools/validate-local-input-contract.mjs` | validator | n/a | implemented | contract validator | fail-closed on missing/invalid `.codex/repo-intake-inputs.json` |
-| `scripts/tools/validate-runtime-policy-input-contract.mjs` | validator | n/a | implemented | contract validator | fail-closed on missing/invalid `.codex/runtime-policy-inputs.json` |
+| `docs/tool-contracts/catalog.json` | config surface | n/a | partly enforced | tool catalog with runnable/helper-only/validator-backed/contract-only/stub labels | non-runnable entries remain explicit; duplicate write executor is labeled as an alias |
+| `scripts/tools/validate-shared-core-package.mjs` | validator | n/a | validator-backed | package and plugin validator | validates package metadata, plugin name/version/skills path |
+| `scripts/tools/validate-shared-core-scaffold.mjs` | validator | n/a | validator-backed | scaffold validator | validates required files/dirs and shared skill contract sections |
+| `scripts/tools/validate-consumer-linkage.mjs` | validator | n/a | validator-backed | linkage validator | validates shared source, version/fingerprint, overlay files, adopted skills |
+| `scripts/tools/validate-local-input-contract.mjs` | validator | n/a | validator-backed | contract validator | fail-closed on missing/invalid `.codex/repo-intake-inputs.json` |
+| `scripts/tools/validate-runtime-policy-input-contract.mjs` | validator | n/a | validator-backed | contract validator | fail-closed on missing/invalid `.codex/runtime-policy-inputs.json` |
+| `scripts/tools/spec-compliance-checker.mjs` | validator | n/a | validator-backed | `scripts/tools/spec-compliance-checker.mjs` | heading/marker compliance checker; real validator-like CLI; not package-script surfaced |
+| `scripts/tools/approval-gated-write-executor.mjs` | runnable-tool | n/a | runnable | `scripts/tools/approval-gated-write-executor.mjs` | canonical write surface; catalog alias exists under `patch-applicator-with-review-gate` |
+| `scripts/tools/init-consumer-overlay.mjs` | initializer/scaffold-script | n/a | runnable | `package.json` `init-consumer` → `scripts/tools/init-consumer-overlay.mjs` | consumer overlay initializer; scaffold-oriented command wrapper |
+| `scripts/tools/refresh-consumer-lock.mjs` | helper-script | n/a | helper-only | `package.json` `refresh-lock` → `scripts/tools/refresh-consumer-lock.mjs` | maintenance helper, not user-facing |
+| `scripts/tools/calculate-package-fingerprint.mjs` | helper-script | n/a | helper-only | `package.json` `fingerprint` → `scripts/tools/calculate-package-fingerprint.mjs` | support utility, not a user-facing tool |
+| `scripts/tools/repo-structure-scanner.mjs` | helper-script | n/a | helper-only | `package.json` `scan` → `scripts/tools/repo-structure-scanner.mjs` | analysis helper, not a product tool |
+| `scripts/tools/git-diff-explainer.mjs` | helper-script | n/a | helper-only | `package.json` `diff` → `scripts/tools/git-diff-explainer.mjs` | analysis helper, not a product tool |
 | `skills/implementation-contract-extractor/SKILL.md` | shared-exported-skill | n/a | extracted | `skills/implementation-contract-extractor/SKILL.md` | generic contract extraction primitive |
 | `skills/mcp-server-creation/SKILL.md` | shared-exported-skill | n/a | extracted | `skills/mcp-server-creation/SKILL.md` | broad scaffold/initializer; keep triggers narrow |
 | `skills/patch-strategy-designer/SKILL.md` | shared-exported-skill | n/a | extracted | `skills/patch-strategy-designer/SKILL.md` | smallest-safe-change selector |

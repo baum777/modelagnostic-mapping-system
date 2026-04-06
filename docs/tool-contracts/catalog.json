@@ -30,7 +30,7 @@
       "approvalRequirement": "none",
       "failureBehavior": "Exit non-zero on missing paths or parse errors.",
       "exampleInvocation": "node scripts/tools/repo-structure-scanner.mjs --json",
-      "implementationStatus": "real",
+      "implementationStatus": "helper-only",
       "entrypoint": "scripts/tools/repo-structure-scanner.mjs"
     },
     {
@@ -55,7 +55,7 @@
       "approvalRequirement": "none",
       "failureBehavior": "Exit non-zero if git is unavailable.",
       "exampleInvocation": "node scripts/tools/git-diff-explainer.mjs --cached",
-      "implementationStatus": "real",
+      "implementationStatus": "helper-only",
       "entrypoint": "scripts/tools/git-diff-explainer.mjs"
     },
     {
@@ -80,7 +80,7 @@
       "approvalRequirement": "none",
       "failureBehavior": "Return a contract-level stub if deep analysis is unavailable.",
       "exampleInvocation": "contract-only; use repo search plus local analysis scripts",
-      "implementationStatus": "contract"
+      "implementationStatus": "contract-only"
     },
     {
       "name": "structured-plan-generator",
@@ -104,11 +104,11 @@
       "approvalRequirement": "none",
       "failureBehavior": "Return a structured plan or a blocker list; never invent unknown repo facts.",
       "exampleInvocation": "Use $planning-slice-builder to split the request into waves.",
-      "implementationStatus": "contract"
+      "implementationStatus": "contract-only"
     },
     {
       "name": "patch-applicator-with-review-gate",
-      "purpose": "Apply a patch only after an explicit review gate has been satisfied.",
+      "purpose": "Alias of approval-gated-write-executor. Apply a patch only after an explicit review gate has been satisfied.",
       "inputs": [
         {
           "name": "target",
@@ -140,7 +140,7 @@
       "approvalRequirement": "required",
       "failureBehavior": "Refuse writes when approval is missing or the target escapes the repo root.",
       "exampleInvocation": "node scripts/tools/approval-gated-write-executor.mjs --target docs/example.md --approved --content '...'",
-      "implementationStatus": "real",
+      "implementationStatus": "runnable",
       "entrypoint": "scripts/tools/approval-gated-write-executor.mjs"
     },
     {
@@ -165,7 +165,7 @@
       "approvalRequirement": "none",
       "failureBehavior": "Return non-zero if validation or diff checks fail.",
       "exampleInvocation": "contract-only; no runnable implementation is present in scripts/tools",
-      "implementationStatus": "contract"
+      "implementationStatus": "contract-only"
     },
     {
       "name": "regression-comparator",
@@ -195,7 +195,7 @@
       "approvalRequirement": "none",
       "failureBehavior": "Stub out if the two artifacts cannot be parsed consistently.",
       "exampleInvocation": "contract-only; use diff and validation scripts as needed",
-      "implementationStatus": "contract"
+      "implementationStatus": "contract-only"
     },
     {
       "name": "env-secret-validator",
@@ -219,7 +219,7 @@
       "approvalRequirement": "none",
       "failureBehavior": "Exit non-zero when required variables are missing or unsafe.",
       "exampleInvocation": "contract-only; no runnable implementation is present in scripts/tools",
-      "implementationStatus": "contract"
+      "implementationStatus": "contract-only"
     },
     {
       "name": "pr-review-assembler",
@@ -243,7 +243,7 @@
       "approvalRequirement": "none",
       "failureBehavior": "Return a structured review stub if the diff is incomplete.",
       "exampleInvocation": "Use $post-implementation-review-writer to synthesize the PR review.",
-      "implementationStatus": "contract"
+      "implementationStatus": "contract-only"
     },
     {
       "name": "issue-to-task-sync",
@@ -267,7 +267,7 @@
       "approvalRequirement": "none",
       "failureBehavior": "Return a conservative packet when issue detail is incomplete.",
       "exampleInvocation": "contract-only; use planning skills to finalize the packet",
-      "implementationStatus": "contract"
+      "implementationStatus": "contract-only"
     },
     {
       "name": "log-journal-query",
@@ -291,7 +291,7 @@
       "approvalRequirement": "none",
       "failureBehavior": "Return no matches instead of guessing if evidence is absent.",
       "exampleInvocation": "contract-only; no runnable implementation is present in scripts/tools",
-      "implementationStatus": "contract"
+      "implementationStatus": "contract-only"
     },
     {
       "name": "spec-compliance-checker",
@@ -321,7 +321,7 @@
       "approvalRequirement": "none",
       "failureBehavior": "Fail closed when the file is unreadable or missing required markers.",
       "exampleInvocation": "node scripts/tools/spec-compliance-checker.mjs --file skills/repo-intake-sot-mapper/SKILL.md --must-contain Trigger,Workflow,Output",
-      "implementationStatus": "real",
+      "implementationStatus": "validator-backed",
       "entrypoint": "scripts/tools/spec-compliance-checker.mjs"
     },
     {
@@ -346,7 +346,7 @@
       "approvalRequirement": "none",
       "failureBehavior": "Return BLOCKED until required gates and validations pass.",
       "exampleInvocation": "contract-only; no runnable implementation is present in scripts/tools",
-      "implementationStatus": "contract"
+      "implementationStatus": "contract-only"
     },
     {
       "name": "staging-prod-context-switcher",
@@ -394,7 +394,7 @@
       "approvalRequirement": "none",
       "failureBehavior": "Exit non-zero if the catalog is missing or malformed.",
       "exampleInvocation": "contract-only; no runnable implementation is present in scripts/tools",
-      "implementationStatus": "contract"
+      "implementationStatus": "contract-only"
     },
     {
       "name": "approval-gated-write-executor",
@@ -430,14 +430,17 @@
       "approvalRequirement": "required",
       "failureBehavior": "Refuse to write if approval is missing or the path escapes the repo root.",
       "exampleInvocation": "node scripts/tools/approval-gated-write-executor.mjs --target docs/example.md --approved --content 'example'",
-      "implementationStatus": "real",
+      "implementationStatus": "runnable",
       "entrypoint": "scripts/tools/approval-gated-write-executor.mjs"
     }
   ],
   "statusLegend": {
-    "real": "implemented and runnable only when an entrypoint is provided",
-    "contract": "contract-only declaration; non-runnable in this repository",
-    "stub": "placeholder declaration; non-runnable in this repository"
+    "runnable": "implemented executable surface with an entrypoint",
+    "validator-backed": "runnable executable whose primary role is enforcement or validation",
+    "helper-only": "real executable used for maintenance, inventory, or analysis; not user-facing",
+    "contract-only": "contract declaration; non-runnable in this repository",
+    "stub": "placeholder declaration; non-runnable in this repository",
+    "planned": "future surface explicitly named but not implemented yet"
   },
-  "runnablePolicy": "Treat a tool as runnable only when implementationStatus is real and entrypoint is present. Contract and stub entries are non-runnable by definition."
+  "runnablePolicy": "Treat a tool as runnable only when implementationStatus is runnable and entrypoint is present. Treat validator-backed and helper-only as real executable surfaces, but not necessarily user-facing tools. Contract-only, stub, and planned entries are non-runnable by definition."
 }
