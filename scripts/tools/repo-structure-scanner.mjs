@@ -5,7 +5,7 @@ import { exists, listFilesRecursive, printJson, repoRoot } from './_shared.mjs';
 const root = path.resolve(process.argv[2] && !process.argv[2].startsWith('--') ? process.argv[2] : repoRoot());
 const json = process.argv.includes('--json');
 
-const keyDirs = ['docs', 'skills', 'scripts/tools', 'templates/codex-workflow', 'examples/codex-workflow'];
+const keyDirs = ['core', 'docs', 'skills', 'scripts/tools', 'templates/codex-workflow', 'examples/codex-workflow', 'providers/openai-codex', 'providers/anthropic-claude', 'providers/qwen-code', 'providers/kimi-k2_5'];
 const inventory = {
   root,
   keyDirs: keyDirs.map((dir) => ({ path: dir, exists: exists(path.join(root, dir)) })),

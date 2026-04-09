@@ -1,6 +1,6 @@
 {
   "name": "codex-workflow-core",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Provider-neutral shared-core Codex workflow compatibility export.",
   "skills": "./skills/",
   "interface": {

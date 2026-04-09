@@ -4,12 +4,15 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseSkillFrontmatter, readJson, repoRoot } from './_shared.mjs';
 
-const DEFAULT_OUT = path.join('contracts', 'core-registry.json');
+const DEFAULT_OUTS = [
+  path.join('core', 'contracts', 'core-registry.json'),
+  path.join('contracts', 'core-registry.json')
+];
 
 function parseArgs(argv) {
   const args = {
     write: false,
-    out: DEFAULT_OUT
+    out: DEFAULT_OUTS[0]
   };
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -29,6 +32,24 @@ function parseArgs(argv) {
 
 function normalize(filePath) {
   return path.resolve(filePath).replace(/\\/g, '/');
+}
+
+function readJsonIfExists(filePath) {
+  if (!fs.existsSync(filePath)) {
+    return null;
+  }
+  return readJson(filePath);
+}
+
+function readFirstJson(root, candidates) {
+  for (const relativePath of candidates) {
+    const absolutePath = path.join(root, relativePath);
+    const value = readJsonIfExists(absolutePath);
+    if (value) {
+      return { path: relativePath, value };
+    }
+  }
+  return null;
 }
 
 function extractOutputHeadings(skillText) {
@@ -64,70 +85,185 @@ function extractOutputHeadings(skillText) {
   return headings;
 }
 
-function buildProviderCompatibility(providers) {
+function loadProviderCapabilities(root) {
+  const candidate = readFirstJson(root, [
+    path.join('core', 'contracts', 'provider-capabilities.json'),
+    path.join('contracts', 'provider-capabilities.json')
+  ]);
+
+  if (candidate) {
+    return candidate.value;
+  }
+
+  return { schemaVersion: '1.0.0', providers: [] };
+}
+
+function buildProviderCompatibility(providerCapabilities) {
   const compatibility = {};
-  for (const provider of providers) {
-    compatibility[provider.name] = provider.name === 'codex' ? 'compatibility-export' : 'adapter';
+  for (const provider of providerCapabilities.providers || []) {
+    const canonicalStatus = provider.skillPackaging === 'compatibility-export' ? 'compatibility-export' : 'adapter';
+    compatibility[provider.name] = canonicalStatus;
+    for (const alias of provider.aliases || []) {
+      compatibility[alias] = 'compatibility-export';
+    }
+    for (const legacy of provider.legacyExportDirectories || []) {
+      compatibility[legacy] = 'compatibility-export';
+    }
   }
   return compatibility;
 }
 
-function buildSkillRecords(root, providerNames) {
-  const skillsRoot = path.join(root, 'skills');
-  const entries = fs.existsSync(skillsRoot) ? fs.readdirSync(skillsRoot, { withFileTypes: true }) : [];
+function buildSkillContracts(root) {
+  const manifestPath = path.join(root, 'core', 'contracts', 'portable-skill-manifest.json');
+  if (!fs.existsSync(manifestPath)) {
+    return new Map();
+  }
+
+  const manifest = readJson(manifestPath);
+  const contracts = new Map();
+  for (const entry of Array.isArray(manifest.skills) ? manifest.skills : []) {
+    if (entry && typeof entry.name === 'string') {
+      contracts.set(entry.name, entry);
+    }
+  }
+  return contracts;
+}
+
+function skillRoots(root) {
+  return [
+    path.join(root, 'core', 'skills'),
+    path.join(root, 'skills')
+  ];
+}
+
+function buildSkillRecords(root, providerCapabilities) {
+  const contracts = buildSkillContracts(root);
+  const providerCompatibility = buildProviderCompatibility(providerCapabilities);
+  const seen = new Set();
   const records = [];
 
-  for (const entry of entries) {
-    if (!entry.isDirectory()) continue;
-    const skillPath = path.join(skillsRoot, entry.name, 'SKILL.md');
-    if (!fs.existsSync(skillPath)) continue;
+  for (const skillRoot of skillRoots(root)) {
+    if (!fs.existsSync(skillRoot)) {
+      continue;
+    }
 
-    const text = fs.readFileSync(skillPath, 'utf8');
-    const frontmatter = parseSkillFrontmatter(text);
-    const outputHeadings = extractOutputHeadings(text);
+    const entries = fs.readdirSync(skillRoot, { withFileTypes: true });
+    for (const entry of entries) {
+      if (!entry.isDirectory()) {
+        continue;
+      }
+      const skillPath = path.join(skillRoot, entry.name, 'SKILL.md');
+      if (!fs.existsSync(skillPath)) {
+        continue;
+      }
 
-    records.push({
-      name: frontmatter.name || entry.name,
-      sourcePath: `skills/${entry.name}/SKILL.md`,
-      classification: frontmatter.classification || 'unknown',
-      requiresRepoInputs: frontmatter.requires_repo_inputs === true,
-      producesStructuredOutput: frontmatter.produces_structured_output === true,
-      safeToAutoRun: frontmatter.safe_to_auto_run === true,
-      status: frontmatter.status || 'unknown',
-      approvalMode: frontmatter.safe_to_auto_run === true ? 'read-only' : 'approval-required',
-      subagentPolicy: frontmatter.classification === 'shared-with-local-inputs' ? 'forbid' : 'allow',
-      requiredTools: [],
-      optionalTools: [],
-      outputHeadings,
-      providerCompatibility: buildProviderCompatibility(providerNames.map((name) => ({ name })))
-    });
+      const frontmatter = parseSkillFrontmatter(fs.readFileSync(skillPath, 'utf8'));
+      const name = frontmatter.name || entry.name;
+      if (seen.has(name)) {
+        continue;
+      }
+      seen.add(name);
+
+      const contract = contracts.get(name) || {};
+      const classification = frontmatter.classification || contract.classification || 'unknown';
+      const safeToAutoRun = frontmatter.safe_to_auto_run === true;
+      const approvalMode = contract.approvalMode || (safeToAutoRun ? 'read-only' : 'approval-required');
+      const outputHeadings = extractOutputHeadings(fs.readFileSync(skillPath, 'utf8'));
+
+      records.push({
+        name,
+        portableIdentity: contract.portableIdentity || null,
+        sourcePath: `${skillRoot.startsWith(path.join(root, 'core')) ? 'core/skills' : 'skills'}/${entry.name}/SKILL.md`,
+        classification,
+        requiresRepoInputs: frontmatter.requires_repo_inputs === true,
+        producesStructuredOutput: frontmatter.produces_structured_output === true,
+        safeToAutoRun,
+        status: frontmatter.status || 'unknown',
+        approvalMode,
+        subagentPolicy: contract.subagentPolicy || (classification === 'shared-with-local-inputs' ? 'forbid' : 'allow'),
+        requiredTools: Array.isArray(contract.requiredTools) ? contract.requiredTools : [],
+        optionalTools: Array.isArray(contract.optionalTools) ? contract.optionalTools : [],
+        outputHeadings,
+        outputContractId: contract.outputContractId || null,
+        outputContractPath: contract.outputContractPath || frontmatter.output_contract_path || null,
+        toolContractCatalogPath: contract.toolContractCatalogPath || frontmatter.tool_contract_catalog_path || null,
+        providerProjections: contract.providerProjection || null,
+        evalScaffold: contract.evalScaffold || null,
+        providerCompatibility
+      });
+    }
   }
 
   return records.sort((left, right) => left.name.localeCompare(right.name));
 }
 
-function buildToolRecords(root, providerNames) {
-  const catalog = readJson(path.join(root, 'docs', 'tool-contracts', 'catalog.json'));
-  const tools = Array.isArray(catalog.tools) ? catalog.tools : [];
+function normalizeLegacyTool(tool) {
+  const name = tool.tool_name || tool.name;
+  const inputs = Array.isArray(tool.inputs) ? tool.inputs : [];
+  const outputs = Array.isArray(tool.outputs) ? tool.outputs : [];
+  return {
+    tool_name: name,
+    intent_class: tool.intent_class || (String(tool.sideEffects || '').startsWith('writes') ? 'mutating' : 'read-only'),
+    schema: tool.schema || {
+      type: 'object',
+      properties: Object.fromEntries(inputs.map((input) => [input.name, { type: input.type === 'boolean' ? 'boolean' : input.type === 'json' ? 'object' : input.type === 'string[]' ? 'array' : 'string' }])),
+      additionalProperties: false
+    },
+    side_effects: tool.side_effects || tool.sideEffects || 'read-only',
+    approval_required: tool.approval_required ?? tool.approvalRequirement === 'required',
+    mcp_compatible: tool.mcp_compatible ?? false,
+    providers: Array.isArray(tool.providers) ? tool.providers : [],
+    routing_hints: Array.isArray(tool.routing_hints) ? tool.routing_hints : [name],
+    name,
+    purpose: tool.purpose || null,
+    inputs,
+    outputs,
+    sideEffects: tool.sideEffects || tool.side_effects || 'read-only',
+    approvalRequirement: tool.approvalRequirement || (tool.approval_required ? 'required' : 'none'),
+    failureBehavior: tool.failureBehavior || 'unspecified',
+    exampleInvocation: tool.exampleInvocation || null,
+    implementationStatus: tool.implementationStatus || 'contract-only',
+    sourcePath: tool.entrypoint || tool.sourcePath || null
+  };
+}
 
-  return tools.map((tool) => ({
-    name: tool.name,
-    purpose: tool.purpose,
-    inputs: tool.inputs,
-    outputs: tool.outputs,
-    sideEffects: tool.sideEffects,
-    approvalRequirement: tool.approvalRequirement,
-    failureBehavior: tool.failureBehavior,
-    exampleInvocation: tool.exampleInvocation,
-    implementationStatus: tool.implementationStatus,
-    sourcePath: tool.entrypoint || null,
-    providerCompatibility: buildProviderCompatibility(providerNames.map((name) => ({ name })))
-  }));
+function buildToolRecords(root, providerCapabilities) {
+  const providerCompatibility = buildProviderCompatibility(providerCapabilities);
+  const seen = new Set();
+  const records = [];
+  const candidateCatalogs = [
+    path.join(root, 'core', 'contracts', 'tool-contracts', 'catalog.json'),
+    path.join(root, 'docs', 'tool-contracts', 'catalog.json')
+  ];
+
+  for (const catalogPath of candidateCatalogs) {
+    if (!fs.existsSync(catalogPath)) {
+      continue;
+    }
+    const catalog = readJson(catalogPath);
+    for (const rawTool of Array.isArray(catalog.tools) ? catalog.tools : []) {
+      const tool = normalizeLegacyTool(rawTool);
+      if (seen.has(tool.tool_name)) {
+        continue;
+      }
+      seen.add(tool.tool_name);
+
+      records.push({
+        ...tool,
+        providers: tool.providers.length > 0 ? tool.providers : Object.keys(providerCompatibility),
+        providerCompatibility,
+        tool_name: tool.tool_name,
+        routing_hints: tool.routing_hints
+      });
+    }
+  }
+
+  return records.sort((left, right) => left.tool_name.localeCompare(right.tool_name));
 }
 
 function buildNeutralCoreRegistry(baseRoot = repoRoot()) {
   const root = baseRoot;
-  const providerCapabilities = readJson(path.join(root, 'contracts', 'provider-capabilities.json'));
+  const providerCapabilities = loadProviderCapabilities(root);
   const providers = Array.isArray(providerCapabilities.providers) ? providerCapabilities.providers : [];
   const providerNames = providers.map((provider) => provider.name);
 
@@ -140,26 +276,43 @@ function buildNeutralCoreRegistry(baseRoot = repoRoot()) {
         name: 'codex-workflow-core',
         version: readJson(path.join(root, 'package.json')).version
       },
-      compatibilityExports: [
+      compatibilityExports: providers.map((provider) => ({
+        provider: provider.name,
+        aliases: provider.aliases || [],
+        legacyExportDirectories: provider.legacyExportDirectories || [],
+        manifestPath: `providers/${provider.name}/export.json`,
+        status: provider.skillPackaging === 'compatibility-export' ? 'compatibility-export' : 'adapter'
+      })).concat([
         {
           provider: 'codex',
-          packageName: 'codex-workflow-core',
           manifestPath: '.codex-plugin/plugin.json',
           status: 'compatibility-export'
         }
-      ]
+      ])
     },
-    skills: buildSkillRecords(root, providerNames),
-    tools: buildToolRecords(root, providerNames),
+    skills: buildSkillRecords(root, providerCapabilities).map((skill) => ({
+      ...skill,
+      providerCompatibility: skill.providerCompatibility
+    })),
+    tools: buildToolRecords(root, providerCapabilities),
     providers
   };
 }
 
 function writeRegistry(root, outPath, registry) {
-  const absoluteOutPath = path.join(root, outPath);
-  fs.mkdirSync(path.dirname(absoluteOutPath), { recursive: true });
-  fs.writeFileSync(absoluteOutPath, `${JSON.stringify(registry, null, 2)}\n`, 'utf8');
-  return absoluteOutPath;
+  const targetPaths = [
+    outPath,
+    ...DEFAULT_OUTS.filter((candidate) => path.resolve(path.join(root, candidate)) !== path.resolve(path.join(root, outPath)))
+  ];
+
+  const receipts = [];
+  for (const targetPath of targetPaths) {
+    const absoluteOutPath = path.join(root, targetPath);
+    fs.mkdirSync(path.dirname(absoluteOutPath), { recursive: true });
+    fs.writeFileSync(absoluteOutPath, `${JSON.stringify(registry, null, 2)}\n`, 'utf8');
+    receipts.push(normalize(absoluteOutPath));
+  }
+  return receipts;
 }
 
 const isMain = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
@@ -168,8 +321,8 @@ if (isMain) {
   const args = parseArgs(process.argv.slice(2));
   const registry = buildNeutralCoreRegistry();
   if (args.write) {
-    const outPath = writeRegistry(repoRoot(), args.out, registry);
-    console.log(JSON.stringify({ ok: true, written: normalize(outPath) }, null, 2));
+    const written = writeRegistry(repoRoot(), args.out, registry);
+    console.log(JSON.stringify({ ok: true, written }, null, 2));
     process.exit(0);
   }
   console.log(JSON.stringify(registry, null, 2));

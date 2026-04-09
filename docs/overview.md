@@ -9,6 +9,10 @@ This page is a summary only. For canonical authority, read [docs/architecture.md
 
 This shared core is limited to reusable workflow assets:
 
+- portable core skills under `core/skills/`
+- normalized output contracts under `core/contracts/output-contracts.json`
+- normalized tool contracts under `core/contracts/tool-contracts/catalog.json`
+- canonical provider capabilities under `core/contracts/provider-capabilities.json`
 - planning and review skills
 - generic templates
 - generic examples
@@ -28,6 +32,11 @@ Consumer repositories must supply those through a local overlay.
 
 - `repo-intake-sot-mapper`
 - `runtime-policy-auditor`
-- the provider-neutral registry snapshot in `contracts/core-registry.json`
+- `repo-audit`
+- `readiness-check`
+- `migration-planner`
+- `research-synthesis`
+- `long-document-to-knowledge-asset`
+- the provider-neutral registry snapshot in `core/contracts/core-registry.json`
 
 That slice is intentional: consumer repositories should pin the version and fingerprint before adopting updates, then supply the declared local input contracts for any shared-with-local-inputs skill they enable.

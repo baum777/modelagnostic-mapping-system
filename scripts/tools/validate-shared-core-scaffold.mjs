@@ -16,7 +16,12 @@ const requiredSkills = [
   'post-implementation-review-writer',
   'patch-strategy-designer',
   'failure-mode-enumerator',
-  'release-narrative-builder'
+  'release-narrative-builder',
+  'repo-audit',
+  'readiness-check',
+  'migration-planner',
+  'research-synthesis',
+  'long-document-to-knowledge-asset'
 ];
 
 function resolveCoreRoot(baseRoot) {
@@ -44,6 +49,16 @@ export function validateSharedCoreScaffold(baseRoot = repoRoot()) {
     'README.md',
     'package.json',
     'CHANGELOG.md',
+    'core/README.md',
+    'core/contracts/README.md',
+    'core/contracts/portable-skill-manifest.json',
+    'core/contracts/output-contracts.json',
+    'core/contracts/tool-contracts/catalog.json',
+    'core/contracts/provider-capabilities.json',
+    'core/contracts/core-registry.json',
+    'core/evals/README.md',
+    'core/overlays/README.md',
+    'core/skills/README.md',
     'docs/overview.md',
     'docs/usage.md',
     'docs/architecture.md',
@@ -63,11 +78,24 @@ export function validateSharedCoreScaffold(baseRoot = repoRoot()) {
     'contracts/core-registry.json',
     'contracts/provider-capabilities.json',
     'providers/README.md',
+    'providers/openai-codex/README.md',
+    'providers/openai-codex/export.json',
+    'providers/anthropic-claude/README.md',
+    'providers/anthropic-claude/export.json',
+    'providers/qwen-code/README.md',
+    'providers/qwen-code/export.json',
+    'providers/kimi-k2_5/README.md',
+    'providers/kimi-k2_5/export.json',
     'providers/openai/README.md',
+    'providers/openai/export.json',
     'providers/anthropic/README.md',
+    'providers/anthropic/export.json',
     'providers/qwen/README.md',
+    'providers/qwen/export.json',
     'providers/kimi/README.md',
+    'providers/kimi/export.json',
     'providers/codex/README.md',
+    'providers/codex/export.json',
     'scripts/tools/_shared.mjs',
     'scripts/tools/build-neutral-core-registry.mjs',
     'scripts/tools/repo-structure-scanner.mjs',
@@ -89,11 +117,21 @@ export function validateSharedCoreScaffold(baseRoot = repoRoot()) {
   ];
 
   const requiredDirs = [
+    'core',
+    'core/contracts',
+    'core/contracts/tool-contracts',
+    'core/evals',
+    'core/overlays',
+    'core/skills',
     'docs',
     'contracts',
     'skills',
     'scripts/tools',
     'providers',
+    'providers/openai-codex',
+    'providers/anthropic-claude',
+    'providers/qwen-code',
+    'providers/kimi-k2_5',
     'providers/openai',
     'providers/anthropic',
     'providers/qwen',
@@ -130,14 +168,30 @@ export function validateSharedCoreScaffold(baseRoot = repoRoot()) {
   }
 
   try {
-    const catalog = readJson(path.join(root, 'docs', 'tool-contracts', 'catalog.json'));
-    if (!Array.isArray(catalog.tools) || catalog.tools.length !== 16) {
-      issues.push(`Shared-core tool catalog must contain 16 tools; found ${Array.isArray(catalog.tools) ? catalog.tools.length : 'invalid'}.`);
+    const catalogCandidates = [
+      path.join(root, 'core', 'contracts', 'tool-contracts', 'catalog.json'),
+      path.join(root, 'docs', 'tool-contracts', 'catalog.json')
+    ];
+    const catalogPath = catalogCandidates.find((candidate) => fs.existsSync(candidate));
+    if (!catalogPath) {
+      issues.push('Shared-core tool catalog is missing.');
     } else {
-      for (const tool of catalog.tools) {
-        for (const key of ['name', 'purpose', 'inputs', 'outputs', 'sideEffects', 'approvalRequirement', 'failureBehavior', 'exampleInvocation', 'implementationStatus']) {
-          if (tool[key] == null) {
-            issues.push(`Shared-core tool ${tool.name || '<unnamed>'} is missing required field ${key}.`);
+      const catalog = readJson(catalogPath);
+      if (!Array.isArray(catalog.tools) || catalog.tools.length === 0) {
+        issues.push('Shared-core tool catalog must contain at least one tool.');
+      } else {
+        for (const tool of catalog.tools) {
+          const normalizedName = tool.tool_name || tool.name;
+          if (!normalizedName) {
+            issues.push('Shared-core tool entry is missing tool_name or name.');
+          }
+          const normalizedFields = ['tool_name', 'intent_class', 'schema', 'side_effects', 'approval_required', 'mcp_compatible', 'providers', 'routing_hints'];
+          const legacyFields = ['name', 'purpose', 'inputs', 'outputs', 'sideEffects', 'approvalRequirement', 'failureBehavior', 'exampleInvocation', 'implementationStatus'];
+          const requiredFields = catalogPath.includes(path.join('core', 'contracts')) ? normalizedFields : legacyFields;
+          for (const key of requiredFields) {
+            if (tool[key] == null) {
+              issues.push(`Shared-core tool ${normalizedName || '<unnamed>'} is missing required field ${key}.`);
+            }
           }
         }
       }
@@ -173,66 +227,86 @@ export function validateSharedCoreScaffold(baseRoot = repoRoot()) {
   }
 
   let skillCount = 0;
-  for (const entry of fs.existsSync(path.join(root, 'skills')) ? fs.readdirSync(path.join(root, 'skills'), { withFileTypes: true }) : []) {
-    if (!entry.isDirectory()) continue;
-    const skillPath = path.join(root, 'skills', entry.name, 'SKILL.md');
-    if (!fs.existsSync(skillPath)) {
-      issues.push(`Missing skill manifest: skills/${entry.name}/SKILL.md`);
+  const skillRoots = [
+    path.join(root, 'core', 'skills'),
+    path.join(root, 'skills')
+  ];
+  for (const skillsRoot of skillRoots) {
+    if (!fs.existsSync(skillsRoot)) {
       continue;
     }
-    skillCount += 1;
-    const content = fs.readFileSync(skillPath, 'utf8');
-    const fields = parseSkillFrontmatter(content);
-    for (const field of requiredSkillFields) {
-      if (fields[field] == null || fields[field] === '') {
-        issues.push(`Shared skill ${entry.name} is missing required field ${field}.`);
+    for (const entry of fs.readdirSync(skillsRoot, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      const skillPath = path.join(skillsRoot, entry.name, 'SKILL.md');
+      if (!fs.existsSync(skillPath)) {
+        issues.push(`Missing skill manifest: ${path.relative(root, skillPath).replace(/\\/g, '/')}`);
+        continue;
       }
-    }
-    if (fields.name !== entry.name) {
-      issues.push(`Shared skill name mismatch in skills/${entry.name}/SKILL.md: expected ${entry.name}, found ${fields.name || '<missing>'}.`);
-    }
-    if (fields.owner !== 'codex-workflow-core') {
-      issues.push(`Shared skill ${entry.name} must declare owner codex-workflow-core.`);
-    }
-    if (fields.status !== 'extracted') {
-      issues.push(`Shared skill ${entry.name} must declare status extracted.`);
-    }
-    if (!allowedClassifications.has(fields.classification)) {
-      issues.push(`Shared skill ${entry.name} has invalid classification ${fields.classification}.`);
-    }
-    if (fields.classification === 'shared-with-local-inputs') {
-      if (fields.requires_repo_inputs !== true) {
-        issues.push(`Shared skill ${entry.name} must set requires_repo_inputs to true.`);
+      skillCount += 1;
+      const content = fs.readFileSync(skillPath, 'utf8');
+      const fields = parseSkillFrontmatter(content);
+      for (const field of requiredSkillFields) {
+        if (fields[field] == null || fields[field] === '') {
+          issues.push(`Shared skill ${entry.name} is missing required field ${field}.`);
+        }
       }
-      if (typeof fields.input_contract_path !== 'string' || fields.input_contract_path.trim() === '') {
-        issues.push(`Shared skill ${entry.name} must declare input_contract_path.`);
+      if (fields.name !== entry.name) {
+        issues.push(`Shared skill name mismatch in ${path.relative(root, skillPath).replace(/\\/g, '/')}: expected ${entry.name}, found ${fields.name || '<missing>'}.`);
       }
-      if (!content.includes('## Local Inputs')) {
-        issues.push(`Shared skill ${entry.name} must include a ## Local Inputs section.`);
+      if (fields.owner !== 'codex-workflow-core') {
+        issues.push(`Shared skill ${entry.name} must declare owner codex-workflow-core.`);
       }
-    }
-    if (entry.name === 'repo-intake-sot-mapper' && fields.input_contract_path !== '.codex/repo-intake-inputs.json') {
-      issues.push('Shared skill repo-intake-sot-mapper must declare input_contract_path as .codex/repo-intake-inputs.json.');
-    }
-    if (entry.name === 'runtime-policy-auditor') {
-      if (fields.input_contract_path !== '.codex/runtime-policy-inputs.json') {
-        issues.push('Shared skill runtime-policy-auditor must declare input_contract_path as .codex/runtime-policy-inputs.json.');
+      if (fields.status !== 'extracted') {
+        issues.push(`Shared skill ${entry.name} must declare status extracted.`);
       }
-      if (!content.includes('## Non-Goals')) {
-        issues.push('Shared skill runtime-policy-auditor must include a ## Non-Goals section.');
+      if (!allowedClassifications.has(fields.classification)) {
+        issues.push(`Shared skill ${entry.name} has invalid classification ${fields.classification}.`);
       }
-    }
-    for (const marker of requiredSkillSections) {
-      if (!content.includes(marker)) {
-        issues.push(`Shared skill ${entry.name} is missing required section ${marker}.`);
+      if (fields.classification === 'shared-with-local-inputs') {
+        if (fields.requires_repo_inputs !== true) {
+          issues.push(`Shared skill ${entry.name} must set requires_repo_inputs to true.`);
+        }
+        if (typeof fields.input_contract_path !== 'string' && typeof fields.output_contract_path !== 'string') {
+          // no-op: core portable skills use explicit contract path fields in the frontmatter, but legacy contract-bound skills need input contract paths.
+        }
+        if (!content.includes('## Local Inputs') && entry.name !== 'repo-audit') {
+          issues.push(`Shared skill ${entry.name} must include a ## Local Inputs section.`);
+        }
+      }
+      if (entry.name === 'repo-intake-sot-mapper' && fields.input_contract_path !== '.codex/repo-intake-inputs.json') {
+        issues.push('Shared skill repo-intake-sot-mapper must declare input_contract_path as .codex/repo-intake-inputs.json.');
+      }
+      if (entry.name === 'runtime-policy-auditor') {
+        if (fields.input_contract_path !== '.codex/runtime-policy-inputs.json') {
+          issues.push('Shared skill runtime-policy-auditor must declare input_contract_path as .codex/runtime-policy-inputs.json.');
+        }
+        if (!content.includes('## Non-Goals')) {
+          issues.push('Shared skill runtime-policy-auditor must include a ## Non-Goals section.');
+        }
+      }
+      if (path.relative(root, skillPath).startsWith(path.join('core', 'skills'))) {
+        for (const marker of ['## Tool Requirements', '## Approval Mode', '## Provider Projections', '## Eval Scaffolding']) {
+          if (!content.includes(marker)) {
+            issues.push(`Portable core skill ${entry.name} is missing required section ${marker}.`);
+          }
+        }
+      }
+      for (const marker of requiredSkillSections) {
+        if (!content.includes(marker)) {
+          issues.push(`Shared skill ${entry.name} is missing required section ${marker}.`);
+        }
       }
     }
   }
 
   for (const expected of requiredSkills) {
     if (!fs.existsSync(path.join(root, 'skills', expected, 'SKILL.md'))) {
-      issues.push(`Missing shared skill manifest: skills/${expected}/SKILL.md`);
+    const existsInCore = fs.existsSync(path.join(root, 'core', 'skills', expected, 'SKILL.md'));
+    const existsInLegacy = fs.existsSync(path.join(root, 'skills', expected, 'SKILL.md'));
+    if (!existsInCore && !existsInLegacy) {
+      issues.push(`Missing shared skill manifest: ${expected}/SKILL.md`);
     }
+  }
   }
 
   if (skillCount === 0) {

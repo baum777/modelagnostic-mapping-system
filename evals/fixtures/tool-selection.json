@@ -1,0 +1,17 @@
+{
+  "id": "tool-selection",
+  "kind": "tool-selection",
+  "blocking": true,
+  "target": {
+    "name": "repo-audit"
+  },
+  "expectations": {
+    "requiredTools": [
+      "repo-structure-scanner",
+      "git-diff-explainer",
+      "spec-compliance-checker",
+      "validate-repo-surface"
+    ]
+  }
+}
+

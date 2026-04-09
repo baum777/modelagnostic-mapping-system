@@ -27,7 +27,7 @@ Every shared-core skill must declare:
 
 ## Provider-Neutral Registry
 
-The repository now carries a machine-readable registry in `contracts/core-registry.json`.
+The repository now carries a machine-readable registry in `core/contracts/core-registry.json`.
 That registry is the canonical snapshot for:
 
 - core identity and compatibility exports
@@ -36,6 +36,7 @@ That registry is the canonical snapshot for:
 - provider capability profiles
 
 The compatibility export in `docs/tool-contracts/catalog.json` remains available for current Codex-oriented consumers, but it is now a compatibility view rather than the only registry surface.
+The canonical tool catalog lives at `core/contracts/tool-contracts/catalog.json` and the canonical output contracts live at `core/contracts/output-contracts.json`.
 
 Recommended values:
 

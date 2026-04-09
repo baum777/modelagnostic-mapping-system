@@ -1,0 +1,12 @@
+{
+  "id": "failure-mode",
+  "kind": "failure-mode",
+  "blocking": true,
+  "target": {
+    "name": "runtime-policy-auditor"
+  },
+  "expectations": {
+    "requiresRepoInputs": true,
+    "subagentPolicy": "forbid"
+  }
+}

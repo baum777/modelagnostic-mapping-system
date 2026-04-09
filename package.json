@@ -1,6 +1,6 @@
 {
   "name": "codex-workflow-core",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "description": "Provider-neutral shared-core scaffold with Codex compatibility export.",
   "type": "module",
@@ -8,7 +8,9 @@
     "validate": "node scripts/tools/validate-repo-surface.mjs",
     "check": "node scripts/tools/validate-repo-surface.mjs",
     "build-registry": "node scripts/tools/build-neutral-core-registry.mjs --write",
+    "build-exports": "node scripts/tools/build-provider-exports.mjs --write",
     "validate-neutral": "node scripts/tools/validate-provider-neutral-core.mjs",
+    "eval": "node scripts/tools/run-certification-evals.mjs",
     "fingerprint": "node scripts/tools/calculate-package-fingerprint.mjs",
     "refresh-lock": "node scripts/tools/refresh-consumer-lock.mjs",
     "validate-consumer": "node scripts/tools/validate-consumer-linkage.mjs",

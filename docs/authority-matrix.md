@@ -29,17 +29,43 @@ Tool surfaces in this matrix use `runnable`, `validator-backed`, `helper-only`, 
 | `docs/consumer-rollout-playbook.md` | doc | operational | prose-only | operational guidance | existing consumer refresh and rollout only |
 | `docs/maintainer-commands.md` | doc | operational | prose-only | operational guidance | command appendix only |
 | `docs/validation-checklist.md` | doc | operational | partly enforced | gates reference scripts and validators | conditional items remain conditional |
+| `docs/portability.md` | doc | canonical | prose-only | portability charter | explains core/provider/compatibility boundaries |
+| `docs/provider-capability-matrix.md` | doc | canonical | prose-only | provider capability charter | names canonical providers and aliases |
+| `docs/authoring-guides.md` | doc | operational | prose-only | authoring guide | explains how to author skills, tools, exports, and eval fixtures |
 | `docs/overview.md` | doc | derived | prose-only | summary only | should not be read as governing text |
 | `docs/eval-baseline.md` | doc | derived | prose-only | derived evidence baseline | not a governance source |
 | `docs/extraction-roadmap.md` | doc | archive | prose-only | historical planning record | not live authority |
 | `CHANGELOG.md` | doc | archive | prose-only | release history | historical record only |
 | `docs/tool-contracts/catalog.json` | config surface | n/a | partly enforced | tool catalog with runnable/helper-only/validator-backed/contract-only/stub labels | compatibility export for the current Codex-oriented tool catalog |
-| `contracts/core-registry.json` | config surface | n/a | validator-backed | `scripts/tools/build-neutral-core-registry.mjs` + `scripts/tools/validate-provider-neutral-core.mjs` | neutral registry snapshot for skills, tools, and providers |
-| `contracts/provider-capabilities.json` | config surface | n/a | validator-backed | `scripts/tools/validate-provider-neutral-core.mjs` | provider capability matrix consumed by the neutral registry builder |
+| `core/README.md` | doc | canonical | prose-only | portable core index | boundary and layout for the provider-neutral core slice |
+| `core/contracts/README.md` | doc | canonical | prose-only | canonical contract index | points at the normalized core contract files |
+| `core/contracts/core-registry.json` | config surface | n/a | validator-backed | `scripts/tools/build-neutral-core-registry.mjs` + `scripts/tools/validate-provider-neutral-core.mjs` | canonical neutral registry snapshot for skills, tools, and providers |
+| `core/contracts/provider-capabilities.json` | config surface | n/a | validator-backed | `scripts/tools/validate-provider-neutral-core.mjs` | canonical provider capability matrix consumed by the neutral registry builder |
+| `core/contracts/output-contracts.json` | config surface | n/a | contract-only | portable output contract catalog | normalized output contract metadata for portable skills |
+| `core/contracts/tool-contracts/catalog.json` | config surface | n/a | contract-only | portable tool contract catalog | normalized tool contract metadata for portable skills |
+| `contracts/core-registry.json` | config surface | n/a | compatibility mirror | `scripts/tools/build-neutral-core-registry.mjs` + `scripts/tools/validate-provider-neutral-core.mjs` | legacy mirror of the canonical registry |
+| `contracts/provider-capabilities.json` | config surface | n/a | compatibility mirror | `scripts/tools/build-neutral-core-registry.mjs` + `scripts/tools/validate-provider-neutral-core.mjs` | legacy mirror of the canonical provider capability matrix |
+| `evals/catalog.json` | config surface | n/a | validator-backed | `scripts/tools/run-certification-evals.mjs` + `scripts/tools/validate-provider-neutral-core.mjs` | fixture index for deterministic certification checks |
+| `providers/openai-codex/export.json` | config surface | n/a | validator-backed | `scripts/tools/build-provider-exports.mjs` + `scripts/tools/validate-provider-neutral-core.mjs` | generated canonical OpenAI-Codex provider export bundle |
+| `providers/anthropic-claude/export.json` | config surface | n/a | validator-backed | `scripts/tools/build-provider-exports.mjs` + `scripts/tools/validate-provider-neutral-core.mjs` | generated canonical Claude provider export bundle |
+| `providers/qwen-code/export.json` | config surface | n/a | validator-backed | `scripts/tools/build-provider-exports.mjs` + `scripts/tools/validate-provider-neutral-core.mjs` | generated canonical Qwen Code provider export bundle |
+| `providers/kimi-k2_5/export.json` | config surface | n/a | validator-backed | `scripts/tools/build-provider-exports.mjs` + `scripts/tools/validate-provider-neutral-core.mjs` | generated canonical Kimi K2.5 provider export bundle |
+| `providers/openai/export.json` | config surface | n/a | compatibility mirror | `scripts/tools/build-provider-exports.mjs` + `scripts/tools/validate-provider-neutral-core.mjs` | legacy OpenAI/Codex compatibility export bundle |
+| `providers/anthropic/export.json` | config surface | n/a | compatibility mirror | `scripts/tools/build-provider-exports.mjs` + `scripts/tools/validate-provider-neutral-core.mjs` | legacy Anthropic compatibility export bundle |
+| `providers/qwen/export.json` | config surface | n/a | compatibility mirror | `scripts/tools/build-provider-exports.mjs` + `scripts/tools/validate-provider-neutral-core.mjs` | legacy Qwen compatibility export bundle |
+| `providers/kimi/export.json` | config surface | n/a | compatibility mirror | `scripts/tools/build-provider-exports.mjs` + `scripts/tools/validate-provider-neutral-core.mjs` | legacy Kimi compatibility export bundle |
+| `providers/codex/export.json` | config surface | n/a | compatibility mirror | `scripts/tools/build-provider-exports.mjs` + `scripts/tools/validate-provider-neutral-core.mjs` | legacy Codex compatibility export bundle |
+| `core/skills/repo-audit/SKILL.md` | shared-exported-skill | n/a | extracted | `core/contracts/portable-skill-manifest.json` | portable repo audit skill |
+| `core/skills/readiness-check/SKILL.md` | shared-exported-skill | n/a | extracted | `core/contracts/portable-skill-manifest.json` | portable readiness gate skill |
+| `core/skills/migration-planner/SKILL.md` | shared-exported-skill | n/a | extracted | `core/contracts/portable-skill-manifest.json` | portable migration planning skill |
+| `core/skills/research-synthesis/SKILL.md` | shared-exported-skill | n/a | extracted | `core/contracts/portable-skill-manifest.json` | portable research synthesis skill |
+| `core/skills/long-document-to-knowledge-asset/SKILL.md` | shared-exported-skill | n/a | extracted | `core/contracts/portable-skill-manifest.json` | portable document-to-asset skill |
 | `providers/README.md` | doc | operational | prose-only | provider adapter index | adapter boundary, not canonical truth |
 | `scripts/tools/validate-shared-core-package.mjs` | validator | n/a | validator-backed | package and plugin validator | validates package metadata, plugin name/version/skills path |
 | `scripts/tools/validate-shared-core-scaffold.mjs` | validator | n/a | validator-backed | scaffold validator | validates required files/dirs and shared skill contract sections |
 | `scripts/tools/build-neutral-core-registry.mjs` | helper-script | n/a | helper-only | neutral registry generator | writes or prints the provider-neutral registry snapshot |
+| `scripts/tools/build-provider-exports.mjs` | helper-script | n/a | helper-only | provider export generator | writes or prints provider export bundles from the neutral registry |
+| `scripts/tools/run-certification-evals.mjs` | validator | n/a | validator-backed | certification eval runner | runs deterministic fixture-backed certification checks |
 | `scripts/tools/validate-provider-neutral-core.mjs` | validator | n/a | validator-backed | neutral registry validator | checks registry, provider scaffolds, and capability profiles |
 | `scripts/tools/validate-repo-surface.mjs` | validator | n/a | validator-backed | repo-surface validator | combined package and provider-neutral validation entrypoint |
 | `scripts/tools/validate-consumer-linkage.mjs` | validator | n/a | validator-backed | linkage validator | validates shared source, version/fingerprint, overlay files, adopted skills |

@@ -7,17 +7,18 @@ Standalone authoritative shared-core repository for the provider-neutral agent w
 
 ## Purpose
 
-- provide reusable workflow skills, templates, examples, docs, helper scripts, and provider adapter scaffolds
+- provide reusable workflow skills, contracts, evals, docs, helper scripts, and provider adapter scaffolds
 - serve as the versioned source of truth for consumer repositories and compatibility exports
 
 ## Versioning
 
-- package version: `0.2.0`
+- package version: `0.2.1`
 - compatibility: semver, fail closed on breaking metadata changes
 - consumer linkage: file-path reference plus explicit version and fingerprint pin
 
 ## Start Here
 
+- [core/README.md](C:/workspace/main_projects/codex-workflow-core/core/README.md)
 - [docs/architecture.md](C:/workspace/main_projects/codex-workflow-core/docs/architecture.md)
 - [docs/authority-matrix.md](C:/workspace/main_projects/codex-workflow-core/docs/authority-matrix.md)
 - [docs/usage.md](C:/workspace/main_projects/codex-workflow-core/docs/usage.md)
@@ -30,6 +31,8 @@ Standalone authoritative shared-core repository for the provider-neutral agent w
 - use the command appendix in [docs/maintainer-commands.md](C:/workspace/main_projects/codex-workflow-core/docs/maintainer-commands.md)
 - run `npm run validate` before trust or release decisions
 - run `npm run validate-neutral` when the neutral registry or provider scaffolds change
+- run `npm run build-exports` when provider export bundles need regeneration
+- run `npm run eval` when certification fixtures or provider exports change
 - run `npm run fingerprint` when the package state must be pinned
  
 ## Parameterized Skills
@@ -38,8 +41,17 @@ Standalone authoritative shared-core repository for the provider-neutral agent w
 - `runtime-policy-auditor` uses a consumer-local input contract declared in `.codex/runtime-policy-inputs.json`
 - contract rules live in [docs/shared-with-local-inputs.md](C:/workspace/main_projects/codex-workflow-core/docs/shared-with-local-inputs.md), [docs/repo-intake-skill-contract.md](C:/workspace/main_projects/codex-workflow-core/docs/repo-intake-skill-contract.md), and [docs/runtime-policy-skill-contract.md](C:/workspace/main_projects/codex-workflow-core/docs/runtime-policy-skill-contract.md)
 
+## Portable Core Slice
+
+- `core/skills/` holds the portable priority skills
+- `core/contracts/` holds the normalized output and tool contracts plus the canonical provider capability matrix
+- `core/evals/` holds the portable eval scaffolding
+- `providers/openai-codex/`, `providers/anthropic-claude/`, `providers/qwen-code/`, and `providers/kimi-k2_5/` are the canonical adapter exports
+- `providers/openai/`, `providers/anthropic/`, `providers/qwen/`, `providers/kimi/`, and `providers/codex/` remain compatibility mirrors during migration
+
 ## Layout
 
+- `core/` portable core slice
 - `contracts/` machine-readable neutral registries and provider capability profiles
 - `providers/` provider adapter scaffolds and compatibility exports
 - `docs/` portable docs and contracts

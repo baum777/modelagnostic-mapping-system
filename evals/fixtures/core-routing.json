@@ -1,0 +1,17 @@
+{
+  "id": "core-routing",
+  "kind": "routing",
+  "blocking": true,
+  "target": {
+    "name": "repo-audit"
+  },
+  "expectations": {
+    "providers": [
+      "openai-codex",
+      "anthropic-claude",
+      "qwen-code",
+      "kimi-k2_5"
+    ]
+  }
+}
+

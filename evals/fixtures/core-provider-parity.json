@@ -1,0 +1,18 @@
+{
+  "id": "core-provider-parity",
+  "kind": "provider-parity",
+  "blocking": true,
+  "target": {
+    "name": "repo-audit"
+  },
+  "expectations": {
+    "baselineProvider": "openai-codex",
+    "providers": [
+      "openai-codex",
+      "anthropic-claude",
+      "qwen-code",
+      "kimi-k2_5"
+    ]
+  }
+}
+

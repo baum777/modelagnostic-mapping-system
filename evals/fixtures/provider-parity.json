@@ -1,0 +1,18 @@
+{
+  "id": "provider-parity",
+  "kind": "provider-parity",
+  "blocking": true,
+  "target": {
+    "name": "repo-intake-sot-mapper"
+  },
+  "expectations": {
+    "baselineProvider": "openai",
+    "providers": [
+      "openai",
+      "anthropic",
+      "qwen",
+      "kimi",
+      "codex"
+    ]
+  }
+}

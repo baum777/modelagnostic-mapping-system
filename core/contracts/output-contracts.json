@@ -1,0 +1,112 @@
+{
+  "schemaVersion": "1.0.0",
+  "contracts": [
+    {
+      "contract_id": "repo-audit-report-v1",
+      "skill": "repo-audit",
+      "required_sections": [
+        "SUMMARY",
+        "OBSERVED STATE",
+        "CANONICAL SOURCES",
+        "GAPS",
+        "RISKS",
+        "NEXT ACTIONS"
+      ],
+      "optional_sections": [
+        "TOOL COVERAGE",
+        "PROVIDER NOTES"
+      ],
+      "validation_notes": [
+        "Observed state must cite exact file paths.",
+        "Inferred claims must be marked as inferred."
+      ],
+      "failure_or_partial_completion_behavior": "If repo evidence is missing or contradictory, return BLOCKED and enumerate the missing paths."
+    },
+    {
+      "contract_id": "readiness-check-verdict-v1",
+      "skill": "readiness-check",
+      "required_sections": [
+        "SUMMARY",
+        "CURRENT TRUTH",
+        "GATES",
+        "BLOCKERS",
+        "DECISION",
+        "NEXT ACTIONS"
+      ],
+      "optional_sections": [
+        "ROLLBACK",
+        "ESCALATION"
+      ],
+      "validation_notes": [
+        "State whether readiness is verified, blocked, or advisory-only.",
+        "Do not claim live readiness without concrete evidence."
+      ],
+      "failure_or_partial_completion_behavior": "If the required gates cannot be verified, return BLOCKED with the missing evidence list."
+    },
+    {
+      "contract_id": "migration-plan-v1",
+      "skill": "migration-planner",
+      "required_sections": [
+        "SUMMARY",
+        "TARGET SHAPE",
+        "SLICE PLAN",
+        "DEPENDENCIES",
+        "ACCEPTANCE CRITERIA",
+        "RISKS",
+        "NEXT ACTIONS"
+      ],
+      "optional_sections": [
+        "ROLLBACK",
+        "OPEN QUESTIONS"
+      ],
+      "validation_notes": [
+        "Each slice must be independently testable.",
+        "The smallest safe first slice must be explicit."
+      ],
+      "failure_or_partial_completion_behavior": "If the requested migration is ambiguous, stop at the smallest safe slice and list the blockers."
+    },
+    {
+      "contract_id": "research-synthesis-brief-v1",
+      "skill": "research-synthesis",
+      "required_sections": [
+        "SUMMARY",
+        "SOURCES",
+        "SYNTHESIS",
+        "OPEN QUESTIONS",
+        "RISKS",
+        "NEXT ACTIONS"
+      ],
+      "optional_sections": [
+        "COUNTERPOINTS",
+        "LIMITATIONS"
+      ],
+      "validation_notes": [
+        "Distinguish direct evidence from synthesis.",
+        "Do not overstate certainty when sources disagree."
+      ],
+      "failure_or_partial_completion_behavior": "If sources are insufficient, return a conservative synthesis with explicit gaps."
+    },
+    {
+      "contract_id": "knowledge-asset-transform-v1",
+      "skill": "long-document-to-knowledge-asset",
+      "required_sections": [
+        "SUMMARY",
+        "DOCUMENT MAP",
+        "DERIVED ASSETS",
+        "TRACEABILITY",
+        "GAPS",
+        "NEXT ACTIONS"
+      ],
+      "optional_sections": [
+        "EXCERPTS",
+        "INDEX"
+      ],
+      "validation_notes": [
+        "Preserve provenance from source document to derived asset.",
+        "Do not drop unresolved ambiguities."
+      ],
+      "failure_or_partial_completion_behavior": "If the source document is incomplete or malformed, return a partial asset map with the missing segments called out."
+    }
+  ]
+}
+

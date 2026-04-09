@@ -1,0 +1,17 @@
+{
+  "id": "routing-skill-parity",
+  "kind": "routing",
+  "blocking": true,
+  "target": {
+    "name": "planning-slice-builder"
+  },
+  "expectations": {
+    "providers": [
+      "openai",
+      "anthropic",
+      "qwen",
+      "kimi",
+      "codex"
+    ]
+  }
+}

@@ -16,7 +16,23 @@ Updates the consumer manifest with the current shared-core version and fingerpri
 npm run build-registry -- --write
 ```
 
-Regenerates `contracts/core-registry.json` from the current skills, tool catalog, and provider capability profile.
+Regenerates `core/contracts/core-registry.json` and the compatibility mirror in `contracts/core-registry.json` from the current skills, tool catalog, and provider capability profile.
+
+## Build the Provider Exports (helper-only)
+
+```bash
+npm run build-exports -- --provider openai
+```
+
+Regenerates `providers/<provider>/export.json` from the neutral registry and provider capability profile. Omit `--provider` to rebuild every provider export. Canonical provider names are `openai-codex`, `anthropic-claude`, `qwen-code`, and `kimi-k2_5`.
+
+## Run Certification Evals (validator-backed)
+
+```bash
+npm run eval
+```
+
+Runs the deterministic certification fixtures in `evals/` against the generated registry and provider export bundles.
 
 ## Validate a Consumer (validator-backed)
 
@@ -62,7 +78,9 @@ Creates the minimal overlay files and a local validator wrapper if they do not a
 
 - use `refresh-lock` for helper-only linkage refreshes
 - use `validate-consumer` for validator-backed consumer linkage checks before rollout or review
-- use `build-registry` when `skills/`, `docs/tool-contracts/catalog.json`, or provider capability profiles change
+- use `build-registry` when `core/skills/`, `skills/`, `core/contracts/tool-contracts/catalog.json`, or provider capability profiles change
+- use `build-exports` when canonical provider adapter scaffolds or provider capability profiles change
+- use `eval` when certification fixtures, registry semantics, or provider export bundles change
 - use `validate-neutral` after changing the neutral registry, provider scaffolds, or adapter boundary docs
 - use `init-consumer` for the first initializer/scaffold pass in a new repository
 - use `validate-input-contract` whenever a consumer adopts `repo-intake-sot-mapper`

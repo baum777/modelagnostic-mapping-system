@@ -1,0 +1,13 @@
+{
+  "id": "core-failure-mode",
+  "kind": "failure-mode",
+  "blocking": true,
+  "target": {
+    "name": "repo-audit"
+  },
+  "expectations": {
+    "requiresRepoInputs": true,
+    "subagentPolicy": "forbid"
+  }
+}
+

@@ -4,14 +4,26 @@ This directory is the provider-specific export boundary for the shared core.
 
 ## Canonical Rule
 
-- Core semantics live in the repository root, `contracts/`, `skills/`, and `scripts/tools/`.
-- Provider directories compile those canonical surfaces into provider-specific packaging and transport artifacts.
+- Core semantics live in `core/`, `contracts/`, `skills/`, and `scripts/tools/`.
+- Canonical provider adapters live in `providers/openai-codex/`, `providers/anthropic-claude/`, `providers/qwen-code/`, and `providers/kimi-k2_5/`.
+- Legacy directories under `providers/openai/`, `providers/anthropic/`, `providers/qwen/`, `providers/kimi/`, and `providers/codex/` remain compatibility mirrors until the migration is complete.
+- Provider directories compile the canonical portable slice into provider-specific packaging and transport artifacts.
 - Provider-specific behavior must not become the source of truth for shared contracts.
 
 ## Current Provider Scaffolds
 
-- `providers/openai/` - OpenAI / Codex / GPT export boundary
-- `providers/anthropic/` - Claude export boundary
-- `providers/qwen/` - Qwen export boundary
-- `providers/kimi/` - Kimi K2.5 export boundary
-- `providers/codex/` - compatibility export boundary for the current Codex package surface
+- `providers/openai-codex/` - canonical OpenAI / Codex / GPT export boundary
+- `providers/anthropic-claude/` - canonical Claude export boundary
+- `providers/qwen-code/` - canonical Qwen Code export boundary
+- `providers/kimi-k2_5/` - canonical Kimi K2.5 export boundary
+- `providers/openai/` - compatibility export boundary for the legacy OpenAI/Codex surface
+- `providers/anthropic/` - compatibility export boundary for the legacy Claude surface
+- `providers/qwen/` - compatibility export boundary for the legacy Qwen surface
+- `providers/kimi/` - compatibility export boundary for the legacy Kimi surface
+- `providers/codex/` - compatibility export boundary for the legacy Codex package surface
+
+## Generated Exports
+
+- `providers/<provider>/export.json` is the generated provider export bundle
+- run `npm run build-exports` to regenerate committed export bundles from `contracts/core-registry.json`
+- run `npm run eval` to validate the committed exports against the certification fixtures

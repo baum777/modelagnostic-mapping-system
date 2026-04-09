@@ -1,0 +1,19 @@
+{
+  "id": "core-schema",
+  "kind": "schema",
+  "blocking": true,
+  "target": {
+    "name": "repo-audit"
+  },
+  "expectations": {
+    "outputHeadings": [
+      "SUMMARY",
+      "OBSERVED STATE",
+      "CANONICAL SOURCES",
+      "GAPS",
+      "RISKS",
+      "NEXT ACTIONS"
+    ]
+  }
+}
+

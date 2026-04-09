@@ -1,0 +1,12 @@
+{
+  "id": "approval-boundary",
+  "kind": "approval-boundary",
+  "blocking": true,
+  "target": {
+    "name": "approval-gated-write-executor"
+  },
+  "expectations": {
+    "approvalRequirement": "required",
+    "sideEffects": "writes files only when approved"
+  }
+}

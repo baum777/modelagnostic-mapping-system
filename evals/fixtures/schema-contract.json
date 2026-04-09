@@ -1,0 +1,20 @@
+{
+  "id": "schema-contract",
+  "kind": "schema",
+  "blocking": true,
+  "target": {
+    "name": "mcp-server-creation"
+  },
+  "expectations": {
+    "outputHeadings": [
+      "MCP server architecture brief",
+      "tool inventory with Use this when... descriptions",
+      "JSON schemas for each tool input and output",
+      "starter server implementation scaffold",
+      ".env.example or equivalent environment template",
+      "testing checklist",
+      "deployment checklist",
+      "usage examples"
+    ]
+  }
+}

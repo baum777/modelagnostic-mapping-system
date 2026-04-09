@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1 - 2026-04-09
+
+- Added generated provider export bundles and the certification eval runner.
+- Wired the neutral validator to check provider export artifacts and eval fixtures.
+- Brought the package, plugin, README, and generated registry metadata back into version sync.
+
 ## 0.2.0 - 2026-04-09
 
 - Introduced provider-neutral contracts and provider adapter scaffolds.
