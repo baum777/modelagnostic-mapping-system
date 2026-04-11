@@ -58,6 +58,7 @@ Tool surfaces in this matrix use `runnable`, `validator-backed`, `helper-only`, 
 | `core/skills/repo-audit/SKILL.md` | shared-exported-skill | n/a | extracted | `core/contracts/portable-skill-manifest.json` | portable repo audit skill |
 | `core/skills/readiness-check/SKILL.md` | shared-exported-skill | n/a | extracted | `core/contracts/portable-skill-manifest.json` | portable readiness gate skill |
 | `core/skills/supabase-deployment/SKILL.md` | shared-exported-skill | n/a | extracted | `core/contracts/portable-skill-manifest.json` | portable Supabase deployment skill with fail-closed remote-state gates |
+| `core/skills/neon-db-setup/SKILL.md` | shared-exported-skill | n/a | extracted | `core/contracts/portable-skill-manifest.json` | portable Neon Postgres setup and validation skill |
 | `core/skills/migration-planner/SKILL.md` | shared-exported-skill | n/a | extracted | `core/contracts/portable-skill-manifest.json` | portable migration planning skill |
 | `core/skills/research-synthesis/SKILL.md` | shared-exported-skill | n/a | extracted | `core/contracts/portable-skill-manifest.json` | portable research synthesis skill |
 | `core/skills/long-document-to-knowledge-asset/SKILL.md` | shared-exported-skill | n/a | extracted | `core/contracts/portable-skill-manifest.json` | portable document-to-asset skill |

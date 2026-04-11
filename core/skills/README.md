@@ -7,6 +7,7 @@ Portable skill slice.
 - `repo-audit`
 - `readiness-check`
 - `supabase-deployment`
+- `neon-db-setup`
 - `migration-planner`
 - `research-synthesis`
 - `long-document-to-knowledge-asset`

@@ -130,6 +130,32 @@
         "Fail closed when project binding, secret inventory, or migration order cannot be proven."
       ],
       "failure_or_partial_completion_behavior": "If deployment evidence is missing or contradictory, return BLOCKED and enumerate the missing project, environment, or verification paths."
+    },
+    {
+      "contract_id": "neon-db-setup-runbook-v1",
+      "skill": "neon-db-setup",
+      "required_sections": [
+        "SUMMARY",
+        "NEON CONCEPTS",
+        "REQUIRED INPUTS",
+        "REQUIRED ENVIRONMENT VARIABLES",
+        "SETUP PROCEDURE",
+        "VALIDATION CHECKLIST",
+        "TROUBLESHOOTING",
+        "BOUNDARIES / NON-GOALS",
+        "OPEN GAPS"
+      ],
+      "optional_sections": [
+        "COMMAND EXAMPLES",
+        "ASSUMPTIONS",
+        "ROLLBACK"
+      ],
+      "validation_notes": [
+        "Separate pooled/runtime and direct/migration connection strings.",
+        "Fail closed on missing or malformed database URLs.",
+        "Do not claim database readiness without connectivity and migration evidence."
+      ],
+      "failure_or_partial_completion_behavior": "If the Neon project, connection strings, or wiring cannot be proven, return BLOCKED and enumerate the missing values."
     }
   ]
 }
