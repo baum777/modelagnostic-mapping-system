@@ -3,7 +3,22 @@
 Class: canonical.
 Use rule: use this as the shortest practical entrypoint; it should point to the docs hierarchy rather than duplicate it.
 
-Standalone authoritative shared-core repository for the provider-neutral agent workflow core, with Codex kept as a compatibility export.
+Provider-neutral shared-core repository for governed agent workflow artifacts, with Codex kept as a compatibility export.
+
+## Current Truth
+
+Observed repo surfaces:
+
+- `core/` portable core slice
+- `core/skills/` portable priority skills
+- `skills/` legacy shared exported skills
+- `.agents/skills/` repo-local control-plane skills
+- `contracts/` neutral registries and compatibility mirrors
+- `providers/` canonical adapter exports and compatibility mirrors
+- `scripts/tools/` validators and deterministic helper scripts
+- `templates/` shared workflow templates
+- `examples/` shared workflow examples
+- `.codex-plugin/plugin.json` Codex compatibility manifest
 
 ## Purpose
 
@@ -22,19 +37,29 @@ Standalone authoritative shared-core repository for the provider-neutral agent w
 - [docs/architecture.md](C:/workspace/main_projects/codex-workflow-core/docs/architecture.md)
 - [docs/authority-matrix.md](C:/workspace/main_projects/codex-workflow-core/docs/authority-matrix.md)
 - [docs/usage.md](C:/workspace/main_projects/codex-workflow-core/docs/usage.md)
+- [docs/compatibility.md](C:/workspace/main_projects/codex-workflow-core/docs/compatibility.md)
+- [docs/portability.md](C:/workspace/main_projects/codex-workflow-core/docs/portability.md)
+- [docs/validation-checklist.md](C:/workspace/main_projects/codex-workflow-core/docs/validation-checklist.md)
+- [docs/maintainer-commands.md](C:/workspace/main_projects/codex-workflow-core/docs/maintainer-commands.md)
 - [AGENTS.md](C:/workspace/main_projects/codex-workflow-core/AGENTS.md)
 - [contracts/README.md](C:/workspace/main_projects/codex-workflow-core/contracts/README.md)
 - [providers/README.md](C:/workspace/main_projects/codex-workflow-core/providers/README.md)
 
 ## Operational Commands
 
-- use the command appendix in [docs/maintainer-commands.md](C:/workspace/main_projects/codex-workflow-core/docs/maintainer-commands.md)
-- run `npm run validate` before trust or release decisions
-- run `npm run validate-neutral` when the neutral registry or provider scaffolds change
-- run `npm run build-exports` when provider export bundles need regeneration
-- run `npm run eval` when certification fixtures or provider exports change
-- run `npm run fingerprint` when the package state must be pinned
- 
+- `npm run validate` to validate the repo surface
+- `npm run validate-neutral` when neutral registry or provider scaffolds change
+- `npm run build-registry` when `core/contracts/core-registry.json` needs regeneration
+- `npm run build-exports` when provider export bundles need regeneration
+- `npm run eval` when certification fixtures or provider exports change
+- `npm run fingerprint` when the package state must be pinned
+- `npm run validate-consumer` when linkage, overlay, or adoption surfaces change
+- `npm run validate-input-contract` when `.codex/repo-intake-inputs.json` changes
+- `npm run validate-runtime-policy-input-contract` when `.codex/runtime-policy-inputs.json` changes
+- `npm run init-consumer` to scaffold a consumer overlay
+- `npm run scan` to inspect repository structure
+- `npm run diff` to explain git diffs
+
 ## Parameterized Skills
 
 - `repo-intake-sot-mapper` uses a consumer-local input contract declared in `.codex/repo-intake-inputs.json`
@@ -55,7 +80,8 @@ Standalone authoritative shared-core repository for the provider-neutral agent w
 - `contracts/` machine-readable neutral registries and provider capability profiles
 - `providers/` provider adapter scaffolds and compatibility exports
 - `docs/` portable docs and contracts
-- `skills/` reusable skills
+- `skills/` reusable shared-exported skills
+- `.agents/skills/` repo-local control-plane skills
 - `scripts/tools/` deterministic helpers and validators
 - `templates/` shared templates
 - `examples/` shared examples
