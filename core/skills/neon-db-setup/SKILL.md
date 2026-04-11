@@ -55,6 +55,17 @@ Use this skill when a project needs a Neon Postgres database created, wired, mig
 - If a migration or admin command fails through pooling, switch that path to the direct URL instead of forcing the pooler.
 - If runtime traffic opens many short-lived connections, prefer the pooled URL unless the project has a documented reason not to.
 
+## Neon Docs Navigation
+
+- Treat Neon documentation as the source of current product behavior. When the task needs exact setup, API, SDK, or command details, fetch the matching Neon doc instead of relying on stale local memory.
+- The official Neon Agent Skills page says the main development skill is `neon-postgres`; `claimable-postgres` is the separate skill for disposable databases.
+- The same Neon page documents install paths such as:
+  - `npx skills add neondatabase/agent-skills -s neon-postgres`
+  - `npx neonctl@latest init`
+- The Neon skill coverage called out by Neon includes getting started, connection strings and pooling, Neon Auth, `@neondatabase/neon-js`, the Neon REST API and SDKs, and developer tools such as the CLI, VS Code extension, and MCP server.
+- Use project-level install when the skill should travel with the project. Use global install only when the same Neon guidance should apply across all projects in a personal environment.
+- If a project needs a disposable or ephemeral database workflow, treat that as a separate path rather than folding it into the main database setup skill.
+
 ## Required Inputs
 
 - the Neon account or project where the database should live
