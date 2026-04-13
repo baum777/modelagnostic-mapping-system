@@ -33,6 +33,7 @@ Tool surfaces in this matrix use `runnable`, `validator-backed`, `helper-only`, 
 | `docs/provider-capability-matrix.md` | doc | canonical | prose-only | provider capability charter | names canonical providers and aliases |
 | `docs/authoring-guides.md` | doc | operational | prose-only | authoring guide | explains how to author skills, tools, exports, and eval fixtures |
 | `docs/overview.md` | doc | derived | prose-only | summary only | should not be read as governing text |
+| `docs/qwen-3-6-intro.md` | doc | derived | prose-only | reviewed guide for Qwen prompt and workflow design | external product claims are not repo-verified |
 | `docs/eval-baseline.md` | doc | derived | prose-only | derived evidence baseline | not a governance source |
 | `docs/extraction-roadmap.md` | doc | archive | prose-only | historical planning record | not live authority |
 | `CHANGELOG.md` | doc | archive | prose-only | release history | historical record only |

@@ -37,6 +37,7 @@ Consumer repositories must supply those through a local overlay.
 - `migration-planner`
 - `research-synthesis`
 - `long-document-to-knowledge-asset`
+- `qwen-3-6-intro` as a derived guide for Qwen prompt and workflow design
 - the provider-neutral registry snapshot in `core/contracts/core-registry.json`
 
 That slice is intentional: consumer repositories should pin the version and fingerprint before adopting updates, then supply the declared local input contracts for any shared-with-local-inputs skill they enable.
