@@ -28,6 +28,8 @@ The generated `.qwen` scaffold is a consumer-local operating overlay. It is not 
 | `docs/architecture.md` | doc | canonical | prose-only | canonical docs charter by repo convention | defines tiers, merge rules, update rules, and skill topology |
 | `docs/authority-matrix.md` | doc | canonical | prose-only | canonical authority ledger by repo convention | records claim status and evidence across surfaces |
 | `docs/usage.md` | doc | operational | prose-only | operational hub | links outward instead of redefining canon |
+| `docs/ui-ux-composition-branch.md` | doc | canonical | prose-only | canonical UI/UX branch charter | branch authority, status matrix, and contract boundaries |
+| `docs/ui-ux-composition/*` | doc | derived | prose-only | advisory internal branch taxonomy | not a second authority path |
 | `evals/README.md` | doc | operational | prose-only | evals entrypoint | certification and parity guide |
 | `docs/adoption-playbook.md` | doc | operational | prose-only | operational guidance | first-time setup only |
 | `docs/consumer-rollout-playbook.md` | doc | operational | prose-only | operational guidance | existing consumer refresh and rollout only |
@@ -45,8 +47,8 @@ The generated `.qwen` scaffold is a consumer-local operating overlay. It is not 
 | `core/contracts/README.md` | doc | canonical | prose-only | canonical contract index | points at the normalized core contract files |
 | `core/contracts/core-registry.json` | config surface | n/a | validator-backed | `scripts/tools/build-neutral-core-registry.mjs` + `scripts/tools/validate-provider-neutral-core.mjs` | canonical neutral registry snapshot for skills, tools, and providers |
 | `core/contracts/provider-capabilities.json` | config surface | n/a | validator-backed | `scripts/tools/validate-provider-neutral-core.mjs` | canonical provider capability matrix consumed by the neutral registry builder |
-| `core/contracts/output-contracts.json` | config surface | n/a | contract-only | portable output contract catalog | normalized output contract metadata for portable skills |
-| `core/contracts/tool-contracts/catalog.json` | config surface | n/a | contract-only | portable tool contract catalog | normalized tool contract metadata for portable skills |
+| `core/contracts/output-contracts.json` | config surface | n/a | contract-only | portable output contract catalog | normalized output contract metadata for portable skills, including the `ui-ux-composition` branch contract |
+| `core/contracts/tool-contracts/catalog.json` | config surface | n/a | contract-only | portable tool contract catalog | normalized tool contract metadata for portable skills, including the `ui-ux-composition` logical tool entries |
 | `contracts/core-registry.json` | config surface | n/a | compatibility mirror | `scripts/tools/build-neutral-core-registry.mjs` + `scripts/tools/validate-provider-neutral-core.mjs` | legacy mirror of the canonical registry |
 | `contracts/provider-capabilities.json` | config surface | n/a | compatibility mirror | `scripts/tools/build-neutral-core-registry.mjs` + `scripts/tools/validate-provider-neutral-core.mjs` | legacy mirror of the canonical provider capability matrix |
 | `evals/catalog.json` | config surface | n/a | validator-backed | `scripts/tools/run-certification-evals.mjs` + `scripts/tools/validate-provider-neutral-core.mjs` | fixture index for deterministic certification checks |
@@ -66,6 +68,7 @@ The generated `.qwen` scaffold is a consumer-local operating overlay. It is not 
 | `core/skills/migration-planner/SKILL.md` | shared-exported-skill | n/a | extracted | `core/contracts/portable-skill-manifest.json` | portable migration planning skill |
 | `core/skills/research-synthesis/SKILL.md` | shared-exported-skill | n/a | extracted | `core/contracts/portable-skill-manifest.json` | portable research synthesis skill |
 | `core/skills/long-document-to-knowledge-asset/SKILL.md` | shared-exported-skill | n/a | extracted | `core/contracts/portable-skill-manifest.json` | portable document-to-asset skill |
+| `core/skills/ui-ux-composition/SKILL.md` | shared-exported-skill | n/a | extracted | `core/contracts/portable-skill-manifest.json` | canonical operational skill surface for the UI/UX composition branch |
 | `providers/README.md` | doc | operational | prose-only | provider adapter index | adapter boundary, not canonical truth |
 | `scripts/tools/validate-shared-core-package.mjs` | validator | n/a | validator-backed | package and plugin validator | validates package metadata, plugin name/version/skills path |
 | `scripts/tools/validate-shared-core-scaffold.mjs` | validator | n/a | validator-backed | scaffold validator | validates required files/dirs and shared skill contract sections |

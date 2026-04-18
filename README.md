@@ -11,11 +11,14 @@ Observed repo surfaces:
 
 - `core/` portable core slice
 - `core/skills/` portable priority skills
+- `core/skills/ui-ux-composition/` canonical UI/UX composition branch skill surface
 - `skills/` legacy shared exported skills
 - `.agents/skills/` repo-local control-plane skills
 - `contracts/` neutral registries and compatibility mirrors
 - `providers/` canonical adapter exports and compatibility mirrors
 - `docs/` documentation hierarchy and contracts
+- `docs/ui-ux-composition-branch.md` canonical UI/UX branch charter
+- `docs/ui-ux-composition/` advisory internal branch taxonomy
 - `evals/` certification fixtures and checks
 - `scripts/tools/` validators and deterministic helper scripts
 - `templates/` shared workflow templates
@@ -40,6 +43,7 @@ Observed repo surfaces:
 - [core/README.md](C:/workspace/main_projects/codex-workflow-core/core/README.md)
 - [docs/architecture.md](C:/workspace/main_projects/codex-workflow-core/docs/architecture.md)
 - [docs/authority-matrix.md](C:/workspace/main_projects/codex-workflow-core/docs/authority-matrix.md)
+- [docs/ui-ux-composition-branch.md](C:/workspace/main_projects/codex-workflow-core/docs/ui-ux-composition-branch.md) when the task touches the UI/UX composition branch
 - [docs/usage.md](C:/workspace/main_projects/codex-workflow-core/docs/usage.md)
 - [docs/compatibility.md](C:/workspace/main_projects/codex-workflow-core/docs/compatibility.md)
 - [docs/portability.md](C:/workspace/main_projects/codex-workflow-core/docs/portability.md)
@@ -75,6 +79,7 @@ Observed repo surfaces:
 ## Portable Core Slice
 
 - `core/skills/` holds the portable priority skills
+- `core/skills/ui-ux-composition/` holds the canonical UI/UX composition branch skill surface
 - `core/contracts/` holds the normalized output and tool contracts plus the canonical provider capability matrix
 - `core/evals/` holds the portable eval scaffolding
 - `providers/openai-codex/`, `providers/anthropic-claude/`, `providers/qwen-code/`, and `providers/kimi-k2_5/` are the canonical adapter exports

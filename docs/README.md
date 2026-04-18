@@ -10,6 +10,7 @@ This page is an index only. Canonical truth lives in [docs/architecture.md](C:/w
 - [README.md](C:/workspace/main_projects/codex-workflow-core/README.md)
 - [docs/architecture.md](C:/workspace/main_projects/codex-workflow-core/docs/architecture.md)
 - [docs/authority-matrix.md](C:/workspace/main_projects/codex-workflow-core/docs/authority-matrix.md)
+- [docs/ui-ux-composition-branch.md](C:/workspace/main_projects/codex-workflow-core/docs/ui-ux-composition-branch.md) when the task touches the UI/UX composition branch
 - [docs/usage.md](C:/workspace/main_projects/codex-workflow-core/docs/usage.md)
 - [core/README.md](C:/workspace/main_projects/codex-workflow-core/core/README.md)
 - [contracts/README.md](C:/workspace/main_projects/codex-workflow-core/contracts/README.md)
@@ -18,9 +19,9 @@ This page is an index only. Canonical truth lives in [docs/architecture.md](C:/w
 
 ## Documentation Classes
 
-- Canonical: `docs/architecture.md`, `docs/authority-matrix.md`, `docs/compatibility.md`, `docs/lock-model.md`, `docs/portability.md`, `docs/provider-capability-matrix.md`, `docs/repo-overlay-contract.md`, `docs/shared-with-local-inputs.md`, `docs/repo-intake-skill-contract.md`, `docs/runtime-policy-skill-contract.md`, `docs/tool-contracts/catalog.json`
+- Canonical: `docs/architecture.md`, `docs/authority-matrix.md`, `docs/compatibility.md`, `docs/lock-model.md`, `docs/portability.md`, `docs/provider-capability-matrix.md`, `docs/repo-overlay-contract.md`, `docs/shared-with-local-inputs.md`, `docs/repo-intake-skill-contract.md`, `docs/runtime-policy-skill-contract.md`, `docs/tool-contracts/catalog.json`, `docs/ui-ux-composition-branch.md`
 - Operational: `docs/README.md`, `docs/usage.md`, `docs/adoption-playbook.md`, `docs/consumer-rollout-playbook.md`, `docs/maintainer-commands.md`, `docs/validation-checklist.md`, `docs/authoring-guides.md`
-- Derived: `docs/overview.md`, `docs/eval-baseline.md`
+- Derived: `docs/overview.md`, `docs/eval-baseline.md`, `docs/ui-ux-composition/*`
 - Archive: `docs/extraction-roadmap.md`, `CHANGELOG.md`
 
 ## Repository Entry Points

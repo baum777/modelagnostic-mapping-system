@@ -197,7 +197,202 @@
       "routing_hints": [
         "readiness-check"
       ]
+    },
+    {
+      "tool_name": "analyze_layout",
+      "intent_class": "contract-only branch analysis",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "branch": { "type": "string" },
+          "mode": { "type": "string" },
+          "artifact_type": { "type": "string" },
+          "page_goal": { "type": "string" },
+          "current_structure": { "type": "object" },
+          "content_blocks": { "type": "array", "items": { "type": "object" } },
+          "product_context": { "type": "object" }
+        },
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "ui-ux-composition"
+      ]
+    },
+    {
+      "tool_name": "analyze_typography",
+      "intent_class": "contract-only branch analysis",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "branch": { "type": "string" },
+          "mode": { "type": "string" },
+          "text_system": { "type": "object" },
+          "content_blocks": { "type": "array", "items": { "type": "object" } },
+          "typography_tokens": { "type": "object" }
+        },
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "ui-ux-composition"
+      ]
+    },
+    {
+      "tool_name": "analyze_spacing",
+      "intent_class": "contract-only branch analysis",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "branch": { "type": "string" },
+          "mode": { "type": "string" },
+          "current_structure": { "type": "object" },
+          "spacing_tokens": { "type": "object" },
+          "density_mode": { "type": "string" }
+        },
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "ui-ux-composition"
+      ]
+    },
+    {
+      "tool_name": "audit_ui",
+      "intent_class": "contract-only branch analysis",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "branch": { "type": "string" },
+          "mode": { "type": "string" },
+          "current_structure": { "type": "object" },
+          "content_blocks": { "type": "array", "items": { "type": "object" } },
+          "product_context": { "type": "object" },
+          "goals": { "type": "array", "items": { "type": "string" } },
+          "known_problems": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "ui-ux-composition"
+      ]
+    },
+    {
+      "tool_name": "generate_layout_blueprint",
+      "intent_class": "contract-only branch analysis",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "branch": { "type": "string" },
+          "mode": { "type": "string" },
+          "page_goal": { "type": "string" },
+          "content_blocks": { "type": "array", "items": { "type": "object" } },
+          "product_context": { "type": "object" },
+          "device_targets": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "ui-ux-composition"
+      ]
+    },
+    {
+      "tool_name": "synthesize_design_tokens",
+      "intent_class": "contract-only branch analysis",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "branch": { "type": "string" },
+          "mode": { "type": "string" },
+          "current_structure": { "type": "object" },
+          "design_tokens": { "type": "object" },
+          "density_modes": { "type": "object" },
+          "brand_constraints": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "ui-ux-composition"
+      ]
+    },
+    {
+      "tool_name": "refine_screen",
+      "intent_class": "contract-only branch analysis",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "branch": { "type": "string" },
+          "mode": { "type": "string" },
+          "current_structure": { "type": "object" },
+          "known_problems": { "type": "array", "items": { "type": "string" } },
+          "constraints": { "type": "array", "items": { "type": "string" } },
+          "requested_outputs": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "ui-ux-composition"
+      ]
     }
   ]
 }
-

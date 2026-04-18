@@ -44,6 +44,34 @@
       "failure_or_partial_completion_behavior": "If the required gates cannot be verified, return BLOCKED with the missing evidence list."
     },
     {
+      "contract_id": "ui-ux-composition-branch-v1",
+      "skill": "ui-ux-composition",
+      "required_sections": [
+        "branch",
+        "mode",
+        "result_type",
+        "summary",
+        "constraints_applied",
+        "confidence",
+        "findings",
+        "recommendations"
+      ],
+      "optional_sections": [
+        "review_report",
+        "layout_blueprint",
+        "token_pack",
+        "refinement_plan",
+        "next_actions"
+      ],
+      "validation_notes": [
+        "The required fields must always appear and stay branch-specific.",
+        "Result-type-specific sections are optional and must not replace the required fields.",
+        "Audit mode is descriptive, structural, token, and text-based only in v1.",
+        "Native screenshot, DOM-runtime, and computed-style truth claims are not supported."
+      ],
+      "failure_or_partial_completion_behavior": "If required fields are missing or the output overclaims unsupported visual-runtime truth, return BLOCKED and name the missing or overclaimed fields."
+    },
+    {
       "contract_id": "migration-plan-v1",
       "skill": "migration-planner",
       "required_sections": [

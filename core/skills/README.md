@@ -10,6 +10,7 @@ Portable skill slice.
 - `migration-planner`
 - `research-synthesis`
 - `long-document-to-knowledge-asset`
+- `ui-ux-composition`
 
 ## Compatibility Rule
 

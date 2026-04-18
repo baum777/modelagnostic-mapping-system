@@ -25,13 +25,13 @@ Define how repository docs are classified, where authority lives, and how update
 - Root governance: `AGENTS.md`
 - Front door: `README.md`
 - Docs index: `docs/README.md`
-- Canonical docs: `docs/authority-matrix.md`, `docs/architecture.md`, `docs/compatibility.md`, `docs/lock-model.md`, `docs/repo-overlay-contract.md`, `docs/shared-with-local-inputs.md`, `docs/repo-intake-skill-contract.md`, `docs/runtime-policy-skill-contract.md`, `docs/tool-contracts/catalog.json`, `docs/portability.md`, `docs/provider-capability-matrix.md`
+- Canonical docs: `docs/authority-matrix.md`, `docs/architecture.md`, `docs/compatibility.md`, `docs/lock-model.md`, `docs/repo-overlay-contract.md`, `docs/shared-with-local-inputs.md`, `docs/repo-intake-skill-contract.md`, `docs/runtime-policy-skill-contract.md`, `docs/tool-contracts/catalog.json`, `docs/portability.md`, `docs/provider-capability-matrix.md`, `docs/ui-ux-composition-branch.md`
 - Machine-readable neutral registry: `core/contracts/core-registry.json`, `core/contracts/provider-capabilities.json`
 - Portable core slice: `core/`
 - Provider adapter scaffolds: `providers/`
 - Operational docs: `docs/README.md`, `docs/usage.md`, `docs/adoption-playbook.md`, `docs/consumer-rollout-playbook.md`, `docs/maintainer-commands.md`, `docs/validation-checklist.md`, `docs/authoring-guides.md`, `evals/README.md`
 - Evals surface: `evals/`
-- Derived docs and support surfaces: `docs/overview.md`, `docs/eval-baseline.md`, `templates/codex-workflow/*`, `examples/codex-workflow/*`
+- Derived docs and support surfaces: `docs/overview.md`, `docs/eval-baseline.md`, `docs/ui-ux-composition/*`, `templates/codex-workflow/*`, `examples/codex-workflow/*`
 - Archive: `docs/extraction-roadmap.md`, `CHANGELOG.md`
 - Enforcement surfaces: `scripts/tools/*`
 - Logical class model only: the repo does not currently use physical `canonical/`, `operational/`, `derived/`, or `archive` subdirectories.
@@ -98,6 +98,7 @@ flowchart LR
 ## Skill Topology
 
 - Portable exported skills live in `core/skills/`. They are reusable, versioned, and safe to project into provider bundles when their boundaries remain generic and explicit.
+- `core/skills/ui-ux-composition/` is the canonical operational skill surface for the UI/UX composition branch.
 - Legacy shared exported skills live in `skills/` as compatibility surfaces until the migration is complete.
 - Contract-bound skills still live in `skills/` when the only repo-specific dependency is an explicit local input contract. The boundary is the declared contract, not the directory name.
 - Canonical provider-specific packaging and prompt compilation live in `providers/openai-codex/`, `providers/anthropic-claude/`, `providers/qwen-code/`, and `providers/kimi-k2_5/`. Legacy provider directories remain compatibility mirrors.
