@@ -4,7 +4,7 @@ Class: canonical.
 Use rule: read this first for documentation hierarchy, class definitions, merge rules, and update rules; treat it as logical structure only, not a physical directory map.
 
 This file is the canonical documentation operating charter for the repository.
-It is prose authority, not script-enforced truth. When a validator or script disagrees with this file, the validator or script is the enforcement surface and [docs/authority-matrix.md](C:/workspace/main_projects/codex-workflow-core/docs/authority-matrix.md) records the claim status.
+It is prose authority, not script-enforced truth. When a validator or script disagrees with this file, the validator or script is the enforcement surface and [authority-matrix.md](authority-matrix.md) records the claim status.
 
 ## Objective
 
@@ -115,12 +115,12 @@ flowchart LR
 5. Archive docs are append-only except for factual corrections.
 6. If enforcement changes, update the validator or script and the canonical doc in the same slice.
 7. If a new doc is needed, justify it only when no existing canonical file can absorb the rule without becoming mixed-purpose.
-8. If authority is unclear, fail closed and record the ambiguity in [docs/authority-matrix.md](C:/workspace/main_projects/codex-workflow-core/docs/authority-matrix.md).
+8. If authority is unclear, fail closed and record the ambiguity in [authority-matrix.md](authority-matrix.md).
 
 ## Enforcement Relationship
 
 - If a rule is script-enforced, cite the script path instead of restating the rule as if prose were sufficient.
-- If no enforcing surface exists, mark the claim as `contract-only`, `planned`, `missing`, or `unclear` in [docs/authority-matrix.md](C:/workspace/main_projects/codex-workflow-core/docs/authority-matrix.md).
+- If no enforcing surface exists, mark the claim as `contract-only`, `planned`, `missing`, or `unclear` in [authority-matrix.md](authority-matrix.md).
 - Do not label derived or archive material as current truth.
 
 ## Naming And Layout

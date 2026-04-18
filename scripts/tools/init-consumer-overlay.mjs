@@ -59,7 +59,7 @@ function buildConsumerDoc(version, packageFingerprint) {
     '',
     'This repository consumes the standalone shared-core Codex workflow package from:',
     '',
-    '`C:/workspace/main_projects/codex-workflow-core/`',
+    '`the standalone codex-workflow-core repository`',
     '',
     '## Linked Version',
     '',
@@ -126,7 +126,7 @@ function buildAgentAppend() {
     '- If `.codex/shared-core-consumer.json` exists, read docs/codex-workflow-consumer.md and docs/repo-specific-canonical-sources.md first.',
     `- If ${repoIntakeContract} exists, keep it in sync with ${repoIntakeSkill} before running repo intake.`,
     '- Use the standalone shared-core source only through the consumer manifest.',
-    '- Do not edit C:/workspace/main_projects/codex-workflow-core/ from this repository.'
+    '- Do not edit the standalone codex-workflow-core repository from this repository.'
   ].join('\n');
 }
 

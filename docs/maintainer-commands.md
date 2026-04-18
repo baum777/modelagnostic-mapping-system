@@ -1,6 +1,8 @@
 # Maintainer Commands
 
-Operational command appendix. These are command wrappers, not exported tool declarations. For hierarchy and rules, see [docs/architecture.md](C:/workspace/main_projects/codex-workflow-core/docs/architecture.md) and [docs/usage.md](C:/workspace/main_projects/codex-workflow-core/docs/usage.md).
+Operational command appendix. These are command wrappers, not exported tool declarations. For hierarchy and rules, see [architecture.md](architecture.md) and [usage.md](usage.md).
+
+Use `<consumer-root>` in the examples below to stand in for the consumer repository root.
 
 ## Qwen Bootstrap Lifecycle
 
@@ -14,7 +16,7 @@ The generated `.qwen` tree is a consumer-local scaffold. It is not shared-core r
 ## Refresh a Consumer Lock (helper-only)
 
 ```bash
-npm run refresh-lock -- --consumer C:/workspace/main_projects/SaaS-Production_workspace/OrchestrAI_Labs
+npm run refresh-lock -- --consumer <consumer-root>
 ```
 
 Updates the consumer manifest with the current shared-core version and fingerprint.
@@ -46,7 +48,7 @@ Runs the deterministic certification fixtures in `evals/` against the generated 
 ## Validate a Consumer (validator-backed)
 
 ```bash
-npm run validate-consumer -- --consumer C:/workspace/main_projects/SaaS-Production_workspace/OrchestrAI_Labs
+npm run validate-consumer -- --consumer <consumer-root>
 ```
 
 Checks the consumer manifest, shared-core path, version, fingerprint, adopted skills, and local overlay files.
@@ -62,7 +64,7 @@ Checks the neutral registry, provider capability profile, provider adapter scaff
 ## Validate a Local Input Contract (validator-backed)
 
 ```bash
-npm run validate-input-contract -- --contract C:/workspace/main_projects/SaaS-Production_workspace/OrchestrAI_Labs/.codex/repo-intake-inputs.json
+npm run validate-input-contract -- --contract <consumer-root>/.codex/repo-intake-inputs.json
 ```
 
 Confirms that a shared-with-local-inputs skill has the repo-local source declarations it needs.
@@ -70,7 +72,7 @@ Confirms that a shared-with-local-inputs skill has the repo-local source declara
 ## Validate a Runtime Policy Contract (validator-backed)
 
 ```bash
-npm run validate-runtime-policy-input-contract -- --contract C:/workspace/main_projects/SaaS-Production_workspace/OrchestrAI_Labs/.codex/runtime-policy-inputs.json
+npm run validate-runtime-policy-input-contract -- --contract <consumer-root>/.codex/runtime-policy-inputs.json
 ```
 
 Confirms that `runtime-policy-auditor` only reads the runtime policy surfaces the consumer repo explicitly declared.
@@ -78,7 +80,7 @@ Confirms that `runtime-policy-auditor` only reads the runtime policy surfaces th
 ## Validate a Qwen Bootstrap Overlay (validator-backed)
 
 ```bash
-npm run validate-qwen-bootstrap -- --consumer C:/workspace/main_projects/dotBot/bobbyExecute
+npm run validate-qwen-bootstrap -- --consumer <consumer-root>
 ```
 
 Checks the consumer-local `.qwen` scaffold for required settings, extension manifest fields, resource files, agent contracts, skill contracts, and broken references.
@@ -86,7 +88,7 @@ Checks the consumer-local `.qwen` scaffold for required settings, extension mani
 ## Initialize a Consumer Overlay (initializer/scaffold)
 
 ```bash
-npm run init-consumer -- --consumer C:/workspace/main_projects/dotBot/bobbyExecute
+npm run init-consumer -- --consumer <consumer-root>
 ```
 
 Creates the minimal overlay files and a local validator wrapper if they do not already exist.
@@ -94,7 +96,7 @@ Creates the minimal overlay files and a local validator wrapper if they do not a
 ## Initialize a Qwen Bootstrap Overlay (initializer/scaffold)
 
 ```bash
-npm run init-qwen-bootstrap -- --consumer C:/workspace/main_projects/dotBot/bobbyExecute
+npm run init-qwen-bootstrap -- --consumer <consumer-root>
 ```
 
 Creates the consumer-local `.qwen` scaffold from the shared template pack. Re-running init is intentionally non-destructive and fails if `.qwen` already exists.

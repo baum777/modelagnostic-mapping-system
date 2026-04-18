@@ -4,7 +4,7 @@ The consumer lock is intentionally boring.
 
 ## Fields
 
-- `sharedCoreSource`: absolute path to the standalone shared-core repository
+- `sharedCoreSource`: consumer-resolved path reference to the standalone shared-core repository
 - `sharedCoreVersion`: package version from the shared-core `package.json`
 - `packageFingerprint`: SHA-256 fingerprint of the shared-core package state
 - `sharedCoreMode`: explicit linkage mode for the consumer

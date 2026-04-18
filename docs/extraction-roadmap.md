@@ -44,5 +44,5 @@ The extraction is ready to leave staging when a second repository can adopt the 
 
 ## Use Rule
 
-If you need current authority, use [docs/architecture.md](C:/workspace/main_projects/codex-workflow-core/docs/architecture.md) and [docs/authority-matrix.md](C:/workspace/main_projects/codex-workflow-core/docs/authority-matrix.md).
+If you need current authority, use [architecture.md](architecture.md) and [authority-matrix.md](authority-matrix.md).
 - This class label is logical only; it does not imply a physical archive directory.

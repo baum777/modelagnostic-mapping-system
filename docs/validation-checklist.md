@@ -57,7 +57,7 @@ These items are expected to be backed by scripts or validators.
 ## Conditional Checks
 
 Conditional checks are only evaluated when the surface is present or explicitly adopted. Absence is not failure unless the repo is expected to provide the surface.
-- The class model in [docs/architecture.md](C:/workspace/main_projects/codex-workflow-core/docs/architecture.md) is logical only; it does not require physical `canonical/`, `operational/`, `derived/`, or `archive` directories.
+- The class model in [architecture.md](architecture.md) is logical only; it does not require physical `canonical/`, `operational/`, `derived/`, or `archive` directories.
 
 - [ ] If `/.codex/shared-core-map.json` is present, it is valid JSON
 - [ ] If `/.codex/shared-core-map.json` is present, it classifies shared, local, contract-only, and deferred assets explicitly
@@ -66,6 +66,6 @@ Conditional checks are only evaluated when the surface is present or explicitly 
 
 Advisory items are guidance, not gate failures.
 
-- [ ] Use [docs/maintainer-commands.md](C:/workspace/main_projects/codex-workflow-core/docs/maintainer-commands.md) for command syntax before running helper-only or validator-backed commands manually.
+- [ ] Use [maintainer-commands.md](maintainer-commands.md) for command syntax before running helper-only or validator-backed commands manually.
 - [ ] Treat catalog `contract-only` and `stub` rows as non-runnable even when the names read like actions.
 - [ ] Keep helper-only scripts labeled as helper-only in docs so they do not read like exported product tools.

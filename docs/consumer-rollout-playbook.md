@@ -18,5 +18,5 @@ Use this playbook after a consumer overlay already exists.
 ## Notes
 
 - Rollback behavior is consumer-specific; do not infer live-readiness from this document.
-- Exact commands live in [docs/maintainer-commands.md](C:/workspace/main_projects/codex-workflow-core/docs/maintainer-commands.md).
-- Canonical boundary rules live in [docs/architecture.md](C:/workspace/main_projects/codex-workflow-core/docs/architecture.md) and [docs/repo-overlay-contract.md](C:/workspace/main_projects/codex-workflow-core/docs/repo-overlay-contract.md).
+- Exact commands live in [maintainer-commands.md](maintainer-commands.md).
+- Canonical boundary rules live in [architecture.md](architecture.md) and [repo-overlay-contract.md](repo-overlay-contract.md).

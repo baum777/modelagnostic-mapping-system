@@ -76,7 +76,7 @@ Implement `ui-ux-composition` as a canonical, model-agnostic branch in the share
 - `npm run build-exports`
 - Compare generated registry output against committed registry output and confirm `ui-ux-composition` is present.
 - Confirm the export artifacts include the new skill without manual registry edits.
-- `node scripts/tools/spec-compliance-checker.mjs --file C:/workspace/main_projects/codex-workflow-core/docs/ui-ux-composition-branch.md --must-contain Objective,Current Truth,Gaps,Reuse Decision,Status Matrix,Implementation Plan,Acceptance Criteria,Verification / Tests,Risks / Rollback,Next Step`
+- `node scripts/tools/spec-compliance-checker.mjs --file docs/ui-ux-composition-branch.md --must-contain Objective,Current Truth,Gaps,Reuse Decision,Status Matrix,Implementation Plan,Acceptance Criteria,Verification / Tests,Risks / Rollback,Next Step`
 
 ## Risks / Rollback
 

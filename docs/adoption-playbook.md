@@ -11,11 +11,11 @@ Use this playbook for first-time consumer setup.
 
 ## Canonical Inputs
 
-- [docs/repo-overlay-contract.md](C:/workspace/main_projects/codex-workflow-core/docs/repo-overlay-contract.md)
-- [docs/shared-with-local-inputs.md](C:/workspace/main_projects/codex-workflow-core/docs/shared-with-local-inputs.md)
-- [docs/repo-intake-skill-contract.md](C:/workspace/main_projects/codex-workflow-core/docs/repo-intake-skill-contract.md)
-- [docs/runtime-policy-skill-contract.md](C:/workspace/main_projects/codex-workflow-core/docs/runtime-policy-skill-contract.md)
-- [docs/validation-checklist.md](C:/workspace/main_projects/codex-workflow-core/docs/validation-checklist.md)
+- [repo-overlay-contract.md](repo-overlay-contract.md)
+- [shared-with-local-inputs.md](shared-with-local-inputs.md)
+- [repo-intake-skill-contract.md](repo-intake-skill-contract.md)
+- [runtime-policy-skill-contract.md](runtime-policy-skill-contract.md)
+- [validation-checklist.md](validation-checklist.md)
 
 ## Minimal Flow
 
@@ -27,7 +27,7 @@ Use this playbook for first-time consumer setup.
 
 ## Notes
 
-- Do not treat this playbook as the source of truth for authority claims; use [docs/architecture.md](C:/workspace/main_projects/codex-workflow-core/docs/architecture.md) and [docs/authority-matrix.md](C:/workspace/main_projects/codex-workflow-core/docs/authority-matrix.md).
-- Exact commands live in [docs/maintainer-commands.md](C:/workspace/main_projects/codex-workflow-core/docs/maintainer-commands.md).
+- Do not treat this playbook as the source of truth for authority claims; use [architecture.md](architecture.md) and [authority-matrix.md](authority-matrix.md).
+- Exact commands live in [maintainer-commands.md](maintainer-commands.md).
 - The generated `.qwen` tree is a local overlay. Template updates do not automatically propagate into already initialized consumers.
 - Qwen runtime claims in the bootstrap resources are advisory-only unless the consumer repo adds a concrete enforcement surface.

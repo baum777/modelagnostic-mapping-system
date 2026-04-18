@@ -1,10 +1,10 @@
 # Codex Operating Contract (Repo Root)
 
 Class: canonical.
-Use rule: use this as the root operating contract; defer docs hierarchy details to [docs/architecture.md](C:/workspace/main_projects/codex-workflow-core/docs/architecture.md).
+Use rule: use this as the root operating contract; defer docs hierarchy details to [docs/architecture.md](docs/architecture.md).
 
 ## Project Overview
-- Repository: `C:\workspace\main_projects\codex-workflow-core`
+- Repository: `codex-workflow-core`
 - Role: authoritative shared-core workflow package (skills, contracts, validators, templates).
 - Canonical reusable surfaces:
   - `.codex-plugin/plugin.json`
@@ -22,7 +22,7 @@ Use rule: use this as the root operating contract; defer docs hierarchy details 
 5. Separate `Observed` vs `Inferred` vs `Recommended`.
 6. Never present derived or assumed state as canonical truth.
 7. If critical information is missing or contradictory, stop and escalate with explicit gaps.
-8. For docs hierarchy, skill topology, and authority order, use [docs/architecture.md](C:/workspace/main_projects/codex-workflow-core/docs/architecture.md) and [docs/authority-matrix.md](C:/workspace/main_projects/codex-workflow-core/docs/authority-matrix.md).
+8. For docs hierarchy, skill topology, and authority order, use [docs/architecture.md](docs/architecture.md) and [docs/authority-matrix.md](docs/authority-matrix.md).
 
 ## Word + Context Economy
 - Keep always-on guidance short; route depth into skills.
