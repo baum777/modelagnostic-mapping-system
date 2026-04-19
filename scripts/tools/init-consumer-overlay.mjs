@@ -55,11 +55,11 @@ function fingerprint(root) {
 
 function buildConsumerDoc(version, packageFingerprint) {
   return [
-    '# Codex Workflow Consumer Overlay',
+    '# Model-Agnostic Workflow System Consumer Overlay',
     '',
-    'This repository consumes the standalone shared-core Codex workflow package from:',
+    'This repository consumes the standalone shared-core model-agnostic-workflow-system package from:',
     '',
-    '`the standalone codex-workflow-core repository`',
+    '`the standalone model-agnostic-workflow-system repository`',
     '',
     '## Linked Version',
     '',
@@ -114,7 +114,7 @@ function buildCanonicalSourcesDoc() {
     '## Shared-Core Boundary',
     '',
     'Shared-core assets are consumed through `.codex/shared-core-consumer.json`.',
-    'The shared-core source of truth is the standalone codex-workflow-core repository.',
+    'The shared-core source of truth is the standalone model-agnostic-workflow-system repository.',
     `The repo-intake skill uses ${repoIntakeContract} for consumer-local source selection.`
   ].join('\n');
 }
@@ -122,11 +122,11 @@ function buildCanonicalSourcesDoc() {
 function buildAgentAppend() {
   return [
     '',
-    '## Codex Shared-Core Consumer',
-    '- If `.codex/shared-core-consumer.json` exists, read docs/codex-workflow-consumer.md and docs/repo-specific-canonical-sources.md first.',
+    '## Model-Agnostic Workflow System Shared-Core Consumer',
+    '- If `.codex/shared-core-consumer.json` exists, read docs/model-agnostic-workflow-system-consumer.md and docs/repo-specific-canonical-sources.md first.',
     `- If ${repoIntakeContract} exists, keep it in sync with ${repoIntakeSkill} before running repo intake.`,
     '- Use the standalone shared-core source only through the consumer manifest.',
-    '- Do not edit the standalone codex-workflow-core repository from this repository.'
+    '- Do not edit the standalone model-agnostic-workflow-system repository from this repository.'
   ].join('\n');
 }
 
@@ -165,7 +165,7 @@ function initConsumerOverlay({ sourceRoot, consumerRoot }) {
     deferredSkills,
     localOverlayFiles: [
       repoIntakeContract,
-      'docs/codex-workflow-consumer.md',
+      'docs/model-agnostic-workflow-system-consumer.md',
       'docs/repo-specific-canonical-sources.md',
       'AGENTS.md'
     ],
@@ -180,11 +180,11 @@ function initConsumerOverlay({ sourceRoot, consumerRoot }) {
       'repo-specific canonical sources are explicit',
       'repo-intake local input contract validates'
     ],
-    notes: 'Initial consumer overlay created from codex-workflow-core.'
+    notes: 'Initial consumer overlay created from model-agnostic-workflow-system.'
   };
 
   writeFile(path.join(consumerRoot, '.codex', 'shared-core-consumer.json'), JSON.stringify(manifest, null, 2));
-  writeFile(path.join(consumerRoot, 'docs', 'codex-workflow-consumer.md'), buildConsumerDoc(sourcePackage.version, packageFingerprint));
+  writeFile(path.join(consumerRoot, 'docs', 'model-agnostic-workflow-system-consumer.md'), buildConsumerDoc(sourcePackage.version, packageFingerprint));
   writeFile(path.join(consumerRoot, 'docs', 'repo-specific-canonical-sources.md'), buildCanonicalSourcesDoc());
   writeFile(path.join(consumerRoot, 'scripts', 'tools', 'validate-shared-core-consumer.mjs'), buildWrapperScript());
 

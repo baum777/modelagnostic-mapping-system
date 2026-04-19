@@ -73,7 +73,10 @@ function validateConsumerLinkage({ sourceRoot, consumerRoot }) {
     }
   }
 
-  if (normalize(manifest.sharedCoreSource || '') !== normalize(sourceRoot)) {
+  const manifestSharedCoreSource = manifest.sharedCoreSource
+    ? (path.isAbsolute(manifest.sharedCoreSource) ? manifest.sharedCoreSource : path.resolve(consumerRoot, manifest.sharedCoreSource))
+    : '';
+  if (normalize(manifestSharedCoreSource) !== normalize(sourceRoot)) {
     issues.push(`Shared-core source mismatch: manifest points to ${manifest.sharedCoreSource || '<missing>'}, expected ${normalize(sourceRoot)}.`);
   }
 
@@ -116,7 +119,14 @@ function validateConsumerLinkage({ sourceRoot, consumerRoot }) {
       issues.push(`Missing local overlay file: ${overlayFile}`);
     }
   }
-  for (const required of ['docs/codex-workflow-consumer.md', 'docs/repo-specific-canonical-sources.md', 'AGENTS.md']) {
+  const consumerOverlayDocCandidates = [
+    'docs/model-agnostic-workflow-system-consumer.md',
+    'docs/codex-workflow-consumer.md'
+  ];
+  if (!consumerOverlayDocCandidates.some((required) => fs.existsSync(path.join(consumerRoot, required)))) {
+    issues.push(`Required consumer overlay file missing: ${consumerOverlayDocCandidates.join(' or ')}`);
+  }
+  for (const required of ['docs/repo-specific-canonical-sources.md', 'AGENTS.md']) {
     if (!fs.existsSync(path.join(consumerRoot, required))) {
       issues.push(`Required consumer overlay file missing: ${required}`);
     }

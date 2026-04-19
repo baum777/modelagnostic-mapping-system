@@ -41,7 +41,7 @@ The canonical tool catalog lives at `core/contracts/tool-contracts/catalog.json`
 Recommended values:
 
 - `classification`: `shared` or `shared-with-local-inputs`
-- `owner`: `codex-workflow-core`
+- `owner`: `model-agnostic-workflow-system`
 - `status`: `extracted`
 
 ## Supported Behavior

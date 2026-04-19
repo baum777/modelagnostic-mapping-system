@@ -20,8 +20,8 @@ export function validateSharedCorePackage(baseRoot = repoRoot()) {
   let packageJson;
   try {
     packageJson = readJson(path.join(root, 'package.json'));
-    if (packageJson.name !== 'codex-workflow-core') {
-      issues.push(`package.json name must be codex-workflow-core; found ${packageJson.name || '<missing>'}.`);
+    if (packageJson.name !== 'model-agnostic-workflow-system') {
+      issues.push(`package.json name must be model-agnostic-workflow-system; found ${packageJson.name || '<missing>'}.`);
     }
     if (!semverLike.test(String(packageJson.version || ''))) {
       issues.push(`package.json version must be semver-like; found ${packageJson.version || '<missing>'}.`);

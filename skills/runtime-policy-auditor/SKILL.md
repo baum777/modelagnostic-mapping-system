@@ -6,7 +6,7 @@ classification: shared-with-local-inputs
 requires_repo_inputs: true
 produces_structured_output: true
 safe_to_auto_run: true
-owner: codex-workflow-core
+owner: model-agnostic-workflow-system
 status: extracted
 input_contract_path: .codex/runtime-policy-inputs.json
 ---

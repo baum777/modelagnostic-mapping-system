@@ -6,7 +6,7 @@ classification: local-only
 requires_repo_inputs: false
 produces_structured_output: true
 safe_to_auto_run: true
-owner: codex-workflow-core
+owner: model-agnostic-workflow-system
 status: active
 ---
 

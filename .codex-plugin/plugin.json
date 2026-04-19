@@ -1,13 +1,13 @@
 {
-  "name": "codex-workflow-core",
+  "name": "model-agnostic-workflow-system",
   "version": "0.2.1",
   "description": "Provider-neutral shared-core Codex workflow compatibility export.",
   "skills": "./skills/",
   "interface": {
-    "displayName": "Codex Workflow Core",
+    "displayName": "model-agnostic-workflow-system",
     "shortDescription": "Provider-neutral shared-core workflow package",
     "longDescription": "Reusable skills, tool contracts, templates, examples, helper scripts, and provider adapter scaffolds for governed planning, implementation, review, and readiness flows.",
-    "developerName": "Codex Workflow Core",
+    "developerName": "model-agnostic-workflow-system",
     "category": "Productivity",
     "defaultPrompt": [
       "Use the shared-core docs before editing consumer repos.",

@@ -6,7 +6,7 @@ classification: shared
 requires_repo_inputs: false
 produces_structured_output: true
 safe_to_auto_run: false
-owner: codex-workflow-core
+owner: model-agnostic-workflow-system
 status: extracted
 ---
 

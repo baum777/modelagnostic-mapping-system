@@ -1,4 +1,4 @@
-# codex-workflow-core
+# model-agnostic-workflow-system
 
 Class: canonical.
 Use rule: shortest practical front door; point to the docs hierarchy instead of duplicating it.

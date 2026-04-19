@@ -1,10 +1,10 @@
-# Codex Operating Contract (Repo Root)
+# Model-Agnostic Workflow System Operating Contract (Repo Root)
 
 Class: canonical.
 Use rule: use this as the root operating contract; defer docs hierarchy details to [docs/architecture.md](docs/architecture.md).
 
 ## Project Overview
-- Repository: `codex-workflow-core`
+- Repository: `model-agnostic-workflow-system`
 - Role: authoritative shared-core workflow package (skills, contracts, validators, templates).
 - Canonical reusable surfaces:
   - `.codex-plugin/plugin.json`

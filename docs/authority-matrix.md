@@ -3,7 +3,7 @@
 Class: canonical.
 Use rule: read this as the compact claim/status ledger; use it to separate doc class from enforcement status and to see which surfaces are canonical, operational, derived, or archive.
 
-This file is the canonical authority map for governance, capability, and documentation claims in `codex-workflow-core`.
+This file is the canonical authority map for governance, capability, and documentation claims in `model-agnostic-workflow-system`.
 
 Status values:
 

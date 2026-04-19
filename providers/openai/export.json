@@ -13,7 +13,7 @@
   ],
   "sourceRegistry": "core/contracts/core-registry.json",
   "sourcePackage": {
-    "name": "codex-workflow-core",
+    "name": "model-agnostic-workflow-system",
     "version": "0.2.1"
   },
   "capabilityProfile": {

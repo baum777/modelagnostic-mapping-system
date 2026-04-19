@@ -259,8 +259,8 @@ function validateProviderNeutralCore(baseRoot = repoRoot()) {
     }
   }
 
-  if (committedRegistry.core?.name !== 'agent-workflow-core') {
-    issues.push(`core.name must be agent-workflow-core; found ${committedRegistry.core?.name || '<missing>'}.`);
+  if (committedRegistry.core?.name !== 'model-agnostic-workflow-system') {
+    issues.push(`core.name must be model-agnostic-workflow-system; found ${committedRegistry.core?.name || '<missing>'}.`);
   }
   if (committedRegistry.core?.status !== 'provider-neutral') {
     issues.push(`core.status must be provider-neutral; found ${committedRegistry.core?.status || '<missing>'}.`);

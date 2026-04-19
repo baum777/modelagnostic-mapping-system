@@ -30,7 +30,7 @@ function resolveCoreRoot(baseRoot) {
   try {
     if (fs.existsSync(directPackageJson)) {
       const packageJson = readJson(directPackageJson);
-      if (packageJson.name === 'codex-workflow-core') {
+      if (packageJson.name === 'model-agnostic-workflow-system') {
         return baseRoot;
       }
     }
@@ -38,7 +38,7 @@ function resolveCoreRoot(baseRoot) {
     // Fall through to the nested-scaffold lookup.
   }
 
-  const nestedRoot = path.join(baseRoot, 'codex-workflow-core');
+  const nestedRoot = path.join(baseRoot, 'model-agnostic-workflow-system');
   return nestedRoot;
 }
 
@@ -155,8 +155,8 @@ export function validateSharedCoreScaffold(baseRoot = repoRoot()) {
 
   try {
     const packageJson = readJson(path.join(root, 'package.json'));
-    if (packageJson.name !== 'codex-workflow-core') {
-      issues.push(`package.json name must be codex-workflow-core; found ${packageJson.name || '<missing>'}.`);
+    if (packageJson.name !== 'model-agnostic-workflow-system') {
+      issues.push(`package.json name must be model-agnostic-workflow-system; found ${packageJson.name || '<missing>'}.`);
     }
     if (packageJson.type !== 'module') {
       issues.push('package.json type must be module.');
@@ -205,8 +205,8 @@ export function validateSharedCoreScaffold(baseRoot = repoRoot()) {
   if (fs.existsSync(mapPath)) {
     try {
       const mapping = readJson(mapPath);
-      if (mapping.sharedCoreRoot !== 'codex-workflow-core') {
-        issues.push(`shared-core-map sharedCoreRoot must be codex-workflow-core; found ${mapping.sharedCoreRoot || '<missing>'}.`);
+      if (mapping.sharedCoreRoot !== 'model-agnostic-workflow-system') {
+        issues.push(`shared-core-map sharedCoreRoot must be model-agnostic-workflow-system; found ${mapping.sharedCoreRoot || '<missing>'}.`);
       }
       if (!Array.isArray(mapping.assets) || mapping.assets.length === 0) {
         issues.push('shared-core-map assets must be a non-empty array.');
@@ -254,8 +254,8 @@ export function validateSharedCoreScaffold(baseRoot = repoRoot()) {
       if (fields.name !== entry.name) {
         issues.push(`Shared skill name mismatch in ${path.relative(root, skillPath).replace(/\\/g, '/')}: expected ${entry.name}, found ${fields.name || '<missing>'}.`);
       }
-      if (fields.owner !== 'codex-workflow-core') {
-        issues.push(`Shared skill ${entry.name} must declare owner codex-workflow-core.`);
+      if (fields.owner !== 'model-agnostic-workflow-system') {
+        issues.push(`Shared skill ${entry.name} must declare owner model-agnostic-workflow-system.`);
       }
       if (fields.status !== 'extracted') {
         issues.push(`Shared skill ${entry.name} must declare status extracted.`);

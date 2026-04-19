@@ -6,7 +6,7 @@ classification: shared
 requires_repo_inputs: true
 produces_structured_output: true
 safe_to_auto_run: true
-owner: codex-workflow-core
+owner: model-agnostic-workflow-system
 status: extracted
 output_contract_path: core/contracts/output-contracts.json
 tool_contract_catalog_path: core/contracts/tool-contracts/catalog.json
@@ -75,4 +75,3 @@ Use this skill when you need a bounded readiness verdict before merge, export, r
 - do not conflate advisory and blocking states
 - fail closed when inputs are missing
 - keep the decision compact and evidence-based
-

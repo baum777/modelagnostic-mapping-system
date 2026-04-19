@@ -6,7 +6,7 @@ classification: shared
 requires_repo_inputs: false
 produces_structured_output: true
 safe_to_auto_run: true
-owner: codex-workflow-core
+owner: model-agnostic-workflow-system
 status: extracted
 output_contract_path: core/contracts/output-contracts.json
 tool_contract_catalog_path: core/contracts/tool-contracts/catalog.json
@@ -73,4 +73,3 @@ Use this skill when you need a decision-ready synthesis from several explicit so
 - do not flatten disagreement into consensus
 - label inference as inference
 - preserve traceability to the source files
-

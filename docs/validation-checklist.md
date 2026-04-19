@@ -9,45 +9,45 @@ This is an operational gate, not the canonical authority source.
 
 These items are expected to be backed by scripts or validators.
 
-- [ ] `codex-workflow-core/package.json` exists
-- [ ] `codex-workflow-core/package.json` declares the current provider-neutral package version
-- [ ] `codex-workflow-core/CHANGELOG.md` contains the release entry for the current package version
-- [ ] `codex-workflow-core/.codex-plugin/plugin.json` exists and matches the package version
-- [ ] `codex-workflow-core/core/README.md` exists and describes the portable core slice
-- [ ] `codex-workflow-core/core/contracts/core-registry.json` exists and validates
-- [ ] `codex-workflow-core/core/contracts/provider-capabilities.json` exists and validates
-- [ ] `codex-workflow-core/core/contracts/output-contracts.json` exists and validates
-- [ ] `codex-workflow-core/core/contracts/tool-contracts/catalog.json` exists and validates
-- [ ] `codex-workflow-core/core/skills/` contains the portable priority skills
-- [ ] `codex-workflow-core/providers/openai-codex/` contains the canonical OpenAI-Codex adapter
-- [ ] `codex-workflow-core/providers/anthropic-claude/` contains the canonical Claude adapter
-- [ ] `codex-workflow-core/providers/qwen-code/` contains the canonical Qwen Code adapter
-- [ ] `codex-workflow-core/providers/kimi-k2_5/` contains the canonical Kimi K2.5 adapter
-- [ ] `codex-workflow-core/docs/architecture.md` defines the documentation authority model
-- [ ] `codex-workflow-core/docs/authority-matrix.md` records claim status and evidence notes
-- [ ] `codex-workflow-core/docs/usage.md` exists as the operational entrypoint
-- [ ] `codex-workflow-core/docs/` contains the canonical docs, operational docs, derived docs, and archive docs
-- [ ] `codex-workflow-core/contracts/core-registry.json` and `codex-workflow-core/contracts/provider-capabilities.json` remain compatibility mirrors
-- [ ] `codex-workflow-core/providers/` contains the provider adapter scaffolds
-- [ ] `codex-workflow-core/providers/<provider>/export.json` files are regenerated from the neutral registry
-- [ ] `codex-workflow-core/skills/` contains the mirrored shared skills
-- [ ] `codex-workflow-core/core/skills/repo-audit/SKILL.md` is present and declares the portable core metadata
-- [ ] `codex-workflow-core/skills/repo-intake-sot-mapper/SKILL.md` is classified as `shared-with-local-inputs`
-- [ ] `codex-workflow-core/skills/runtime-policy-auditor/SKILL.md` is classified as `shared-with-local-inputs`
-- [ ] `codex-workflow-core/docs/shared-with-local-inputs.md` documents the local-input pattern
-- [ ] `codex-workflow-core/docs/repo-intake-skill-contract.md` documents the contract shape
-- [ ] `codex-workflow-core/docs/runtime-policy-skill-contract.md` documents the runtime-policy contract shape
-- [ ] `codex-workflow-core/templates/` contains the shared templates
-- [ ] `codex-workflow-core/examples/` contains generic examples
-- [ ] `codex-workflow-core/scripts/tools/` contains the shared validation scripts
-- [ ] `codex-workflow-core/scripts/tools/validate-local-input-contract.mjs` validates consumer-local contracts
-- [ ] `codex-workflow-core/scripts/tools/validate-runtime-policy-input-contract.mjs` validates runtime-policy contracts
-- [ ] `codex-workflow-core/scripts/tools/build-neutral-core-registry.mjs` can regenerate the neutral registry snapshot
-- [ ] `codex-workflow-core/scripts/tools/build-provider-exports.mjs` can regenerate the provider export bundles
-- [ ] `codex-workflow-core/scripts/tools/run-certification-evals.mjs` can run the certification fixtures
-- [ ] `codex-workflow-core/scripts/tools/validate-provider-neutral-core.mjs` validates the neutral registry and provider scaffolds
-- [ ] `codex-workflow-core/scripts/tools/validate-repo-surface.mjs` combines package and neutral-core validation
-- [ ] `codex-workflow-core/scripts/tools/calculate-package-fingerprint.mjs` produces a stable fingerprint
+- [ ] `model-agnostic-workflow-system/package.json` exists
+- [ ] `model-agnostic-workflow-system/package.json` declares the current provider-neutral package version
+- [ ] `model-agnostic-workflow-system/CHANGELOG.md` contains the release entry for the current package version
+- [ ] `model-agnostic-workflow-system/.codex-plugin/plugin.json` exists and matches the package version
+- [ ] `model-agnostic-workflow-system/core/README.md` exists and describes the portable core slice
+- [ ] `model-agnostic-workflow-system/core/contracts/core-registry.json` exists and validates
+- [ ] `model-agnostic-workflow-system/core/contracts/provider-capabilities.json` exists and validates
+- [ ] `model-agnostic-workflow-system/core/contracts/output-contracts.json` exists and validates
+- [ ] `model-agnostic-workflow-system/core/contracts/tool-contracts/catalog.json` exists and validates
+- [ ] `model-agnostic-workflow-system/core/skills/` contains the portable priority skills
+- [ ] `model-agnostic-workflow-system/providers/openai-codex/` contains the canonical OpenAI-Codex adapter
+- [ ] `model-agnostic-workflow-system/providers/anthropic-claude/` contains the canonical Claude adapter
+- [ ] `model-agnostic-workflow-system/providers/qwen-code/` contains the canonical Qwen Code adapter
+- [ ] `model-agnostic-workflow-system/providers/kimi-k2_5/` contains the canonical Kimi K2.5 adapter
+- [ ] `model-agnostic-workflow-system/docs/architecture.md` defines the documentation authority model
+- [ ] `model-agnostic-workflow-system/docs/authority-matrix.md` records claim status and evidence notes
+- [ ] `model-agnostic-workflow-system/docs/usage.md` exists as the operational entrypoint
+- [ ] `model-agnostic-workflow-system/docs/` contains the canonical docs, operational docs, derived docs, and archive docs
+- [ ] `model-agnostic-workflow-system/contracts/core-registry.json` and `model-agnostic-workflow-system/contracts/provider-capabilities.json` remain compatibility mirrors
+- [ ] `model-agnostic-workflow-system/providers/` contains the provider adapter scaffolds
+- [ ] `model-agnostic-workflow-system/providers/<provider>/export.json` files are regenerated from the neutral registry
+- [ ] `model-agnostic-workflow-system/skills/` contains the mirrored shared skills
+- [ ] `model-agnostic-workflow-system/core/skills/repo-audit/SKILL.md` is present and declares the portable core metadata
+- [ ] `model-agnostic-workflow-system/skills/repo-intake-sot-mapper/SKILL.md` is classified as `shared-with-local-inputs`
+- [ ] `model-agnostic-workflow-system/skills/runtime-policy-auditor/SKILL.md` is classified as `shared-with-local-inputs`
+- [ ] `model-agnostic-workflow-system/docs/shared-with-local-inputs.md` documents the local-input pattern
+- [ ] `model-agnostic-workflow-system/docs/repo-intake-skill-contract.md` documents the contract shape
+- [ ] `model-agnostic-workflow-system/docs/runtime-policy-skill-contract.md` documents the runtime-policy contract shape
+- [ ] `model-agnostic-workflow-system/templates/` contains the shared templates
+- [ ] `model-agnostic-workflow-system/examples/` contains generic examples
+- [ ] `model-agnostic-workflow-system/scripts/tools/` contains the shared validation scripts
+- [ ] `model-agnostic-workflow-system/scripts/tools/validate-local-input-contract.mjs` validates consumer-local contracts
+- [ ] `model-agnostic-workflow-system/scripts/tools/validate-runtime-policy-input-contract.mjs` validates runtime-policy contracts
+- [ ] `model-agnostic-workflow-system/scripts/tools/build-neutral-core-registry.mjs` can regenerate the neutral registry snapshot
+- [ ] `model-agnostic-workflow-system/scripts/tools/build-provider-exports.mjs` can regenerate the provider export bundles
+- [ ] `model-agnostic-workflow-system/scripts/tools/run-certification-evals.mjs` can run the certification fixtures
+- [ ] `model-agnostic-workflow-system/scripts/tools/validate-provider-neutral-core.mjs` validates the neutral registry and provider scaffolds
+- [ ] `model-agnostic-workflow-system/scripts/tools/validate-repo-surface.mjs` combines package and neutral-core validation
+- [ ] `model-agnostic-workflow-system/scripts/tools/calculate-package-fingerprint.mjs` produces a stable fingerprint
 - [ ] Shared skill frontmatter includes the required metadata fields
 - [ ] `repo-intake-sot-mapper` declares `input_contract_path` and a `## Local Inputs` section
 - [ ] `runtime-policy-auditor` declares `input_contract_path`, `## Local Inputs`, and `## Non-Goals`

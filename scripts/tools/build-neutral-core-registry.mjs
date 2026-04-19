@@ -270,10 +270,10 @@ function buildNeutralCoreRegistry(baseRoot = repoRoot()) {
   return {
     schemaVersion: '1.0.0',
     core: {
-      name: 'agent-workflow-core',
+      name: 'model-agnostic-workflow-system',
       status: 'provider-neutral',
       sourcePackage: {
-        name: 'codex-workflow-core',
+        name: 'model-agnostic-workflow-system',
         version: readJson(path.join(root, 'package.json')).version
       },
       compatibilityExports: providers.map((provider) => ({
