@@ -26,6 +26,11 @@
     "init-qwen-bootstrap": "node scripts/tools/init-qwen-bootstrap.mjs",
     "validate-qwen-bootstrap": "node scripts/tools/validate-qwen-bootstrap.mjs",
     "scan": "node scripts/tools/repo-structure-scanner.mjs",
-    "diff": "node scripts/tools/git-diff-explainer.mjs"
+    "diff": "node scripts/tools/git-diff-explainer.mjs",
+    "analyze-content-semantics-for-design": "node scripts/tools/analyze-content-semantics-for-design.mjs --json",
+    "generate-visual-direction-contract": "node scripts/tools/generate-visual-direction-contract.mjs --json",
+    "lint-semantic-design-contracts": "node scripts/tools/lint-semantic-design-contracts.mjs --json",
+    "derive-oklch-palette": "node scripts/tools/derive-oklch-palette.mjs --json",
+    "eval:semantic-layout": "node scripts/tools/run-certification-evals.mjs --kind semantic-layout"
   }
 }

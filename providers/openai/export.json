@@ -1279,6 +1279,49 @@
       ]
     },
     {
+      "name": "analyze-content-semantics-for-design",
+      "tool_name": "analyze-content-semantics-for-design",
+      "intent_class": "read-only semantic analysis",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "json": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "exportMode": "adapter",
+      "providerCompatibility": {
+        "openai-codex": "adapter",
+        "openai": "compatibility-export",
+        "codex": "compatibility-export",
+        "gpt": "compatibility-export",
+        "anthropic-claude": "adapter",
+        "anthropic": "compatibility-export",
+        "claude": "compatibility-export",
+        "qwen-code": "adapter",
+        "qwen": "compatibility-export",
+        "qwen-agent": "compatibility-export",
+        "kimi-k2_5": "adapter",
+        "kimi": "compatibility-export",
+        "kimi-k2.5": "compatibility-export",
+        "moonshot": "compatibility-export"
+      },
+      "routing_hints": [
+        "ui-ux-composition"
+      ]
+    },
+    {
       "name": "analyze-skill-tree-coverage",
       "tool_name": "analyze-skill-tree-coverage",
       "intent_class": "read-only skill-tree coverage analysis",
@@ -1472,6 +1515,49 @@
       ]
     },
     {
+      "name": "derive-oklch-palette",
+      "tool_name": "derive-oklch-palette",
+      "intent_class": "read-only palette derivation",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string"
+          },
+          "json": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "input"
+        ],
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "exportMode": "adapter",
+      "providerCompatibility": {
+        "openai-codex": "adapter",
+        "openai": "compatibility-export",
+        "codex": "compatibility-export",
+        "gpt": "compatibility-export",
+        "anthropic-claude": "adapter",
+        "anthropic": "compatibility-export",
+        "claude": "compatibility-export",
+        "qwen-code": "adapter",
+        "qwen": "compatibility-export",
+        "qwen-agent": "compatibility-export",
+        "kimi-k2_5": "adapter",
+        "kimi": "compatibility-export",
+        "kimi-k2.5": "compatibility-export",
+        "moonshot": "compatibility-export"
+      },
+      "routing_hints": [
+        "ui-ux-composition"
+      ]
+    },
+    {
       "name": "detect-skill-overlap",
       "tool_name": "detect-skill-overlap",
       "intent_class": "read-only overlap analysis",
@@ -1559,6 +1645,44 @@
       ]
     },
     {
+      "name": "eval-semantic-layout-decisions",
+      "tool_name": "eval-semantic-layout-decisions",
+      "intent_class": "read-only evaluation",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "fixture": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "exportMode": "adapter",
+      "providerCompatibility": {
+        "openai-codex": "adapter",
+        "openai": "compatibility-export",
+        "codex": "compatibility-export",
+        "gpt": "compatibility-export",
+        "anthropic-claude": "adapter",
+        "anthropic": "compatibility-export",
+        "claude": "compatibility-export",
+        "qwen-code": "adapter",
+        "qwen": "compatibility-export",
+        "qwen-agent": "compatibility-export",
+        "kimi-k2_5": "adapter",
+        "kimi": "compatibility-export",
+        "kimi-k2.5": "compatibility-export",
+        "moonshot": "compatibility-export"
+      },
+      "routing_hints": [
+        "readiness-check",
+        "ui-ux-composition"
+      ]
+    },
+    {
       "name": "generate_layout_blueprint",
       "tool_name": "generate_layout_blueprint",
       "intent_class": "contract-only branch analysis",
@@ -1590,6 +1714,49 @@
             }
           }
         },
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "exportMode": "adapter",
+      "providerCompatibility": {
+        "openai-codex": "adapter",
+        "openai": "compatibility-export",
+        "codex": "compatibility-export",
+        "gpt": "compatibility-export",
+        "anthropic-claude": "adapter",
+        "anthropic": "compatibility-export",
+        "claude": "compatibility-export",
+        "qwen-code": "adapter",
+        "qwen": "compatibility-export",
+        "qwen-agent": "compatibility-export",
+        "kimi-k2_5": "adapter",
+        "kimi": "compatibility-export",
+        "kimi-k2.5": "compatibility-export",
+        "moonshot": "compatibility-export"
+      },
+      "routing_hints": [
+        "ui-ux-composition"
+      ]
+    },
+    {
+      "name": "generate-visual-direction-contract",
+      "tool_name": "generate-visual-direction-contract",
+      "intent_class": "read-only contract generation",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string"
+          },
+          "json": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "input"
+        ],
         "additionalProperties": false
       },
       "side_effects": "read-only",
@@ -1689,6 +1856,50 @@
       },
       "routing_hints": [
         "issue-to-task-sync"
+      ]
+    },
+    {
+      "name": "lint-semantic-design-contracts",
+      "tool_name": "lint-semantic-design-contracts",
+      "intent_class": "read-only validation",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string"
+          },
+          "json": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "input"
+        ],
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "exportMode": "adapter",
+      "providerCompatibility": {
+        "openai-codex": "adapter",
+        "openai": "compatibility-export",
+        "codex": "compatibility-export",
+        "gpt": "compatibility-export",
+        "anthropic-claude": "adapter",
+        "anthropic": "compatibility-export",
+        "claude": "compatibility-export",
+        "qwen-code": "adapter",
+        "qwen": "compatibility-export",
+        "qwen-agent": "compatibility-export",
+        "kimi-k2_5": "adapter",
+        "kimi": "compatibility-export",
+        "kimi-k2.5": "compatibility-export",
+        "moonshot": "compatibility-export"
+      },
+      "routing_hints": [
+        "ui-ux-composition",
+        "readiness-check"
       ]
     },
     {

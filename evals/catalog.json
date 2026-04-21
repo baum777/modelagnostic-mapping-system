@@ -13,6 +13,7 @@
     "fixtures/core-failure-mode.json",
     "fixtures/approval-boundary.json",
     "fixtures/provider-parity.json",
-    "fixtures/failure-mode.json"
+    "fixtures/failure-mode.json",
+    "fixtures/semantic-layout-decisions.json"
   ]
 }

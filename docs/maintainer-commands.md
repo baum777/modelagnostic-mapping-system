@@ -117,6 +117,46 @@ npm run analyze-skill-tree-coverage
 
 Classifies current skills into capability families and reports weak or overconcentrated coverage as advisory analysis.
 
+## Analyze Content Semantics For Design (helper-only)
+
+```bash
+npm run analyze-content-semantics-for-design -- --input <path-to-content-or-json>
+```
+
+Builds a deterministic semantic profile for content type, tone posture, density, hierarchy, cue levels, and audience hints.
+
+## Generate Visual Direction Contract (helper-only)
+
+```bash
+npm run generate-visual-direction-contract -- --input <semantic-profile-json>
+```
+
+Derives a bounded visual-direction contract from the normalized semantic profile.
+
+## Lint Semantic Design Contracts (validator-backed)
+
+```bash
+npm run lint-semantic-design-contracts -- --input <visual-direction-contract-json>
+```
+
+Validates semantic-design contracts for required fields, bounded enums, contradiction checks, rationale refs, and responsive/accessibility guardrails.
+
+## Derive OKLCH Palette (helper-only)
+
+```bash
+npm run derive-oklch-palette -- --input <semantic-profile-or-visual-contract-json>
+```
+
+Derives role-based OKLCH palette recommendations with explicit intent-level guardrail checks.
+
+## Run Semantic Layout Eval Slice (validator-backed)
+
+```bash
+npm run eval:semantic-layout
+```
+
+Runs only `kind: "semantic-layout"` certification fixtures.
+
 ## Initialize a Consumer Overlay (initializer/scaffold)
 
 ```bash
@@ -148,5 +188,10 @@ Creates the consumer-local `.qwen` scaffold from the shared template pack. Re-ru
 - use `detect-skill-overlap` to inspect potential near-duplicate or ambiguous sibling skill boundaries
 - use `lint-skill-contracts` to validate contract shape consistency across skill files
 - use `analyze-skill-tree-coverage` to inspect advisory family coverage and concentration
+- use `analyze-content-semantics-for-design` to generate deterministic semantic design profiles from content inputs
+- use `generate-visual-direction-contract` to turn semantic profiles into bounded visual-direction contracts
+- use `lint-semantic-design-contracts` to enforce contract completeness, boundedness, and internal consistency
+- use `derive-oklch-palette` to derive role-based OKLCH palette recommendations from semantic/contract signals
+- use `eval:semantic-layout` when semantic-to-layout consistency logic or fixtures change
 - use `init-qwen-bootstrap` for the first consumer-local Qwen scaffold pass only
 - use `validate-qwen-bootstrap` after generating or editing the consumer-local Qwen scaffold

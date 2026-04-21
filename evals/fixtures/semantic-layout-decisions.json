@@ -1,0 +1,67 @@
+{
+  "id": "semantic-layout-decisions",
+  "kind": "semantic-layout",
+  "blocking": true,
+  "target": {
+    "name": "semantic-layout-decisions"
+  },
+  "cases": [
+    {
+      "id": "semantic-layout-01-governance-policy",
+      "description": "Governance policy copy should map to operational clarity and bounded density.",
+      "input": {
+        "content": "# Runtime Policy Governance\n\n## Required Controls\n- All rollout changes must pass validator gate checks.\n- Deployment approval is mandatory before release.\n- Compliance evidence must be attached to every change.\n\n## Enforcement\nTeams shall preserve canonical contracts and must not bypass authority boundaries."
+      },
+      "expected": {
+        "contentType": "policy-doc",
+        "visualPosture": "operational-clarity",
+        "densityLevel": "balanced",
+        "proportionRule": "none",
+        "maxStylizationScore": 1
+      }
+    },
+    {
+      "id": "semantic-layout-02-trust-brief",
+      "description": "Trust-oriented structured guidance can allow macro golden-ratio posture.",
+      "input": {
+        "content": "# Reliability Brief\n\n## Stable Structure\n- Trusted evidence keeps decisions transparent and clear.\n- Verified safety checks preserve reliable operations.\n- Stable communication reduces uncertainty.\n\n## Reading Path\n1. Start with the verified facts.\n2. Keep summary, detail, and follow-up clearly separated.\n3. Preserve heading contrast for mobile readability."
+      },
+      "expected": {
+        "tonePosture": "trust-reassuring",
+        "hierarchyStrength": "strong",
+        "visualPosture": "trust-stable",
+        "densityLevel": "spacious",
+        "proportionRule": "golden-ratio-macro-only",
+        "maxStylizationScore": 1
+      }
+    },
+    {
+      "id": "semantic-layout-03-urgent-campaign",
+      "description": "Urgent campaign copy can be expressive but must keep bounded proportion rule.",
+      "input": {
+        "content": "# Launch Now\n\nOur campaign must move immediately. This urgent launch is critical for customer engagement now!\n\n## Why This Matters\n- Brand momentum depends on immediate action.\n- The CTA must be clear now.\n- Teams should escalate blockers immediately."
+      },
+      "expected": {
+        "visualPosture": "expressive-conversion",
+        "trustUrgencyEmphasis": "urgency-first",
+        "proportionRule": "none",
+        "maxStylizationScore": 3
+      }
+    },
+    {
+      "id": "semantic-layout-04-technical-spec",
+      "description": "Technical spec text should avoid false-positive over-stylization.",
+      "input": {
+        "content": "# API Contract\n\n## Schema\n- JSON schema defines request and response fields.\n- Validator checks ensure deterministic fixture output.\n- Script execution is tested through eval gates.\n\n## Notes\nUse interface and type consistency before rollout."
+      },
+      "expected": {
+        "contentType": "technical-spec",
+        "visualPosture": "operational-clarity",
+        "colorEnergy": "moderate",
+        "motionPosture": "minimal",
+        "proportionRule": "none",
+        "maxStylizationScore": 1
+      }
+    }
+  ]
+}

@@ -7,8 +7,12 @@
       "schema": {
         "type": "object",
         "properties": {
-          "root": { "type": "string" },
-          "json": { "type": "boolean" }
+          "root": {
+            "type": "string"
+          },
+          "json": {
+            "type": "boolean"
+          }
         },
         "additionalProperties": false
       },
@@ -33,7 +37,9 @@
       "schema": {
         "type": "object",
         "properties": {
-          "cached": { "type": "boolean" }
+          "cached": {
+            "type": "boolean"
+          }
         },
         "additionalProperties": false
       },
@@ -57,13 +63,20 @@
       "schema": {
         "type": "object",
         "properties": {
-          "file": { "type": "string" },
+          "file": {
+            "type": "string"
+          },
           "mustContain": {
             "type": "array",
-            "items": { "type": "string" }
+            "items": {
+              "type": "string"
+            }
           }
         },
-        "required": ["file", "mustContain"],
+        "required": [
+          "file",
+          "mustContain"
+        ],
         "additionalProperties": false
       },
       "side_effects": "read-only",
@@ -87,7 +100,9 @@
       "schema": {
         "type": "object",
         "properties": {
-          "strict": { "type": "boolean" }
+          "strict": {
+            "type": "boolean"
+          }
         },
         "additionalProperties": false
       },
@@ -155,11 +170,21 @@
       "schema": {
         "type": "object",
         "properties": {
-          "target": { "type": "string" },
-          "content": { "type": "string" },
-          "approved": { "type": "boolean" }
+          "target": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "approved": {
+            "type": "boolean"
+          }
         },
-        "required": ["target", "content", "approved"],
+        "required": [
+          "target",
+          "content",
+          "approved"
+        ],
         "additionalProperties": false
       },
       "side_effects": "writes files only when approved",
@@ -181,8 +206,12 @@
       "schema": {
         "type": "object",
         "properties": {
-          "suite": { "type": "string" },
-          "kind": { "type": "string" }
+          "suite": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          }
         },
         "additionalProperties": false
       },
@@ -205,11 +234,21 @@
       "schema": {
         "type": "object",
         "properties": {
-          "include_agents": { "type": "boolean" },
-          "json": { "type": "boolean" },
-          "name_threshold": { "type": "number" },
-          "boundary_threshold": { "type": "number" },
-          "ambiguity_threshold": { "type": "number" }
+          "include_agents": {
+            "type": "boolean"
+          },
+          "json": {
+            "type": "boolean"
+          },
+          "name_threshold": {
+            "type": "number"
+          },
+          "boundary_threshold": {
+            "type": "number"
+          },
+          "ambiguity_threshold": {
+            "type": "number"
+          }
         },
         "additionalProperties": false
       },
@@ -233,9 +272,15 @@
       "schema": {
         "type": "object",
         "properties": {
-          "include_agents": { "type": "boolean" },
-          "json": { "type": "boolean" },
-          "strict_core_warnings": { "type": "boolean" }
+          "include_agents": {
+            "type": "boolean"
+          },
+          "json": {
+            "type": "boolean"
+          },
+          "strict_core_warnings": {
+            "type": "boolean"
+          }
         },
         "additionalProperties": false
       },
@@ -259,9 +304,15 @@
       "schema": {
         "type": "object",
         "properties": {
-          "include_agents": { "type": "boolean" },
-          "json": { "type": "boolean" },
-          "overconcentration_ratio": { "type": "number" }
+          "include_agents": {
+            "type": "boolean"
+          },
+          "json": {
+            "type": "boolean"
+          },
+          "overconcentration_ratio": {
+            "type": "number"
+          }
         },
         "additionalProperties": false
       },
@@ -285,13 +336,30 @@
       "schema": {
         "type": "object",
         "properties": {
-          "branch": { "type": "string" },
-          "mode": { "type": "string" },
-          "artifact_type": { "type": "string" },
-          "page_goal": { "type": "string" },
-          "current_structure": { "type": "object" },
-          "content_blocks": { "type": "array", "items": { "type": "object" } },
-          "product_context": { "type": "object" }
+          "branch": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "artifact_type": {
+            "type": "string"
+          },
+          "page_goal": {
+            "type": "string"
+          },
+          "current_structure": {
+            "type": "object"
+          },
+          "content_blocks": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "product_context": {
+            "type": "object"
+          }
         },
         "additionalProperties": false
       },
@@ -314,11 +382,24 @@
       "schema": {
         "type": "object",
         "properties": {
-          "branch": { "type": "string" },
-          "mode": { "type": "string" },
-          "text_system": { "type": "object" },
-          "content_blocks": { "type": "array", "items": { "type": "object" } },
-          "typography_tokens": { "type": "object" }
+          "branch": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "text_system": {
+            "type": "object"
+          },
+          "content_blocks": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "typography_tokens": {
+            "type": "object"
+          }
         },
         "additionalProperties": false
       },
@@ -341,11 +422,21 @@
       "schema": {
         "type": "object",
         "properties": {
-          "branch": { "type": "string" },
-          "mode": { "type": "string" },
-          "current_structure": { "type": "object" },
-          "spacing_tokens": { "type": "object" },
-          "density_mode": { "type": "string" }
+          "branch": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "current_structure": {
+            "type": "object"
+          },
+          "spacing_tokens": {
+            "type": "object"
+          },
+          "density_mode": {
+            "type": "string"
+          }
         },
         "additionalProperties": false
       },
@@ -368,13 +459,36 @@
       "schema": {
         "type": "object",
         "properties": {
-          "branch": { "type": "string" },
-          "mode": { "type": "string" },
-          "current_structure": { "type": "object" },
-          "content_blocks": { "type": "array", "items": { "type": "object" } },
-          "product_context": { "type": "object" },
-          "goals": { "type": "array", "items": { "type": "string" } },
-          "known_problems": { "type": "array", "items": { "type": "string" } }
+          "branch": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "current_structure": {
+            "type": "object"
+          },
+          "content_blocks": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "product_context": {
+            "type": "object"
+          },
+          "goals": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "known_problems": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
         },
         "additionalProperties": false
       },
@@ -397,12 +511,30 @@
       "schema": {
         "type": "object",
         "properties": {
-          "branch": { "type": "string" },
-          "mode": { "type": "string" },
-          "page_goal": { "type": "string" },
-          "content_blocks": { "type": "array", "items": { "type": "object" } },
-          "product_context": { "type": "object" },
-          "device_targets": { "type": "array", "items": { "type": "string" } }
+          "branch": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "page_goal": {
+            "type": "string"
+          },
+          "content_blocks": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "product_context": {
+            "type": "object"
+          },
+          "device_targets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
         },
         "additionalProperties": false
       },
@@ -425,12 +557,27 @@
       "schema": {
         "type": "object",
         "properties": {
-          "branch": { "type": "string" },
-          "mode": { "type": "string" },
-          "current_structure": { "type": "object" },
-          "design_tokens": { "type": "object" },
-          "density_modes": { "type": "object" },
-          "brand_constraints": { "type": "array", "items": { "type": "string" } }
+          "branch": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "current_structure": {
+            "type": "object"
+          },
+          "design_tokens": {
+            "type": "object"
+          },
+          "density_modes": {
+            "type": "object"
+          },
+          "brand_constraints": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
         },
         "additionalProperties": false
       },
@@ -453,12 +600,33 @@
       "schema": {
         "type": "object",
         "properties": {
-          "branch": { "type": "string" },
-          "mode": { "type": "string" },
-          "current_structure": { "type": "object" },
-          "known_problems": { "type": "array", "items": { "type": "string" } },
-          "constraints": { "type": "array", "items": { "type": "string" } },
-          "requested_outputs": { "type": "array", "items": { "type": "string" } }
+          "branch": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "current_structure": {
+            "type": "object"
+          },
+          "known_problems": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "constraints": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requested_outputs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
         },
         "additionalProperties": false
       },
@@ -472,6 +640,157 @@
         "kimi-k2_5"
       ],
       "routing_hints": [
+        "ui-ux-composition"
+      ]
+    },
+    {
+      "tool_name": "analyze-content-semantics-for-design",
+      "intent_class": "read-only semantic analysis",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "json": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "ui-ux-composition"
+      ]
+    },
+    {
+      "tool_name": "generate-visual-direction-contract",
+      "intent_class": "read-only contract generation",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string"
+          },
+          "json": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "input"
+        ],
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "ui-ux-composition"
+      ]
+    },
+    {
+      "tool_name": "lint-semantic-design-contracts",
+      "intent_class": "read-only validation",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string"
+          },
+          "json": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "input"
+        ],
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "ui-ux-composition",
+        "readiness-check"
+      ]
+    },
+    {
+      "tool_name": "derive-oklch-palette",
+      "intent_class": "read-only palette derivation",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string"
+          },
+          "json": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "input"
+        ],
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "ui-ux-composition"
+      ]
+    },
+    {
+      "tool_name": "eval-semantic-layout-decisions",
+      "intent_class": "read-only evaluation",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "fixture": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "readiness-check",
         "ui-ux-composition"
       ]
     }

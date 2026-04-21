@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { buildNeutralCoreRegistry } from './build-neutral-core-registry.mjs';
 import { buildProviderExports } from './build-provider-exports.mjs';
 import { readJson, repoRoot } from './_shared.mjs';
+import { evaluateSemanticLayoutDecisionsFixture } from './eval-semantic-layout-decisions.mjs';
 
 function normalize(filePath) {
   return path.resolve(filePath).replace(/\\/g, '/');
@@ -768,6 +769,10 @@ function evaluateFixture(root, registry, providerExports, fixture) {
     result.issues.push(...check.issues);
   } else if (fixture.kind === 'skill-routing') {
     const check = evaluateSkillRouting(root, fixture);
+    result.passed = check.passed;
+    result.issues.push(...check.issues);
+  } else if (fixture.kind === 'semantic-layout') {
+    const check = evaluateSemanticLayoutDecisionsFixture(fixture);
     result.passed = check.passed;
     result.issues.push(...check.issues);
   } else {

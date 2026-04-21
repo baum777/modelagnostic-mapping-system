@@ -10,6 +10,7 @@ This bundle organizes the branch into readable internal layers for composition, 
 ## Contents
 
 - [CONSTITUTION.md](CONSTITUTION.md)
+- [SEMANTIC_DESIGN_TOOLING_CONTRACT.md](SEMANTIC_DESIGN_TOOLING_CONTRACT.md)
 - [ROUTING.md](ROUTING.md)
 - [MODES.md](MODES.md)
 - [POLICIES/GOLDEN_RATIO_POLICY.md](POLICIES/GOLDEN_RATIO_POLICY.md)

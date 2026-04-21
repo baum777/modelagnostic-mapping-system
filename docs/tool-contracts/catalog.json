@@ -543,6 +543,161 @@
       "exampleInvocation": "node scripts/tools/approval-gated-write-executor.mjs --target docs/example.md --approved --content 'example'",
       "implementationStatus": "runnable",
       "entrypoint": "scripts/tools/approval-gated-write-executor.mjs"
+    },
+    {
+      "name": "analyze-content-semantics-for-design",
+      "purpose": "Analyze bounded content semantics and emit a normalized design-semantic profile with deterministic evidence.",
+      "inputs": [
+        {
+          "name": "input",
+          "type": "path",
+          "required": false,
+          "description": "Path to plain-text or JSON payload with content signals."
+        },
+        {
+          "name": "text",
+          "type": "string",
+          "required": false,
+          "description": "Inline content to analyze when no input path is provided."
+        },
+        {
+          "name": "json",
+          "type": "boolean",
+          "required": false,
+          "description": "Emit JSON output."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "semanticProfile",
+          "type": "json",
+          "description": "Normalized semantic profile and evidence payload."
+        }
+      ],
+      "sideEffects": "read-only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Exit non-zero on missing/invalid input payload.",
+      "exampleInvocation": "node scripts/tools/analyze-content-semantics-for-design.mjs --input ./content.json --json",
+      "implementationStatus": "helper-only",
+      "entrypoint": "scripts/tools/analyze-content-semantics-for-design.mjs"
+    },
+    {
+      "name": "generate-visual-direction-contract",
+      "purpose": "Derive a bounded machine-readable visual-direction contract from a normalized semantic profile.",
+      "inputs": [
+        {
+          "name": "input",
+          "type": "path",
+          "required": true,
+          "description": "Path to semantic profile JSON."
+        },
+        {
+          "name": "json",
+          "type": "boolean",
+          "required": false,
+          "description": "Emit JSON output."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "visualDirectionContract",
+          "type": "json",
+          "description": "Bounded visual-direction contract and derivation evidence."
+        }
+      ],
+      "sideEffects": "read-only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Exit non-zero on invalid semantic profile schema.",
+      "exampleInvocation": "node scripts/tools/generate-visual-direction-contract.mjs --input ./semantic-profile.json --json",
+      "implementationStatus": "helper-only",
+      "entrypoint": "scripts/tools/generate-visual-direction-contract.mjs"
+    },
+    {
+      "name": "lint-semantic-design-contracts",
+      "purpose": "Validate semantic design contracts for required fields, bounded enums, guardrails, and contradictions.",
+      "inputs": [
+        {
+          "name": "input",
+          "type": "path",
+          "required": true,
+          "description": "Path to contract JSON (object or array)."
+        },
+        {
+          "name": "json",
+          "type": "boolean",
+          "required": false,
+          "description": "Emit JSON output."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "lintReport",
+          "type": "json",
+          "description": "Actionable findings with severity, code, path, and suggested fix."
+        }
+      ],
+      "sideEffects": "read-only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Exit non-zero when lint errors are present.",
+      "exampleInvocation": "node scripts/tools/lint-semantic-design-contracts.mjs --input ./contract.json --json",
+      "implementationStatus": "validator-backed",
+      "entrypoint": "scripts/tools/lint-semantic-design-contracts.mjs"
+    },
+    {
+      "name": "derive-oklch-palette",
+      "purpose": "Derive bounded role-based OKLCH palette recommendations from semantic profile or visual-direction contract signals.",
+      "inputs": [
+        {
+          "name": "input",
+          "type": "path",
+          "required": true,
+          "description": "Path to semantic profile or visual-direction contract JSON."
+        },
+        {
+          "name": "json",
+          "type": "boolean",
+          "required": false,
+          "description": "Emit JSON output."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "oklchPalette",
+          "type": "json",
+          "description": "Role-based palette with intent-level guardrail checks."
+        }
+      ],
+      "sideEffects": "read-only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Exit non-zero on invalid input shape.",
+      "exampleInvocation": "node scripts/tools/derive-oklch-palette.mjs --input ./visual-contract.json --json",
+      "implementationStatus": "helper-only",
+      "entrypoint": "scripts/tools/derive-oklch-palette.mjs"
+    },
+    {
+      "name": "eval-semantic-layout-decisions",
+      "purpose": "Evaluate semantic-to-layout decisions for consistency, boundedness, over-stylization prevention, and proportion-rule constraints.",
+      "inputs": [
+        {
+          "name": "fixture",
+          "type": "path",
+          "required": false,
+          "description": "Path to semantic layout fixture JSON."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "evalResult",
+          "type": "json",
+          "description": "Case-level pass/fail report with deterministic evidence."
+        }
+      ],
+      "sideEffects": "read-only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Exit non-zero when any blocking semantic-layout case fails.",
+      "exampleInvocation": "node scripts/tools/eval-semantic-layout-decisions.mjs --fixture evals/fixtures/semantic-layout-decisions.json",
+      "implementationStatus": "validator-backed",
+      "entrypoint": "scripts/tools/eval-semantic-layout-decisions.mjs"
     }
   ],
   "statusLegend": {
