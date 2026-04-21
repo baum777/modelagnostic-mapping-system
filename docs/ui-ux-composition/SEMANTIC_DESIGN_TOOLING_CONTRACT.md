@@ -3,6 +3,8 @@
 Class: operational.
 Use rule: applies to deterministic semantic-design tools under `scripts/tools`; this is an implementation contract note, not a visual-runtime claim.
 
+For rendered-behavior and accessibility verification boundaries, see [RENDER_ACCESSIBILITY_VERIFICATION_CONTRACT.md](RENDER_ACCESSIBILITY_VERIFICATION_CONTRACT.md).
+
 ## Covered Tools
 
 - `analyze-content-semantics-for-design.mjs`

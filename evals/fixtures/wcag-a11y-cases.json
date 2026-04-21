@@ -1,0 +1,127 @@
+{
+  "id": "wcag-a11y-cases",
+  "kind": "wcag-a11y",
+  "blocking": true,
+  "target": {
+    "name": "wcag-a11y-verification"
+  },
+  "axeTags": ["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"],
+  "cases": [
+    {
+      "id": "a11y-clean-pass",
+      "class": "clean-pass",
+      "page": { "file": "evals/fixtures/render-pages/clean-pass.html" },
+      "intendedSemanticPosture": {
+        "contentType": "technical-spec",
+        "tonePosture": "neutral-instructional"
+      },
+      "expectedRenderPosture": {
+        "densityLevel": "balanced"
+      },
+      "expectedAccessibilityRiskPosture": {
+        "expectedOutcome": "pass",
+        "maxAxeViolations": 0,
+        "minLighthouseAccessibility": 0.9,
+        "allowStructureWarnings": true
+      },
+      "permittedAmbiguity": [
+        "manual review allowed for non-critical scanner incompletes"
+      ],
+      "nonClaims": [
+        "Passing this case is not complete legal WCAG certification."
+      ]
+    },
+    {
+      "id": "a11y-known-fail",
+      "class": "known-fail",
+      "page": { "file": "evals/fixtures/render-pages/a11y-fail.html" },
+      "intendedSemanticPosture": {
+        "contentType": "marketing-copy",
+        "tonePosture": "promotional-energetic"
+      },
+      "expectedRenderPosture": {
+        "densityLevel": "compact"
+      },
+      "expectedAccessibilityRiskPosture": {
+        "expectedOutcome": "fail",
+        "maxAxeViolations": 0,
+        "minLighthouseAccessibility": 0.9,
+        "allowStructureWarnings": false
+      },
+      "permittedAmbiguity": [],
+      "nonClaims": [
+        "This case intentionally includes structural and scanner-detectable failures."
+      ]
+    },
+    {
+      "id": "a11y-borderline",
+      "class": "borderline",
+      "page": { "file": "evals/fixtures/render-pages/borderline.html" },
+      "intendedSemanticPosture": {
+        "contentType": "support-guidance",
+        "tonePosture": "neutral-instructional"
+      },
+      "expectedRenderPosture": {
+        "densityLevel": "balanced"
+      },
+      "expectedAccessibilityRiskPosture": {
+        "expectedOutcome": "borderline",
+        "maxAxeViolations": 0,
+        "minLighthouseAccessibility": 0.88,
+        "allowStructureWarnings": true
+      },
+      "permittedAmbiguity": [
+        "manual review areas are acceptable when no confirmed issue is detected"
+      ],
+      "nonClaims": [
+        "Borderline outcome does not imply guaranteed usability for all assistive technologies."
+      ]
+    },
+    {
+      "id": "a11y-responsive-stress",
+      "class": "responsive-stress",
+      "page": { "file": "evals/fixtures/render-pages/responsive-stress.html" },
+      "intendedSemanticPosture": {
+        "contentType": "technical-spec",
+        "tonePosture": "neutral-instructional"
+      },
+      "expectedRenderPosture": {
+        "densityLevel": "balanced"
+      },
+      "expectedAccessibilityRiskPosture": {
+        "expectedOutcome": "pass",
+        "maxAxeViolations": 0,
+        "minLighthouseAccessibility": 0.88,
+        "allowStructureWarnings": true
+      },
+      "permittedAmbiguity": [
+        "minor score fluctuation tolerated above threshold"
+      ],
+      "nonClaims": [
+        "This case validates bounded responsive risk, not exhaustive device coverage."
+      ]
+    },
+    {
+      "id": "a11y-semantic-contradiction",
+      "class": "semantic-vs-render-contradiction",
+      "page": { "file": "evals/fixtures/render-pages/semantic-render-contradiction.html" },
+      "intendedSemanticPosture": {
+        "contentType": "trust-brief",
+        "tonePosture": "trust-reassuring"
+      },
+      "expectedRenderPosture": {
+        "densityLevel": "spacious"
+      },
+      "expectedAccessibilityRiskPosture": {
+        "expectedOutcome": "fail",
+        "maxAxeViolations": 0,
+        "minLighthouseAccessibility": 0.9,
+        "allowStructureWarnings": false
+      },
+      "permittedAmbiguity": [],
+      "nonClaims": [
+        "Contradiction case validates evidence mismatch detection only."
+      ]
+    }
+  ]
+}

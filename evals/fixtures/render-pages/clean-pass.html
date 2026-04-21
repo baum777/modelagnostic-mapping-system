@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Clean Pass Fixture</title>
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; line-height: 1.5; }
+    header, main, footer { max-width: 72rem; margin: 0 auto; padding: 1rem; }
+    nav ul { display: flex; gap: 1rem; list-style: none; padding: 0; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1rem; }
+    .card { border: 1px solid #c7c7c7; border-radius: 0.5rem; padding: 1rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Operations Dashboard</h1>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="#status">Status</a></li>
+        <li><a href="#controls">Controls</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main id="status">
+    <section>
+      <h2>System Status</h2>
+      <p>All monitored services are healthy and deployment gates are passing.</p>
+    </section>
+    <section class="cards" id="controls">
+      <article class="card">
+        <h3>Incidents</h3>
+        <p>No open incidents.</p>
+      </article>
+      <article class="card">
+        <h3>Rollouts</h3>
+        <p>All rollouts verified.</p>
+      </article>
+    </section>
+  </main>
+  <footer>
+    <p>Evidence-driven fixture page.</p>
+  </footer>
+</body>
+</html>

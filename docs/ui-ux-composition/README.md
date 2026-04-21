@@ -11,6 +11,7 @@ This bundle organizes the branch into readable internal layers for composition, 
 
 - [CONSTITUTION.md](CONSTITUTION.md)
 - [SEMANTIC_DESIGN_TOOLING_CONTRACT.md](SEMANTIC_DESIGN_TOOLING_CONTRACT.md)
+- [RENDER_ACCESSIBILITY_VERIFICATION_CONTRACT.md](RENDER_ACCESSIBILITY_VERIFICATION_CONTRACT.md)
 - [ROUTING.md](ROUTING.md)
 - [MODES.md](MODES.md)
 - [POLICIES/GOLDEN_RATIO_POLICY.md](POLICIES/GOLDEN_RATIO_POLICY.md)
@@ -30,5 +31,6 @@ This bundle organizes the branch into readable internal layers for composition, 
 - The module docs are advisory and internal.
 - Tool contracts remain contract-only until a real runtime surface exists.
 - Semantic-design outputs stay deterministic where tooling exists (`scripts/tools` semantic-design commands).
+- Render/accessibility verification outputs are deterministic in certification mode and advisory only in operator-evidence mode.
 - Golden-ratio guidance is bounded and subordinate to semantic clarity, accessibility, responsiveness, and readability.
 - Rendering posture decisions (`static` vs server-rendered dynamic vs hydration) are outside this bundle and belong to `static-vs-dynamic-rendering-advisor`.

@@ -7,6 +7,8 @@ import { buildProviderExports } from './build-provider-exports.mjs';
 import { readJson, repoRoot } from './_shared.mjs';
 import { evaluateSemanticLayoutDecisionsFixture } from './eval-semantic-layout-decisions.mjs';
 import { evaluateStaticVsDynamicRenderingAdvisorFixture } from './eval-static-vs-dynamic-rendering-advisor.mjs';
+import { evaluateRenderLayoutFixture } from './eval-render-layout-cases.mjs';
+import { evaluateWcagA11yFixture } from './eval-wcag-a11y-cases.mjs';
 
 function normalize(filePath) {
   return path.resolve(filePath).replace(/\\/g, '/');
@@ -668,7 +670,7 @@ function evaluateToolSelection(registry, fixture) {
   return result;
 }
 
-function evaluateFixture(root, registry, providerExports, fixture) {
+async function evaluateFixture(root, registry, providerExports, fixture) {
   const result = {
     id: fixture.id,
     kind: fixture.kind,
@@ -776,6 +778,14 @@ function evaluateFixture(root, registry, providerExports, fixture) {
     const check = evaluateSemanticLayoutDecisionsFixture(fixture);
     result.passed = check.passed;
     result.issues.push(...check.issues);
+  } else if (fixture.kind === 'render-layout') {
+    const check = await evaluateRenderLayoutFixture(fixture, { baseRoot: root });
+    result.passed = check.passed;
+    result.issues.push(...check.issues);
+  } else if (fixture.kind === 'wcag-a11y') {
+    const check = await evaluateWcagA11yFixture(fixture, { baseRoot: root });
+    result.passed = check.passed;
+    result.issues.push(...check.issues);
   } else if (fixture.kind === 'rendering-posture') {
     const check = evaluateStaticVsDynamicRenderingAdvisorFixture(fixture);
     result.passed = check.passed;
@@ -788,7 +798,7 @@ function evaluateFixture(root, registry, providerExports, fixture) {
   return result;
 }
 
-function runCertificationEvals(baseRoot = repoRoot(), options = {}) {
+async function runCertificationEvals(baseRoot = repoRoot(), options = {}) {
   const root = baseRoot;
   const catalog = loadEvalCatalog(root);
   const registry = buildNeutralCoreRegistry(root);
@@ -814,7 +824,7 @@ function runCertificationEvals(baseRoot = repoRoot(), options = {}) {
       issues: ['No eval fixtures matched the requested --kind filter.']
     };
   }
-  const results = selectedFixtures.map((fixture) => evaluateFixture(root, registry, providerExports, fixture));
+  const results = await Promise.all(selectedFixtures.map((fixture) => evaluateFixture(root, registry, providerExports, fixture)));
   const passed = results.filter((result) => result.passed).length;
   const failed = results.length - passed;
   const blockingFailures = results.filter((result) => !result.passed && result.blocking).length;
@@ -836,7 +846,7 @@ const isMain = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPat
 
 if (isMain) {
   const args = parseRunnerArgs(process.argv.slice(2));
-  const result = runCertificationEvals(repoRoot(), args);
+  const result = await runCertificationEvals(repoRoot(), args);
   console.log(JSON.stringify(result, null, 2));
   process.exit(result.ok ? 0 : 1);
 }

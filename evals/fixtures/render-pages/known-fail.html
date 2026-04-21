@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Known Fail Fixture</title>
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; }
+    main { padding: 1rem; }
+    .forced-width { width: 980px; background: #f6f6f6; border: 1px solid #888; padding: 0.5rem; }
+  </style>
+</head>
+<body>
+  <header><h1>Known Overflow Failure</h1></header>
+  <main>
+    <section>
+      <h2>Overflow Section</h2>
+      <div class="forced-width">This block intentionally causes horizontal overflow on small screens.</div>
+    </section>
+    <section>
+      <h2>Secondary</h2>
+      <p>Used for deterministic known-fail render behavior.</p>
+    </section>
+  </main>
+</body>
+</html>

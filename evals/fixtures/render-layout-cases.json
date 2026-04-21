@@ -1,0 +1,157 @@
+{
+  "id": "render-layout-cases",
+  "kind": "render-layout",
+  "blocking": true,
+  "target": {
+    "name": "render-layout-verification"
+  },
+  "repeatCount": 2,
+  "breakpoints": [
+    { "name": "mobile", "width": 390, "height": 844 },
+    { "name": "tablet", "width": 768, "height": 1024 },
+    { "name": "desktop", "width": 1280, "height": 800 }
+  ],
+  "cases": [
+    {
+      "id": "render-clean-pass",
+      "class": "clean-pass",
+      "page": { "file": "evals/fixtures/render-pages/clean-pass.html" },
+      "intendedSemanticPosture": {
+        "contentType": "technical-spec",
+        "visualDensityPosture": "balanced",
+        "hierarchyStrength": "strong"
+      },
+      "expectedRenderPosture": {
+        "expectedOutcome": "pass",
+        "requireReproducible": true,
+        "maxOverflowCount": 0,
+        "requireMainLandmark": true,
+        "contract": {
+          "densityLevel": "balanced",
+          "hierarchyIntensity": "medium"
+        }
+      },
+      "expectedAccessibilityRiskPosture": {
+        "level": "low"
+      },
+      "permittedAmbiguity": [
+        "minor line-wrap differences"
+      ],
+      "nonClaims": [
+        "Does not prove pixel-perfect visual sameness."
+      ]
+    },
+    {
+      "id": "render-known-fail",
+      "class": "known-fail",
+      "page": { "file": "evals/fixtures/render-pages/known-fail.html" },
+      "intendedSemanticPosture": {
+        "contentType": "policy-doc",
+        "visualDensityPosture": "balanced",
+        "hierarchyStrength": "moderate"
+      },
+      "expectedRenderPosture": {
+        "expectedOutcome": "fail",
+        "requireReproducible": true,
+        "maxOverflowCount": 0,
+        "requireMainLandmark": true,
+        "contract": {
+          "densityLevel": "balanced",
+          "hierarchyIntensity": "medium"
+        }
+      },
+      "expectedAccessibilityRiskPosture": {
+        "level": "medium"
+      },
+      "permittedAmbiguity": [],
+      "nonClaims": [
+        "This case intentionally fails overflow constraints."
+      ]
+    },
+    {
+      "id": "render-borderline",
+      "class": "borderline",
+      "page": { "file": "evals/fixtures/render-pages/borderline.html" },
+      "intendedSemanticPosture": {
+        "contentType": "support-guidance",
+        "visualDensityPosture": "balanced",
+        "hierarchyStrength": "moderate"
+      },
+      "expectedRenderPosture": {
+        "expectedOutcome": "borderline",
+        "requireReproducible": true,
+        "maxOverflowCount": 0,
+        "requireMainLandmark": true,
+        "contract": {
+          "densityLevel": "balanced",
+          "hierarchyIntensity": "low"
+        }
+      },
+      "expectedAccessibilityRiskPosture": {
+        "level": "borderline"
+      },
+      "permittedAmbiguity": [
+        "manual readability review may be required"
+      ],
+      "nonClaims": [
+        "Does not automatically block on style-level differences."
+      ]
+    },
+    {
+      "id": "render-responsive-stress",
+      "class": "responsive-stress",
+      "page": { "file": "evals/fixtures/render-pages/responsive-stress.html" },
+      "intendedSemanticPosture": {
+        "contentType": "technical-spec",
+        "visualDensityPosture": "balanced",
+        "hierarchyStrength": "strong"
+      },
+      "expectedRenderPosture": {
+        "expectedOutcome": "pass",
+        "requireReproducible": true,
+        "maxOverflowCount": 0,
+        "requireMainLandmark": true,
+        "contract": {
+          "densityLevel": "balanced",
+          "hierarchyIntensity": "high"
+        }
+      },
+      "expectedAccessibilityRiskPosture": {
+        "level": "low"
+      },
+      "permittedAmbiguity": [
+        "card wrapping differences within breakpoint constraints"
+      ],
+      "nonClaims": [
+        "Does not assert animation quality."
+      ]
+    },
+    {
+      "id": "render-semantic-contradiction",
+      "class": "semantic-vs-render-contradiction",
+      "page": { "file": "evals/fixtures/render-pages/semantic-render-contradiction.html" },
+      "intendedSemanticPosture": {
+        "contentType": "trust-brief",
+        "visualDensityPosture": "spacious",
+        "hierarchyStrength": "strong"
+      },
+      "expectedRenderPosture": {
+        "expectedOutcome": "fail",
+        "requireReproducible": true,
+        "maxOverflowCount": 0,
+        "requireMainLandmark": true,
+        "contract": {
+          "densityLevel": "spacious",
+          "hierarchyIntensity": "high"
+        }
+      },
+      "expectedAccessibilityRiskPosture": {
+        "level": "medium"
+      },
+      "permittedAmbiguity": [],
+      "nonClaims": [
+        "This case demonstrates semantic-to-render mismatch detection only."
+      ]
+    }
+  ]
+}

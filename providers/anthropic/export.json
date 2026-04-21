@@ -1458,6 +1458,56 @@
       ]
     },
     {
+      "name": "assert-layout-contract-rendered",
+      "tool_name": "assert-layout-contract-rendered",
+      "intent_class": "read-only contract-to-render validation",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string"
+          },
+          "contract": {
+            "type": "string"
+          },
+          "snapshots": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "json": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "exportMode": "adapter",
+      "providerCompatibility": {
+        "openai-codex": "adapter",
+        "openai": "compatibility-export",
+        "codex": "compatibility-export",
+        "gpt": "compatibility-export",
+        "anthropic-claude": "adapter",
+        "anthropic": "compatibility-export",
+        "claude": "compatibility-export",
+        "qwen-code": "adapter",
+        "qwen": "compatibility-export",
+        "qwen-agent": "compatibility-export",
+        "kimi-k2_5": "adapter",
+        "kimi": "compatibility-export",
+        "kimi-k2.5": "compatibility-export",
+        "moonshot": "compatibility-export"
+      },
+      "routing_hints": [
+        "ui-ux-composition",
+        "readiness-check"
+      ]
+    },
+    {
       "name": "audit_ui",
       "tool_name": "audit_ui",
       "intent_class": "contract-only branch analysis",
@@ -1519,6 +1569,94 @@
       },
       "routing_hints": [
         "ui-ux-composition"
+      ]
+    },
+    {
+      "name": "check-render-a11y-runtime",
+      "tool_name": "check-render-a11y-runtime",
+      "intent_class": "read-only runtime validation",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "type": "string"
+          },
+          "json": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "exportMode": "adapter",
+      "providerCompatibility": {
+        "openai-codex": "adapter",
+        "openai": "compatibility-export",
+        "codex": "compatibility-export",
+        "gpt": "compatibility-export",
+        "anthropic-claude": "adapter",
+        "anthropic": "compatibility-export",
+        "claude": "compatibility-export",
+        "qwen-code": "adapter",
+        "qwen": "compatibility-export",
+        "qwen-agent": "compatibility-export",
+        "kimi-k2_5": "adapter",
+        "kimi": "compatibility-export",
+        "kimi-k2.5": "compatibility-export",
+        "moonshot": "compatibility-export"
+      },
+      "routing_hints": [
+        "readiness-check",
+        "ui-ux-composition"
+      ]
+    },
+    {
+      "name": "compare-render-breakpoints",
+      "tool_name": "compare-render-breakpoints",
+      "intent_class": "read-only responsive comparison",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "json": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "input"
+        ],
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "exportMode": "adapter",
+      "providerCompatibility": {
+        "openai-codex": "adapter",
+        "openai": "compatibility-export",
+        "codex": "compatibility-export",
+        "gpt": "compatibility-export",
+        "anthropic-claude": "adapter",
+        "anthropic": "compatibility-export",
+        "claude": "compatibility-export",
+        "qwen-code": "adapter",
+        "qwen": "compatibility-export",
+        "qwen-agent": "compatibility-export",
+        "kimi-k2_5": "adapter",
+        "kimi": "compatibility-export",
+        "kimi-k2.5": "compatibility-export",
+        "moonshot": "compatibility-export"
+      },
+      "routing_hints": [
+        "ui-ux-composition",
+        "readiness-check"
       ]
     },
     {
@@ -1991,6 +2129,53 @@
       ]
     },
     {
+      "name": "lint-wcag-structure",
+      "tool_name": "lint-wcag-structure",
+      "intent_class": "read-only accessibility structure lint",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "json": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "input"
+        ],
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "exportMode": "adapter",
+      "providerCompatibility": {
+        "openai-codex": "adapter",
+        "openai": "compatibility-export",
+        "codex": "compatibility-export",
+        "gpt": "compatibility-export",
+        "anthropic-claude": "adapter",
+        "anthropic": "compatibility-export",
+        "claude": "compatibility-export",
+        "qwen-code": "adapter",
+        "qwen": "compatibility-export",
+        "qwen-agent": "compatibility-export",
+        "kimi-k2_5": "adapter",
+        "kimi": "compatibility-export",
+        "kimi-k2.5": "compatibility-export",
+        "moonshot": "compatibility-export"
+      },
+      "routing_hints": [
+        "ui-ux-composition",
+        "readiness-check"
+      ]
+    },
+    {
       "name": "log-journal-query",
       "tool_name": "log-journal-query",
       "intent_class": "read-only",
@@ -2246,6 +2431,59 @@
       ]
     },
     {
+      "name": "render-page-snapshots",
+      "tool_name": "render-page-snapshots",
+      "intent_class": "read-only render evidence capture",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "output_dir": {
+            "type": "string"
+          },
+          "repeat": {
+            "type": "number"
+          },
+          "json": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "input"
+        ],
+        "additionalProperties": false
+      },
+      "side_effects": "writes screenshot artifacts only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "exportMode": "adapter",
+      "providerCompatibility": {
+        "openai-codex": "adapter",
+        "openai": "compatibility-export",
+        "codex": "compatibility-export",
+        "gpt": "compatibility-export",
+        "anthropic-claude": "adapter",
+        "anthropic": "compatibility-export",
+        "claude": "compatibility-export",
+        "qwen-code": "adapter",
+        "qwen": "compatibility-export",
+        "qwen-agent": "compatibility-export",
+        "kimi-k2_5": "adapter",
+        "kimi": "compatibility-export",
+        "kimi-k2.5": "compatibility-export",
+        "moonshot": "compatibility-export"
+      },
+      "routing_hints": [
+        "ui-ux-composition",
+        "readiness-check"
+      ]
+    },
+    {
       "name": "repo-structure-scanner",
       "tool_name": "repo-structure-scanner",
       "intent_class": "read-only inventory",
@@ -2288,6 +2526,53 @@
       ]
     },
     {
+      "name": "run-axe-accessibility-audit",
+      "tool_name": "run-axe-accessibility-audit",
+      "intent_class": "read-only accessibility evaluation",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "json": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "input"
+        ],
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "exportMode": "adapter",
+      "providerCompatibility": {
+        "openai-codex": "adapter",
+        "openai": "compatibility-export",
+        "codex": "compatibility-export",
+        "gpt": "compatibility-export",
+        "anthropic-claude": "adapter",
+        "anthropic": "compatibility-export",
+        "claude": "compatibility-export",
+        "qwen-code": "adapter",
+        "qwen": "compatibility-export",
+        "qwen-agent": "compatibility-export",
+        "kimi-k2_5": "adapter",
+        "kimi": "compatibility-export",
+        "kimi-k2.5": "compatibility-export",
+        "moonshot": "compatibility-export"
+      },
+      "routing_hints": [
+        "ui-ux-composition",
+        "readiness-check"
+      ]
+    },
+    {
       "name": "run-certification-evals",
       "tool_name": "run-certification-evals",
       "intent_class": "read-only evaluation runner",
@@ -2324,6 +2609,53 @@
         "moonshot": "compatibility-export"
       },
       "routing_hints": [
+        "readiness-check"
+      ]
+    },
+    {
+      "name": "run-lighthouse-page-audit",
+      "tool_name": "run-lighthouse-page-audit",
+      "intent_class": "read-only page audit evaluation",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "json": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "input"
+        ],
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "exportMode": "adapter",
+      "providerCompatibility": {
+        "openai-codex": "adapter",
+        "openai": "compatibility-export",
+        "codex": "compatibility-export",
+        "gpt": "compatibility-export",
+        "anthropic-claude": "adapter",
+        "anthropic": "compatibility-export",
+        "claude": "compatibility-export",
+        "qwen-code": "adapter",
+        "qwen": "compatibility-export",
+        "qwen-agent": "compatibility-export",
+        "kimi-k2_5": "adapter",
+        "kimi": "compatibility-export",
+        "kimi-k2.5": "compatibility-export",
+        "moonshot": "compatibility-export"
+      },
+      "routing_hints": [
+        "ui-ux-composition",
         "readiness-check"
       ]
     },

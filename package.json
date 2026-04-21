@@ -31,6 +31,21 @@
     "generate-visual-direction-contract": "node scripts/tools/generate-visual-direction-contract.mjs --json",
     "lint-semantic-design-contracts": "node scripts/tools/lint-semantic-design-contracts.mjs --json",
     "derive-oklch-palette": "node scripts/tools/derive-oklch-palette.mjs --json",
-    "eval:semantic-layout": "node scripts/tools/run-certification-evals.mjs --kind semantic-layout"
+    "eval:semantic-layout": "node scripts/tools/run-certification-evals.mjs --kind semantic-layout",
+    "check-render-a11y-runtime": "node scripts/tools/check-render-a11y-runtime.mjs --mode certification --json",
+    "render-page-snapshots": "node scripts/tools/render-page-snapshots.mjs --mode certification --json",
+    "run-axe-accessibility-audit": "node scripts/tools/run-axe-accessibility-audit.mjs --mode certification --json",
+    "run-lighthouse-page-audit": "node scripts/tools/run-lighthouse-page-audit.mjs --mode certification --json",
+    "assert-layout-contract-rendered": "node scripts/tools/assert-layout-contract-rendered.mjs --mode certification --json",
+    "compare-render-breakpoints": "node scripts/tools/compare-render-breakpoints.mjs --mode certification --json",
+    "lint-wcag-structure": "node scripts/tools/lint-wcag-structure.mjs --mode certification --json",
+    "eval:render-layout": "node scripts/tools/run-certification-evals.mjs --kind render-layout",
+    "eval:wcag-a11y": "node scripts/tools/run-certification-evals.mjs --kind wcag-a11y"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.11.2",
+    "chrome-launcher": "1.2.1",
+    "lighthouse": "13.1.0",
+    "playwright": "1.59.1"
   }
 }

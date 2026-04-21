@@ -157,6 +157,78 @@ npm run eval:semantic-layout
 
 Runs only `kind: "semantic-layout"` certification fixtures.
 
+## Check Render/A11y Runtime (validator-backed)
+
+```bash
+npm run check-render-a11y-runtime
+```
+
+Verifies pinned Playwright/Axe/Lighthouse runtime dependencies before blocking render/accessibility certification checks run.
+
+## Render Page Snapshots (validator-backed)
+
+```bash
+npm run render-page-snapshots -- --input evals/fixtures/render-layout-cases.json
+```
+
+Captures deterministic screenshot artifacts and blocking DOM/layout metrics across configured breakpoints.
+
+## Run Axe Accessibility Audit (validator-backed)
+
+```bash
+npm run run-axe-accessibility-audit -- --input evals/fixtures/wcag-a11y-cases.json
+```
+
+Runs normalized Axe accessibility scans for fixture pages using bounded WCAG tag sets.
+
+## Run Lighthouse Page Audit (validator-backed)
+
+```bash
+npm run run-lighthouse-page-audit -- --input evals/fixtures/wcag-a11y-cases.json
+```
+
+Runs normalized Lighthouse accessibility/quality category audits for fixture pages.
+
+## Assert Layout Contract Rendered (validator-backed)
+
+```bash
+npm run assert-layout-contract-rendered -- --input <contract-plus-snapshots.json>
+```
+
+Checks machine-usable semantic-contract-to-render assertions and reports pass/fail/not-assessed outcomes.
+
+## Compare Render Breakpoints (validator-backed)
+
+```bash
+npm run compare-render-breakpoints -- --input <render-snapshot-report.json>
+```
+
+Detects responsive contradictions and major regressions while treating small visual differences as non-blocking unless readability/hierarchy/overflow constraints fail.
+
+## Lint WCAG Structure (validator-backed)
+
+```bash
+npm run lint-wcag-structure -- --input evals/fixtures/wcag-a11y-cases.json
+```
+
+Runs deterministic structural WCAG-style lint checks in addition to automated scanner evidence.
+
+## Run Render Layout Eval Slice (validator-backed)
+
+```bash
+npm run eval:render-layout
+```
+
+Runs only `kind: "render-layout"` certification fixtures (local fixtures only, blocking).
+
+## Run WCAG A11y Eval Slice (validator-backed)
+
+```bash
+npm run eval:wcag-a11y
+```
+
+Runs only `kind: "wcag-a11y"` certification fixtures (local fixtures only, blocking).
+
 ## Initialize a Consumer Overlay (initializer/scaffold)
 
 ```bash
@@ -193,5 +265,14 @@ Creates the consumer-local `.qwen` scaffold from the shared template pack. Re-ru
 - use `lint-semantic-design-contracts` to enforce contract completeness, boundedness, and internal consistency
 - use `derive-oklch-palette` to derive role-based OKLCH palette recommendations from semantic/contract signals
 - use `eval:semantic-layout` when semantic-to-layout consistency logic or fixtures change
+- use `check-render-a11y-runtime` before blocking render/accessibility certification checks
+- use `render-page-snapshots` to capture deterministic render evidence across breakpoints
+- use `run-axe-accessibility-audit` to collect scanner-based accessibility evidence
+- use `run-lighthouse-page-audit` to collect normalized Lighthouse category evidence
+- use `assert-layout-contract-rendered` to verify contract-to-render coherence with machine-checkable assertions
+- use `compare-render-breakpoints` to detect responsive regressions and contradictions
+- use `lint-wcag-structure` to enforce structural WCAG guardrails beyond scanner output
+- use `eval:render-layout` when rendered layout verification logic or fixtures change
+- use `eval:wcag-a11y` when accessibility verification logic or fixtures change
 - use `init-qwen-bootstrap` for the first consumer-local Qwen scaffold pass only
 - use `validate-qwen-bootstrap` after generating or editing the consumer-local Qwen scaffold

@@ -54,3 +54,11 @@ Provider-neutral shared-core repository for governed agent workflow artifacts. C
 - `npm run validate-consumer` when linkage, overlay, or adoption surfaces change
 - `npm run scan` to inspect repository structure
 - `npm run diff` to explain git diffs
+- `npm run check-render-a11y-runtime` before blocking render/accessibility certification evals
+- `npm run eval:render-layout` to run blocking local-fixture render verification checks
+- `npm run eval:wcag-a11y` to run blocking local-fixture accessibility verification checks
+
+## Render/A11y Verification Modes
+
+- Certification mode: local fixtures only, deterministic, blocking in `npm run eval`.
+- Operator-evidence mode: external URLs allowed, advisory only, non-blocking.

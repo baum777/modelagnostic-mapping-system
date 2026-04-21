@@ -15,6 +15,8 @@
     "fixtures/provider-parity.json",
     "fixtures/failure-mode.json",
     "fixtures/semantic-layout-decisions.json",
+    "fixtures/render-layout-cases.json",
+    "fixtures/wcag-a11y-cases.json",
     "fixtures/static-vs-dynamic-rendering-advisor.json"
   ]
 }

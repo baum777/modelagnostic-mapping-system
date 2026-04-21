@@ -3,451 +3,20 @@
   "version": "1.0.0",
   "tools": [
     {
-      "name": "repo-structure-scanner",
-      "purpose": "Scan a repository and summarize canonical docs, entrypoints, and high-risk surfaces.",
+      "name": "analyze-content-semantics-for-design",
+      "purpose": "Analyze bounded content semantics and emit a normalized design-semantic profile with deterministic evidence.",
       "inputs": [
         {
-          "name": "root",
+          "name": "input",
           "type": "path",
           "required": false,
-          "description": "Repository root to scan."
+          "description": "Path to plain-text or JSON payload with content signals."
         },
         {
-          "name": "json",
-          "type": "boolean",
-          "required": false,
-          "description": "Emit JSON instead of text."
-        }
-      ],
-      "outputs": [
-        {
-          "name": "inventory",
-          "type": "json",
-          "description": "Directory, file, and skill inventory."
-        }
-      ],
-      "sideEffects": "read-only",
-      "approvalRequirement": "none",
-      "failureBehavior": "Exit non-zero on missing paths or parse errors.",
-      "exampleInvocation": "node scripts/tools/repo-structure-scanner.mjs --json",
-      "implementationStatus": "helper-only",
-      "entrypoint": "scripts/tools/repo-structure-scanner.mjs"
-    },
-    {
-      "name": "git-diff-explainer",
-      "purpose": "Summarize a git diff in operator language with file-level change signals.",
-      "inputs": [
-        {
-          "name": "cached",
-          "type": "boolean",
-          "required": false,
-          "description": "Use staged diff."
-        }
-      ],
-      "outputs": [
-        {
-          "name": "diffSummary",
-          "type": "text",
-          "description": "Changed files and diff stats."
-        }
-      ],
-      "sideEffects": "read-only",
-      "approvalRequirement": "none",
-      "failureBehavior": "Exit non-zero if git is unavailable.",
-      "exampleInvocation": "node scripts/tools/git-diff-explainer.mjs --cached",
-      "implementationStatus": "helper-only",
-      "entrypoint": "scripts/tools/git-diff-explainer.mjs"
-    },
-    {
-      "name": "symbol-dependency-tracer",
-      "purpose": "Trace a symbol or contract through the repository to show dependency boundaries.",
-      "inputs": [
-        {
-          "name": "symbol",
-          "type": "string",
-          "required": true,
-          "description": "Symbol or contract name."
-        }
-      ],
-      "outputs": [
-        {
-          "name": "trace",
-          "type": "markdown",
-          "description": "Trace report."
-        }
-      ],
-      "sideEffects": "read-only",
-      "approvalRequirement": "none",
-      "failureBehavior": "Return a contract-level stub if deep analysis is unavailable.",
-      "exampleInvocation": "contract-only; use repo search plus local analysis scripts",
-      "implementationStatus": "contract-only"
-    },
-    {
-      "name": "structured-plan-generator",
-      "purpose": "Turn a broad request into bounded implementation waves and gates.",
-      "inputs": [
-        {
-          "name": "request",
-          "type": "markdown",
-          "required": true,
-          "description": "Change request or goal."
-        }
-      ],
-      "outputs": [
-        {
-          "name": "plan",
-          "type": "markdown",
-          "description": "Wave-based implementation plan."
-        }
-      ],
-      "sideEffects": "read-only",
-      "approvalRequirement": "none",
-      "failureBehavior": "Return a structured plan or a blocker list; never invent unknown repo facts.",
-      "exampleInvocation": "Use $planning-slice-builder to split the request into waves.",
-      "implementationStatus": "contract-only"
-    },
-    {
-      "name": "patch-applicator-with-review-gate",
-      "purpose": "Alias of approval-gated-write-executor. Apply a patch only after an explicit review gate has been satisfied.",
-      "inputs": [
-        {
-          "name": "target",
-          "type": "path",
-          "required": true,
-          "description": "File or directory to update."
-        },
-        {
-          "name": "content",
-          "type": "string",
-          "required": true,
-          "description": "New file content or patch payload."
-        },
-        {
-          "name": "approved",
-          "type": "boolean",
-          "required": true,
-          "description": "Explicit approval flag."
-        }
-      ],
-      "outputs": [
-        {
-          "name": "writeReceipt",
-          "type": "json",
-          "description": "Write confirmation with resolved target path."
-        }
-      ],
-      "sideEffects": "writes files only when approved",
-      "approvalRequirement": "required",
-      "failureBehavior": "Refuse writes when approval is missing or the target escapes the repo root.",
-      "exampleInvocation": "node scripts/tools/approval-gated-write-executor.mjs --target docs/example.md --approved --content '...'",
-      "implementationStatus": "runnable",
-      "entrypoint": "scripts/tools/approval-gated-write-executor.mjs"
-    },
-    {
-      "name": "premerge-gate-runner",
-      "purpose": "Run deterministic premerge gates for package and repo changes.",
-      "inputs": [
-        {
-          "name": "strict",
-          "type": "boolean",
-          "required": false,
-          "description": "Fail on warnings too."
-        }
-      ],
-      "outputs": [
-        {
-          "name": "gateResult",
-          "type": "markdown",
-          "description": "PASS/FAIL gate summary."
-        }
-      ],
-      "sideEffects": "read-only",
-      "approvalRequirement": "none",
-      "failureBehavior": "Return non-zero if validation or diff checks fail.",
-      "exampleInvocation": "contract-only; no runnable implementation is present in scripts/tools",
-      "implementationStatus": "contract-only"
-    },
-    {
-      "name": "regression-comparator",
-      "purpose": "Compare two artifacts, diffs, or outputs and summarize regressions.",
-      "inputs": [
-        {
-          "name": "left",
-          "type": "path",
-          "required": true,
-          "description": "Baseline artifact."
-        },
-        {
-          "name": "right",
-          "type": "path",
-          "required": true,
-          "description": "Candidate artifact."
-        }
-      ],
-      "outputs": [
-        {
-          "name": "comparison",
-          "type": "markdown",
-          "description": "Regression summary and deltas."
-        }
-      ],
-      "sideEffects": "read-only",
-      "approvalRequirement": "none",
-      "failureBehavior": "Stub out if the two artifacts cannot be parsed consistently.",
-      "exampleInvocation": "contract-only; use diff and validation scripts as needed",
-      "implementationStatus": "contract-only"
-    },
-    {
-      "name": "env-secret-validator",
-      "purpose": "Verify required runtime environment variables are present and not obvious placeholders.",
-      "inputs": [
-        {
-          "name": "vars",
-          "type": "string[]",
-          "required": true,
-          "description": "Environment variable names."
-        }
-      ],
-      "outputs": [
-        {
-          "name": "validation",
-          "type": "json",
-          "description": "Per-variable presence and placeholder status."
-        }
-      ],
-      "sideEffects": "read-only",
-      "approvalRequirement": "none",
-      "failureBehavior": "Exit non-zero when required variables are missing or unsafe.",
-      "exampleInvocation": "contract-only; no runnable implementation is present in scripts/tools",
-      "implementationStatus": "contract-only"
-    },
-    {
-      "name": "pr-review-assembler",
-      "purpose": "Assemble a PR review payload from diff, tests, risks, and follow-up items.",
-      "inputs": [
-        {
-          "name": "diff",
-          "type": "markdown",
-          "required": true,
-          "description": "Diff summary or raw patch."
-        }
-      ],
-      "outputs": [
-        {
-          "name": "review",
-          "type": "markdown",
-          "description": "Operator-grade review assembly."
-        }
-      ],
-      "sideEffects": "read-only",
-      "approvalRequirement": "none",
-      "failureBehavior": "Return a structured review stub if the diff is incomplete.",
-      "exampleInvocation": "Use $post-implementation-review-writer to synthesize the PR review.",
-      "implementationStatus": "contract-only"
-    },
-    {
-      "name": "issue-to-task-sync",
-      "purpose": "Convert issues or notes into task packets with scope, ownership, and acceptance criteria.",
-      "inputs": [
-        {
-          "name": "issue",
-          "type": "markdown",
-          "required": true,
-          "description": "Issue text or summary."
-        }
-      ],
-      "outputs": [
-        {
-          "name": "taskPacket",
-          "type": "markdown",
-          "description": "Task packet ready for implementation."
-        }
-      ],
-      "sideEffects": "read-only",
-      "approvalRequirement": "none",
-      "failureBehavior": "Return a conservative packet when issue detail is incomplete.",
-      "exampleInvocation": "contract-only; use planning skills to finalize the packet",
-      "implementationStatus": "contract-only"
-    },
-    {
-      "name": "log-journal-query",
-      "purpose": "Query logs, journals, and prior runs for prior decisions and learned constraints.",
-      "inputs": [
-        {
-          "name": "query",
-          "type": "string",
-          "required": true,
-          "description": "Search terms or query."
-        }
-      ],
-      "outputs": [
-        {
-          "name": "matches",
-          "type": "markdown",
-          "description": "Relevant log and journal excerpts."
-        }
-      ],
-      "sideEffects": "read-only",
-      "approvalRequirement": "none",
-      "failureBehavior": "Return no matches instead of guessing if evidence is absent.",
-      "exampleInvocation": "contract-only; no runnable implementation is present in scripts/tools",
-      "implementationStatus": "contract-only"
-    },
-    {
-      "name": "spec-compliance-checker",
-      "purpose": "Check a file or artifact against required headings, phrases, or markers.",
-      "inputs": [
-        {
-          "name": "file",
-          "type": "path",
-          "required": true,
-          "description": "File to inspect."
-        },
-        {
-          "name": "mustContain",
-          "type": "string[]",
-          "required": true,
-          "description": "Required headings or markers."
-        }
-      ],
-      "outputs": [
-        {
-          "name": "compliance",
-          "type": "json",
-          "description": "Pass/fail report with missing markers."
-        }
-      ],
-      "sideEffects": "read-only",
-      "approvalRequirement": "none",
-      "failureBehavior": "Fail closed when the file is unreadable or missing required markers.",
-      "exampleInvocation": "node scripts/tools/spec-compliance-checker.mjs --file skills/repo-intake-sot-mapper/SKILL.md --must-contain Trigger,Workflow,Output",
-      "implementationStatus": "validator-backed",
-      "entrypoint": "scripts/tools/spec-compliance-checker.mjs"
-    },
-    {
-      "name": "deploy-readiness-gate",
-      "purpose": "Check whether a change is ready for guarded live deployment or release promotion.",
-      "inputs": [
-        {
-          "name": "mode",
+          "name": "text",
           "type": "string",
           "required": false,
-          "description": "Deployment context such as local, staging, or production."
-        }
-      ],
-      "outputs": [
-        {
-          "name": "readiness",
-          "type": "markdown",
-          "description": "Readiness verdict and blockers."
-        }
-      ],
-      "sideEffects": "read-only",
-      "approvalRequirement": "none",
-      "failureBehavior": "Return BLOCKED until required gates and validations pass.",
-      "exampleInvocation": "contract-only; no runnable implementation is present in scripts/tools",
-      "implementationStatus": "contract-only"
-    },
-    {
-      "name": "staging-prod-context-switcher",
-      "purpose": "Switch operator context between staging and production assumptions without changing code.",
-      "inputs": [
-        {
-          "name": "context",
-          "type": "string",
-          "required": true,
-          "description": "Requested runtime context."
-        }
-      ],
-      "outputs": [
-        {
-          "name": "contextProfile",
-          "type": "markdown",
-          "description": "Context assumptions and safety notes."
-        }
-      ],
-      "sideEffects": "read-only",
-      "approvalRequirement": "none",
-      "failureBehavior": "Refuse to infer production state without explicit evidence.",
-      "exampleInvocation": "contract-only; use readiness checks and environment validation first",
-      "implementationStatus": "stub"
-    },
-    {
-      "name": "tool-namespace-loader",
-      "purpose": "Load and list the supported tool namespace and available tool contracts.",
-      "inputs": [
-        {
-          "name": "catalog",
-          "type": "path",
-          "required": false,
-          "description": "Tool catalog path."
-        }
-      ],
-      "outputs": [
-        {
-          "name": "namespace",
-          "type": "json",
-          "description": "List of available tools and statuses."
-        }
-      ],
-      "sideEffects": "read-only",
-      "approvalRequirement": "none",
-      "failureBehavior": "Exit non-zero if the catalog is missing or malformed.",
-      "exampleInvocation": "contract-only; no runnable implementation is present in scripts/tools",
-      "implementationStatus": "contract-only"
-    },
-    {
-      "name": "detect-skill-overlap",
-      "purpose": "Detect potential near-duplicate skills, weak sibling boundaries, naming collisions, and routing ambiguity risk using heuristic similarity checks.",
-      "inputs": [
-        {
-          "name": "include_agents",
-          "type": "boolean",
-          "required": false,
-          "description": "Include .agents/skills in analysis scope."
-        },
-        {
-          "name": "json",
-          "type": "boolean",
-          "required": false,
-          "description": "Emit JSON output."
-        },
-        {
-          "name": "name_threshold",
-          "type": "number",
-          "required": false,
-          "description": "Near-name duplicate threshold."
-        }
-      ],
-      "outputs": [
-        {
-          "name": "overlapReport",
-          "type": "json",
-          "description": "Heuristic overlap findings with severity and evidence."
-        }
-      ],
-      "sideEffects": "read-only",
-      "approvalRequirement": "none",
-      "failureBehavior": "Returns non-zero when high-severity overlap findings are present.",
-      "exampleInvocation": "node scripts/tools/detect-skill-overlap.mjs --json",
-      "implementationStatus": "helper-only",
-      "entrypoint": "scripts/tools/detect-skill-overlap.mjs"
-    },
-    {
-      "name": "lint-skill-contracts",
-      "purpose": "Validate skill files against required contract sections and frontmatter, with warning-level guidance for boundary clarity.",
-      "inputs": [
-        {
-          "name": "include_agents",
-          "type": "boolean",
-          "required": false,
-          "description": "Include .agents/skills in lint scope."
-        },
-        {
-          "name": "strict_core_warnings",
-          "type": "boolean",
-          "required": false,
-          "description": "Treat core warning checks as errors."
+          "description": "Inline content to analyze when no input path is provided."
         },
         {
           "name": "json",
@@ -458,17 +27,17 @@
       ],
       "outputs": [
         {
-          "name": "lintReport",
+          "name": "semanticProfile",
           "type": "json",
-          "description": "Per-file contract findings with error/warning severity."
+          "description": "Normalized semantic profile and evidence payload."
         }
       ],
       "sideEffects": "read-only",
       "approvalRequirement": "none",
-      "failureBehavior": "Returns non-zero when contract errors are detected.",
-      "exampleInvocation": "node scripts/tools/lint-skill-contracts.mjs --json",
-      "implementationStatus": "validator-backed",
-      "entrypoint": "scripts/tools/lint-skill-contracts.mjs"
+      "failureBehavior": "Exit non-zero on missing/invalid input payload.",
+      "exampleInvocation": "node scripts/tools/analyze-content-semantics-for-design.mjs --input ./content.json --json",
+      "implementationStatus": "helper-only",
+      "entrypoint": "scripts/tools/analyze-content-semantics-for-design.mjs"
     },
     {
       "name": "analyze-skill-tree-coverage",
@@ -545,20 +114,32 @@
       "entrypoint": "scripts/tools/approval-gated-write-executor.mjs"
     },
     {
-      "name": "analyze-content-semantics-for-design",
-      "purpose": "Analyze bounded content semantics and emit a normalized design-semantic profile with deterministic evidence.",
+      "name": "assert-layout-contract-rendered",
+      "purpose": "Check whether declared semantic layout contract posture is materially reflected in rendered metrics.",
       "inputs": [
         {
           "name": "input",
           "type": "path",
           "required": false,
-          "description": "Path to plain-text or JSON payload with content signals."
+          "description": "Combined payload with contract and snapshots."
         },
         {
-          "name": "text",
+          "name": "contract",
+          "type": "path",
+          "required": false,
+          "description": "Contract payload path when using split inputs."
+        },
+        {
+          "name": "snapshots",
+          "type": "path",
+          "required": false,
+          "description": "Snapshot report path when using split inputs."
+        },
+        {
+          "name": "mode",
           "type": "string",
           "required": false,
-          "description": "Inline content to analyze when no input path is provided."
+          "description": "certification or operator-evidence mode."
         },
         {
           "name": "json",
@@ -569,79 +150,109 @@
       ],
       "outputs": [
         {
-          "name": "semanticProfile",
+          "name": "contractRenderAssertionReport",
           "type": "json",
-          "description": "Normalized semantic profile and evidence payload."
+          "description": "Machine-checkable assertion outcomes with pass/fail/not-assessed states."
         }
       ],
       "sideEffects": "read-only",
       "approvalRequirement": "none",
-      "failureBehavior": "Exit non-zero on missing/invalid input payload.",
-      "exampleInvocation": "node scripts/tools/analyze-content-semantics-for-design.mjs --input ./content.json --json",
-      "implementationStatus": "helper-only",
-      "entrypoint": "scripts/tools/analyze-content-semantics-for-design.mjs"
-    },
-    {
-      "name": "generate-visual-direction-contract",
-      "purpose": "Derive a bounded machine-readable visual-direction contract from a normalized semantic profile.",
-      "inputs": [
-        {
-          "name": "input",
-          "type": "path",
-          "required": true,
-          "description": "Path to semantic profile JSON."
-        },
-        {
-          "name": "json",
-          "type": "boolean",
-          "required": false,
-          "description": "Emit JSON output."
-        }
-      ],
-      "outputs": [
-        {
-          "name": "visualDirectionContract",
-          "type": "json",
-          "description": "Bounded visual-direction contract and derivation evidence."
-        }
-      ],
-      "sideEffects": "read-only",
-      "approvalRequirement": "none",
-      "failureBehavior": "Exit non-zero on invalid semantic profile schema.",
-      "exampleInvocation": "node scripts/tools/generate-visual-direction-contract.mjs --input ./semantic-profile.json --json",
-      "implementationStatus": "helper-only",
-      "entrypoint": "scripts/tools/generate-visual-direction-contract.mjs"
-    },
-    {
-      "name": "lint-semantic-design-contracts",
-      "purpose": "Validate semantic design contracts for required fields, bounded enums, guardrails, and contradictions.",
-      "inputs": [
-        {
-          "name": "input",
-          "type": "path",
-          "required": true,
-          "description": "Path to contract JSON (object or array)."
-        },
-        {
-          "name": "json",
-          "type": "boolean",
-          "required": false,
-          "description": "Emit JSON output."
-        }
-      ],
-      "outputs": [
-        {
-          "name": "lintReport",
-          "type": "json",
-          "description": "Actionable findings with severity, code, path, and suggested fix."
-        }
-      ],
-      "sideEffects": "read-only",
-      "approvalRequirement": "none",
-      "failureBehavior": "Exit non-zero when lint errors are present.",
-      "exampleInvocation": "node scripts/tools/lint-semantic-design-contracts.mjs --input ./contract.json --json",
+      "failureBehavior": "Exit non-zero when confirmed contract-to-render contradictions are detected.",
+      "exampleInvocation": "node scripts/tools/assert-layout-contract-rendered.mjs --input artifacts/contract-render-input.json --mode certification --json",
       "implementationStatus": "validator-backed",
-      "entrypoint": "scripts/tools/lint-semantic-design-contracts.mjs"
+      "entrypoint": "scripts/tools/assert-layout-contract-rendered.mjs"
+    },
+    {
+      "name": "check-render-a11y-runtime",
+      "purpose": "Verify pinned render/accessibility runtime dependencies before blocking certification evals.",
+      "inputs": [
+        {
+          "name": "mode",
+          "type": "string",
+          "required": false,
+          "description": "certification or operator-evidence mode."
+        },
+        {
+          "name": "json",
+          "type": "boolean",
+          "required": false,
+          "description": "Emit JSON output."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "runtimeReport",
+          "type": "json",
+          "description": "Runtime readiness checks with fail-closed diagnostics."
+        }
+      ],
+      "sideEffects": "read-only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Exit non-zero when required runtime dependencies are unavailable.",
+      "exampleInvocation": "node scripts/tools/check-render-a11y-runtime.mjs --mode certification --json",
+      "implementationStatus": "validator-backed",
+      "entrypoint": "scripts/tools/check-render-a11y-runtime.mjs"
+    },
+    {
+      "name": "compare-render-breakpoints",
+      "purpose": "Detect responsive contradictions and major regressions across rendered breakpoints.",
+      "inputs": [
+        {
+          "name": "input",
+          "type": "path",
+          "required": true,
+          "description": "Path to render snapshot report."
+        },
+        {
+          "name": "mode",
+          "type": "string",
+          "required": false,
+          "description": "certification or operator-evidence mode."
+        },
+        {
+          "name": "json",
+          "type": "boolean",
+          "required": false,
+          "description": "Emit JSON output."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "breakpointComparisonReport",
+          "type": "json",
+          "description": "Per-case breakpoint check matrix and bounded findings."
+        }
+      ],
+      "sideEffects": "read-only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Exit non-zero when confirmed responsive regressions are detected in blocking mode.",
+      "exampleInvocation": "node scripts/tools/compare-render-breakpoints.mjs --input artifacts/render-snapshots-report.json --mode certification --json",
+      "implementationStatus": "validator-backed",
+      "entrypoint": "scripts/tools/compare-render-breakpoints.mjs"
+    },
+    {
+      "name": "deploy-readiness-gate",
+      "purpose": "Check whether a change is ready for guarded live deployment or release promotion.",
+      "inputs": [
+        {
+          "name": "mode",
+          "type": "string",
+          "required": false,
+          "description": "Deployment context such as local, staging, or production."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "readiness",
+          "type": "markdown",
+          "description": "Readiness verdict and blockers."
+        }
+      ],
+      "sideEffects": "read-only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Return BLOCKED until required gates and validations pass.",
+      "exampleInvocation": "contract-only; no runnable implementation is present in scripts/tools",
+      "implementationStatus": "contract-only"
     },
     {
       "name": "derive-oklch-palette",
@@ -675,6 +286,67 @@
       "entrypoint": "scripts/tools/derive-oklch-palette.mjs"
     },
     {
+      "name": "detect-skill-overlap",
+      "purpose": "Detect potential near-duplicate skills, weak sibling boundaries, naming collisions, and routing ambiguity risk using heuristic similarity checks.",
+      "inputs": [
+        {
+          "name": "include_agents",
+          "type": "boolean",
+          "required": false,
+          "description": "Include .agents/skills in analysis scope."
+        },
+        {
+          "name": "json",
+          "type": "boolean",
+          "required": false,
+          "description": "Emit JSON output."
+        },
+        {
+          "name": "name_threshold",
+          "type": "number",
+          "required": false,
+          "description": "Near-name duplicate threshold."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "overlapReport",
+          "type": "json",
+          "description": "Heuristic overlap findings with severity and evidence."
+        }
+      ],
+      "sideEffects": "read-only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Returns non-zero when high-severity overlap findings are present.",
+      "exampleInvocation": "node scripts/tools/detect-skill-overlap.mjs --json",
+      "implementationStatus": "helper-only",
+      "entrypoint": "scripts/tools/detect-skill-overlap.mjs"
+    },
+    {
+      "name": "env-secret-validator",
+      "purpose": "Verify required runtime environment variables are present and not obvious placeholders.",
+      "inputs": [
+        {
+          "name": "vars",
+          "type": "string[]",
+          "required": true,
+          "description": "Environment variable names."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "validation",
+          "type": "json",
+          "description": "Per-variable presence and placeholder status."
+        }
+      ],
+      "sideEffects": "read-only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Exit non-zero when required variables are missing or unsafe.",
+      "exampleInvocation": "contract-only; no runnable implementation is present in scripts/tools",
+      "implementationStatus": "contract-only"
+    },
+    {
       "name": "eval-semantic-layout-decisions",
       "purpose": "Evaluate semantic-to-layout decisions for consistency, boundedness, over-stylization prevention, and proportion-rule constraints.",
       "inputs": [
@@ -698,6 +370,611 @@
       "exampleInvocation": "node scripts/tools/eval-semantic-layout-decisions.mjs --fixture evals/fixtures/semantic-layout-decisions.json",
       "implementationStatus": "validator-backed",
       "entrypoint": "scripts/tools/eval-semantic-layout-decisions.mjs"
+    },
+    {
+      "name": "generate-visual-direction-contract",
+      "purpose": "Derive a bounded machine-readable visual-direction contract from a normalized semantic profile.",
+      "inputs": [
+        {
+          "name": "input",
+          "type": "path",
+          "required": true,
+          "description": "Path to semantic profile JSON."
+        },
+        {
+          "name": "json",
+          "type": "boolean",
+          "required": false,
+          "description": "Emit JSON output."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "visualDirectionContract",
+          "type": "json",
+          "description": "Bounded visual-direction contract and derivation evidence."
+        }
+      ],
+      "sideEffects": "read-only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Exit non-zero on invalid semantic profile schema.",
+      "exampleInvocation": "node scripts/tools/generate-visual-direction-contract.mjs --input ./semantic-profile.json --json",
+      "implementationStatus": "helper-only",
+      "entrypoint": "scripts/tools/generate-visual-direction-contract.mjs"
+    },
+    {
+      "name": "git-diff-explainer",
+      "purpose": "Summarize a git diff in operator language with file-level change signals.",
+      "inputs": [
+        {
+          "name": "cached",
+          "type": "boolean",
+          "required": false,
+          "description": "Use staged diff."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "diffSummary",
+          "type": "text",
+          "description": "Changed files and diff stats."
+        }
+      ],
+      "sideEffects": "read-only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Exit non-zero if git is unavailable.",
+      "exampleInvocation": "node scripts/tools/git-diff-explainer.mjs --cached",
+      "implementationStatus": "helper-only",
+      "entrypoint": "scripts/tools/git-diff-explainer.mjs"
+    },
+    {
+      "name": "issue-to-task-sync",
+      "purpose": "Convert issues or notes into task packets with scope, ownership, and acceptance criteria.",
+      "inputs": [
+        {
+          "name": "issue",
+          "type": "markdown",
+          "required": true,
+          "description": "Issue text or summary."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "taskPacket",
+          "type": "markdown",
+          "description": "Task packet ready for implementation."
+        }
+      ],
+      "sideEffects": "read-only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Return a conservative packet when issue detail is incomplete.",
+      "exampleInvocation": "contract-only; use planning skills to finalize the packet",
+      "implementationStatus": "contract-only"
+    },
+    {
+      "name": "lint-semantic-design-contracts",
+      "purpose": "Validate semantic design contracts for required fields, bounded enums, guardrails, and contradictions.",
+      "inputs": [
+        {
+          "name": "input",
+          "type": "path",
+          "required": true,
+          "description": "Path to contract JSON (object or array)."
+        },
+        {
+          "name": "json",
+          "type": "boolean",
+          "required": false,
+          "description": "Emit JSON output."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "lintReport",
+          "type": "json",
+          "description": "Actionable findings with severity, code, path, and suggested fix."
+        }
+      ],
+      "sideEffects": "read-only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Exit non-zero when lint errors are present.",
+      "exampleInvocation": "node scripts/tools/lint-semantic-design-contracts.mjs --input ./contract.json --json",
+      "implementationStatus": "validator-backed",
+      "entrypoint": "scripts/tools/lint-semantic-design-contracts.mjs"
+    },
+    {
+      "name": "lint-skill-contracts",
+      "purpose": "Validate skill files against required contract sections and frontmatter, with warning-level guidance for boundary clarity.",
+      "inputs": [
+        {
+          "name": "include_agents",
+          "type": "boolean",
+          "required": false,
+          "description": "Include .agents/skills in lint scope."
+        },
+        {
+          "name": "strict_core_warnings",
+          "type": "boolean",
+          "required": false,
+          "description": "Treat core warning checks as errors."
+        },
+        {
+          "name": "json",
+          "type": "boolean",
+          "required": false,
+          "description": "Emit JSON output."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "lintReport",
+          "type": "json",
+          "description": "Per-file contract findings with error/warning severity."
+        }
+      ],
+      "sideEffects": "read-only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Returns non-zero when contract errors are detected.",
+      "exampleInvocation": "node scripts/tools/lint-skill-contracts.mjs --json",
+      "implementationStatus": "validator-backed",
+      "entrypoint": "scripts/tools/lint-skill-contracts.mjs"
+    },
+    {
+      "name": "lint-wcag-structure",
+      "purpose": "Run bounded structural WCAG-oriented lint checks alongside scanner evidence.",
+      "inputs": [
+        {
+          "name": "input",
+          "type": "path",
+          "required": true,
+          "description": "Path to accessibility case payload."
+        },
+        {
+          "name": "mode",
+          "type": "string",
+          "required": false,
+          "description": "certification or operator-evidence mode."
+        },
+        {
+          "name": "json",
+          "type": "boolean",
+          "required": false,
+          "description": "Emit JSON output."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "wcagStructureLintReport",
+          "type": "json",
+          "description": "Actionable structure findings and bounded risk statuses."
+        }
+      ],
+      "sideEffects": "read-only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Exit non-zero when confirmed structural accessibility issues are present in blocking mode.",
+      "exampleInvocation": "node scripts/tools/lint-wcag-structure.mjs --input evals/fixtures/wcag-a11y-cases.json --mode certification --json",
+      "implementationStatus": "validator-backed",
+      "entrypoint": "scripts/tools/lint-wcag-structure.mjs"
+    },
+    {
+      "name": "log-journal-query",
+      "purpose": "Query logs, journals, and prior runs for prior decisions and learned constraints.",
+      "inputs": [
+        {
+          "name": "query",
+          "type": "string",
+          "required": true,
+          "description": "Search terms or query."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "matches",
+          "type": "markdown",
+          "description": "Relevant log and journal excerpts."
+        }
+      ],
+      "sideEffects": "read-only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Return no matches instead of guessing if evidence is absent.",
+      "exampleInvocation": "contract-only; no runnable implementation is present in scripts/tools",
+      "implementationStatus": "contract-only"
+    },
+    {
+      "name": "patch-applicator-with-review-gate",
+      "purpose": "Alias of approval-gated-write-executor. Apply a patch only after an explicit review gate has been satisfied.",
+      "inputs": [
+        {
+          "name": "target",
+          "type": "path",
+          "required": true,
+          "description": "File or directory to update."
+        },
+        {
+          "name": "content",
+          "type": "string",
+          "required": true,
+          "description": "New file content or patch payload."
+        },
+        {
+          "name": "approved",
+          "type": "boolean",
+          "required": true,
+          "description": "Explicit approval flag."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "writeReceipt",
+          "type": "json",
+          "description": "Write confirmation with resolved target path."
+        }
+      ],
+      "sideEffects": "writes files only when approved",
+      "approvalRequirement": "required",
+      "failureBehavior": "Refuse writes when approval is missing or the target escapes the repo root.",
+      "exampleInvocation": "node scripts/tools/approval-gated-write-executor.mjs --target docs/example.md --approved --content '...'",
+      "implementationStatus": "runnable",
+      "entrypoint": "scripts/tools/approval-gated-write-executor.mjs"
+    },
+    {
+      "name": "pr-review-assembler",
+      "purpose": "Assemble a PR review payload from diff, tests, risks, and follow-up items.",
+      "inputs": [
+        {
+          "name": "diff",
+          "type": "markdown",
+          "required": true,
+          "description": "Diff summary or raw patch."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "review",
+          "type": "markdown",
+          "description": "Operator-grade review assembly."
+        }
+      ],
+      "sideEffects": "read-only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Return a structured review stub if the diff is incomplete.",
+      "exampleInvocation": "Use $post-implementation-review-writer to synthesize the PR review.",
+      "implementationStatus": "contract-only"
+    },
+    {
+      "name": "premerge-gate-runner",
+      "purpose": "Run deterministic premerge gates for package and repo changes.",
+      "inputs": [
+        {
+          "name": "strict",
+          "type": "boolean",
+          "required": false,
+          "description": "Fail on warnings too."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "gateResult",
+          "type": "markdown",
+          "description": "PASS/FAIL gate summary."
+        }
+      ],
+      "sideEffects": "read-only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Return non-zero if validation or diff checks fail.",
+      "exampleInvocation": "contract-only; no runnable implementation is present in scripts/tools",
+      "implementationStatus": "contract-only"
+    },
+    {
+      "name": "regression-comparator",
+      "purpose": "Compare two artifacts, diffs, or outputs and summarize regressions.",
+      "inputs": [
+        {
+          "name": "left",
+          "type": "path",
+          "required": true,
+          "description": "Baseline artifact."
+        },
+        {
+          "name": "right",
+          "type": "path",
+          "required": true,
+          "description": "Candidate artifact."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "comparison",
+          "type": "markdown",
+          "description": "Regression summary and deltas."
+        }
+      ],
+      "sideEffects": "read-only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Stub out if the two artifacts cannot be parsed consistently.",
+      "exampleInvocation": "contract-only; use diff and validation scripts as needed",
+      "implementationStatus": "contract-only"
+    },
+    {
+      "name": "render-page-snapshots",
+      "purpose": "Capture deterministic rendered evidence across breakpoints with screenshot artifacts and DOM/layout metrics.",
+      "inputs": [
+        {
+          "name": "input",
+          "type": "path",
+          "required": true,
+          "description": "Path to render-layout fixture payload."
+        },
+        {
+          "name": "mode",
+          "type": "string",
+          "required": false,
+          "description": "certification or operator-evidence mode."
+        },
+        {
+          "name": "output-dir",
+          "type": "path",
+          "required": false,
+          "description": "Artifact output directory for screenshots."
+        },
+        {
+          "name": "repeat",
+          "type": "number",
+          "required": false,
+          "description": "Repeat count for reproducibility checks."
+        },
+        {
+          "name": "json",
+          "type": "boolean",
+          "required": false,
+          "description": "Emit JSON output."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "snapshotReport",
+          "type": "json",
+          "description": "Per-breakpoint rendered metrics and reproducibility evidence."
+        }
+      ],
+      "sideEffects": "writes screenshot artifacts only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Exit non-zero when deterministic rendering or runtime checks fail.",
+      "exampleInvocation": "node scripts/tools/render-page-snapshots.mjs --input evals/fixtures/render-layout-cases.json --mode certification --json",
+      "implementationStatus": "validator-backed",
+      "entrypoint": "scripts/tools/render-page-snapshots.mjs"
+    },
+    {
+      "name": "repo-structure-scanner",
+      "purpose": "Scan a repository and summarize canonical docs, entrypoints, and high-risk surfaces.",
+      "inputs": [
+        {
+          "name": "root",
+          "type": "path",
+          "required": false,
+          "description": "Repository root to scan."
+        },
+        {
+          "name": "json",
+          "type": "boolean",
+          "required": false,
+          "description": "Emit JSON instead of text."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "inventory",
+          "type": "json",
+          "description": "Directory, file, and skill inventory."
+        }
+      ],
+      "sideEffects": "read-only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Exit non-zero on missing paths or parse errors.",
+      "exampleInvocation": "node scripts/tools/repo-structure-scanner.mjs --json",
+      "implementationStatus": "helper-only",
+      "entrypoint": "scripts/tools/repo-structure-scanner.mjs"
+    },
+    {
+      "name": "run-axe-accessibility-audit",
+      "purpose": "Run deterministic Axe accessibility scans for fixture or evidence pages.",
+      "inputs": [
+        {
+          "name": "input",
+          "type": "path",
+          "required": true,
+          "description": "Path to accessibility case payload."
+        },
+        {
+          "name": "mode",
+          "type": "string",
+          "required": false,
+          "description": "certification or operator-evidence mode."
+        },
+        {
+          "name": "json",
+          "type": "boolean",
+          "required": false,
+          "description": "Emit JSON output."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "axeAuditReport",
+          "type": "json",
+          "description": "Normalized Axe violations and bounded finding statuses."
+        }
+      ],
+      "sideEffects": "read-only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Exit non-zero when runtime checks fail or confirmed accessibility issues are detected in blocking mode.",
+      "exampleInvocation": "node scripts/tools/run-axe-accessibility-audit.mjs --input evals/fixtures/wcag-a11y-cases.json --mode certification --json",
+      "implementationStatus": "validator-backed",
+      "entrypoint": "scripts/tools/run-axe-accessibility-audit.mjs"
+    },
+    {
+      "name": "run-lighthouse-page-audit",
+      "purpose": "Run normalized Lighthouse page audits for accessibility and quality evidence.",
+      "inputs": [
+        {
+          "name": "input",
+          "type": "path",
+          "required": true,
+          "description": "Path to accessibility case payload."
+        },
+        {
+          "name": "mode",
+          "type": "string",
+          "required": false,
+          "description": "certification or operator-evidence mode."
+        },
+        {
+          "name": "json",
+          "type": "boolean",
+          "required": false,
+          "description": "Emit JSON output."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "lighthouseAuditReport",
+          "type": "json",
+          "description": "Normalized category scores and selected audit outputs."
+        }
+      ],
+      "sideEffects": "read-only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Exit non-zero when runtime checks fail or blocking thresholds are violated.",
+      "exampleInvocation": "node scripts/tools/run-lighthouse-page-audit.mjs --input evals/fixtures/wcag-a11y-cases.json --mode certification --json",
+      "implementationStatus": "validator-backed",
+      "entrypoint": "scripts/tools/run-lighthouse-page-audit.mjs"
+    },
+    {
+      "name": "spec-compliance-checker",
+      "purpose": "Check a file or artifact against required headings, phrases, or markers.",
+      "inputs": [
+        {
+          "name": "file",
+          "type": "path",
+          "required": true,
+          "description": "File to inspect."
+        },
+        {
+          "name": "mustContain",
+          "type": "string[]",
+          "required": true,
+          "description": "Required headings or markers."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "compliance",
+          "type": "json",
+          "description": "Pass/fail report with missing markers."
+        }
+      ],
+      "sideEffects": "read-only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Fail closed when the file is unreadable or missing required markers.",
+      "exampleInvocation": "node scripts/tools/spec-compliance-checker.mjs --file skills/repo-intake-sot-mapper/SKILL.md --must-contain Trigger,Workflow,Output",
+      "implementationStatus": "validator-backed",
+      "entrypoint": "scripts/tools/spec-compliance-checker.mjs"
+    },
+    {
+      "name": "staging-prod-context-switcher",
+      "purpose": "Switch operator context between staging and production assumptions without changing code.",
+      "inputs": [
+        {
+          "name": "context",
+          "type": "string",
+          "required": true,
+          "description": "Requested runtime context."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "contextProfile",
+          "type": "markdown",
+          "description": "Context assumptions and safety notes."
+        }
+      ],
+      "sideEffects": "read-only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Refuse to infer production state without explicit evidence.",
+      "exampleInvocation": "contract-only; use readiness checks and environment validation first",
+      "implementationStatus": "stub"
+    },
+    {
+      "name": "structured-plan-generator",
+      "purpose": "Turn a broad request into bounded implementation waves and gates.",
+      "inputs": [
+        {
+          "name": "request",
+          "type": "markdown",
+          "required": true,
+          "description": "Change request or goal."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "plan",
+          "type": "markdown",
+          "description": "Wave-based implementation plan."
+        }
+      ],
+      "sideEffects": "read-only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Return a structured plan or a blocker list; never invent unknown repo facts.",
+      "exampleInvocation": "Use $planning-slice-builder to split the request into waves.",
+      "implementationStatus": "contract-only"
+    },
+    {
+      "name": "symbol-dependency-tracer",
+      "purpose": "Trace a symbol or contract through the repository to show dependency boundaries.",
+      "inputs": [
+        {
+          "name": "symbol",
+          "type": "string",
+          "required": true,
+          "description": "Symbol or contract name."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "trace",
+          "type": "markdown",
+          "description": "Trace report."
+        }
+      ],
+      "sideEffects": "read-only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Return a contract-level stub if deep analysis is unavailable.",
+      "exampleInvocation": "contract-only; use repo search plus local analysis scripts",
+      "implementationStatus": "contract-only"
+    },
+    {
+      "name": "tool-namespace-loader",
+      "purpose": "Load and list the supported tool namespace and available tool contracts.",
+      "inputs": [
+        {
+          "name": "catalog",
+          "type": "path",
+          "required": false,
+          "description": "Tool catalog path."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "namespace",
+          "type": "json",
+          "description": "List of available tools and statuses."
+        }
+      ],
+      "sideEffects": "read-only",
+      "approvalRequirement": "none",
+      "failureBehavior": "Exit non-zero if the catalog is missing or malformed.",
+      "exampleInvocation": "contract-only; no runnable implementation is present in scripts/tools",
+      "implementationStatus": "contract-only"
     }
   ],
   "statusLegend": {

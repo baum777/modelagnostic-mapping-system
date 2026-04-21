@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A11y Known Fail</title>
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; }
+    div.wrap { padding: 1rem; }
+    .contrast { color: #8b8b8b; background: #9a9a9a; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>A11y Failure Fixture</h1>
+    <img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=">
+    <form>
+      <input type="email" placeholder="email">
+      <button></button>
+    </form>
+    <p class="contrast">Low contrast sample text for automated checks.</p>
+  </div>
+</body>
+</html>

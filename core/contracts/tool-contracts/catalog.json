@@ -2,335 +2,6 @@
   "schemaVersion": "1.0.0",
   "tools": [
     {
-      "tool_name": "repo-structure-scanner",
-      "intent_class": "read-only inventory",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "root": {
-            "type": "string"
-          },
-          "json": {
-            "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      },
-      "side_effects": "read-only",
-      "approval_required": false,
-      "mcp_compatible": false,
-      "providers": [
-        "openai-codex",
-        "anthropic-claude",
-        "qwen-code",
-        "kimi-k2_5"
-      ],
-      "routing_hints": [
-        "repo-audit",
-        "migration-planner",
-        "readiness-check"
-      ]
-    },
-    {
-      "tool_name": "git-diff-explainer",
-      "intent_class": "read-only diff summary",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "cached": {
-            "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      },
-      "side_effects": "read-only",
-      "approval_required": false,
-      "mcp_compatible": false,
-      "providers": [
-        "openai-codex",
-        "anthropic-claude",
-        "qwen-code",
-        "kimi-k2_5"
-      ],
-      "routing_hints": [
-        "repo-audit",
-        "migration-planner"
-      ]
-    },
-    {
-      "tool_name": "spec-compliance-checker",
-      "intent_class": "read-only validation",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "file": {
-            "type": "string"
-          },
-          "mustContain": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "required": [
-          "file",
-          "mustContain"
-        ],
-        "additionalProperties": false
-      },
-      "side_effects": "read-only",
-      "approval_required": false,
-      "mcp_compatible": false,
-      "providers": [
-        "openai-codex",
-        "anthropic-claude",
-        "qwen-code",
-        "kimi-k2_5"
-      ],
-      "routing_hints": [
-        "repo-audit",
-        "readiness-check",
-        "long-document-to-knowledge-asset"
-      ]
-    },
-    {
-      "tool_name": "validate-repo-surface",
-      "intent_class": "read-only validation",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "strict": {
-            "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      },
-      "side_effects": "read-only",
-      "approval_required": false,
-      "mcp_compatible": false,
-      "providers": [
-        "openai-codex",
-        "anthropic-claude",
-        "qwen-code",
-        "kimi-k2_5"
-      ],
-      "routing_hints": [
-        "readiness-check",
-        "repo-audit"
-      ]
-    },
-    {
-      "tool_name": "validate-provider-neutral-core",
-      "intent_class": "read-only validation",
-      "schema": {
-        "type": "object",
-        "properties": {},
-        "additionalProperties": false
-      },
-      "side_effects": "read-only",
-      "approval_required": false,
-      "mcp_compatible": false,
-      "providers": [
-        "openai-codex",
-        "anthropic-claude",
-        "qwen-code",
-        "kimi-k2_5"
-      ],
-      "routing_hints": [
-        "readiness-check",
-        "migration-planner"
-      ]
-    },
-    {
-      "tool_name": "validate-shared-core-scaffold",
-      "intent_class": "read-only validation",
-      "schema": {
-        "type": "object",
-        "properties": {},
-        "additionalProperties": false
-      },
-      "side_effects": "read-only",
-      "approval_required": false,
-      "mcp_compatible": false,
-      "providers": [
-        "openai-codex",
-        "anthropic-claude",
-        "qwen-code",
-        "kimi-k2_5"
-      ],
-      "routing_hints": [
-        "migration-planner",
-        "readiness-check"
-      ]
-    },
-    {
-      "tool_name": "approval-gated-write-executor",
-      "intent_class": "mutating write executor",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "target": {
-            "type": "string"
-          },
-          "content": {
-            "type": "string"
-          },
-          "approved": {
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "target",
-          "content",
-          "approved"
-        ],
-        "additionalProperties": false
-      },
-      "side_effects": "writes files only when approved",
-      "approval_required": true,
-      "mcp_compatible": false,
-      "providers": [
-        "openai-codex",
-        "anthropic-claude",
-        "qwen-code",
-        "kimi-k2_5"
-      ],
-      "routing_hints": [
-        "migration-planner"
-      ]
-    },
-    {
-      "tool_name": "run-certification-evals",
-      "intent_class": "read-only evaluation runner",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "suite": {
-            "type": "string"
-          },
-          "kind": {
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "side_effects": "read-only",
-      "approval_required": false,
-      "mcp_compatible": false,
-      "providers": [
-        "openai-codex",
-        "anthropic-claude",
-        "qwen-code",
-        "kimi-k2_5"
-      ],
-      "routing_hints": [
-        "readiness-check"
-      ]
-    },
-    {
-      "tool_name": "detect-skill-overlap",
-      "intent_class": "read-only overlap analysis",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "include_agents": {
-            "type": "boolean"
-          },
-          "json": {
-            "type": "boolean"
-          },
-          "name_threshold": {
-            "type": "number"
-          },
-          "boundary_threshold": {
-            "type": "number"
-          },
-          "ambiguity_threshold": {
-            "type": "number"
-          }
-        },
-        "additionalProperties": false
-      },
-      "side_effects": "read-only",
-      "approval_required": false,
-      "mcp_compatible": false,
-      "providers": [
-        "openai-codex",
-        "anthropic-claude",
-        "qwen-code",
-        "kimi-k2_5"
-      ],
-      "routing_hints": [
-        "repo-audit",
-        "migration-planner"
-      ]
-    },
-    {
-      "tool_name": "lint-skill-contracts",
-      "intent_class": "read-only skill-contract validation",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "include_agents": {
-            "type": "boolean"
-          },
-          "json": {
-            "type": "boolean"
-          },
-          "strict_core_warnings": {
-            "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      },
-      "side_effects": "read-only",
-      "approval_required": false,
-      "mcp_compatible": false,
-      "providers": [
-        "openai-codex",
-        "anthropic-claude",
-        "qwen-code",
-        "kimi-k2_5"
-      ],
-      "routing_hints": [
-        "readiness-check",
-        "repo-audit"
-      ]
-    },
-    {
-      "tool_name": "analyze-skill-tree-coverage",
-      "intent_class": "read-only skill-tree coverage analysis",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "include_agents": {
-            "type": "boolean"
-          },
-          "json": {
-            "type": "boolean"
-          },
-          "overconcentration_ratio": {
-            "type": "number"
-          }
-        },
-        "additionalProperties": false
-      },
-      "side_effects": "read-only",
-      "approval_required": false,
-      "mcp_compatible": false,
-      "providers": [
-        "openai-codex",
-        "anthropic-claude",
-        "qwen-code",
-        "kimi-k2_5"
-      ],
-      "routing_hints": [
-        "migration-planner",
-        "readiness-check"
-      ]
-    },
-    {
       "tool_name": "analyze_layout",
       "intent_class": "contract-only branch analysis",
       "schema": {
@@ -359,6 +30,43 @@
           },
           "product_context": {
             "type": "object"
+          }
+        },
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "ui-ux-composition"
+      ]
+    },
+    {
+      "tool_name": "analyze_spacing",
+      "intent_class": "contract-only branch analysis",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "branch": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "current_structure": {
+            "type": "object"
+          },
+          "spacing_tokens": {
+            "type": "object"
+          },
+          "density_mode": {
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -417,25 +125,19 @@
       ]
     },
     {
-      "tool_name": "analyze_spacing",
-      "intent_class": "contract-only branch analysis",
+      "tool_name": "analyze-content-semantics-for-design",
+      "intent_class": "read-only semantic analysis",
       "schema": {
         "type": "object",
         "properties": {
-          "branch": {
+          "input": {
             "type": "string"
           },
-          "mode": {
+          "text": {
             "type": "string"
           },
-          "current_structure": {
-            "type": "object"
-          },
-          "spacing_tokens": {
-            "type": "object"
-          },
-          "density_mode": {
-            "type": "string"
+          "json": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -451,6 +153,112 @@
       ],
       "routing_hints": [
         "ui-ux-composition"
+      ]
+    },
+    {
+      "tool_name": "analyze-skill-tree-coverage",
+      "intent_class": "read-only skill-tree coverage analysis",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "include_agents": {
+            "type": "boolean"
+          },
+          "json": {
+            "type": "boolean"
+          },
+          "overconcentration_ratio": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "migration-planner",
+        "readiness-check"
+      ]
+    },
+    {
+      "tool_name": "approval-gated-write-executor",
+      "intent_class": "mutating write executor",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "target": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "approved": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "target",
+          "content",
+          "approved"
+        ],
+        "additionalProperties": false
+      },
+      "side_effects": "writes files only when approved",
+      "approval_required": true,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "migration-planner"
+      ]
+    },
+    {
+      "tool_name": "assert-layout-contract-rendered",
+      "intent_class": "read-only contract-to-render validation",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string"
+          },
+          "contract": {
+            "type": "string"
+          },
+          "snapshots": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "json": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "ui-ux-composition",
+        "readiness-check"
       ]
     },
     {
@@ -506,153 +314,12 @@
       ]
     },
     {
-      "tool_name": "generate_layout_blueprint",
-      "intent_class": "contract-only branch analysis",
+      "tool_name": "check-render-a11y-runtime",
+      "intent_class": "read-only runtime validation",
       "schema": {
         "type": "object",
         "properties": {
-          "branch": {
-            "type": "string"
-          },
           "mode": {
-            "type": "string"
-          },
-          "page_goal": {
-            "type": "string"
-          },
-          "content_blocks": {
-            "type": "array",
-            "items": {
-              "type": "object"
-            }
-          },
-          "product_context": {
-            "type": "object"
-          },
-          "device_targets": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "additionalProperties": false
-      },
-      "side_effects": "read-only",
-      "approval_required": false,
-      "mcp_compatible": false,
-      "providers": [
-        "openai-codex",
-        "anthropic-claude",
-        "qwen-code",
-        "kimi-k2_5"
-      ],
-      "routing_hints": [
-        "ui-ux-composition"
-      ]
-    },
-    {
-      "tool_name": "synthesize_design_tokens",
-      "intent_class": "contract-only branch analysis",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "branch": {
-            "type": "string"
-          },
-          "mode": {
-            "type": "string"
-          },
-          "current_structure": {
-            "type": "object"
-          },
-          "design_tokens": {
-            "type": "object"
-          },
-          "density_modes": {
-            "type": "object"
-          },
-          "brand_constraints": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "additionalProperties": false
-      },
-      "side_effects": "read-only",
-      "approval_required": false,
-      "mcp_compatible": false,
-      "providers": [
-        "openai-codex",
-        "anthropic-claude",
-        "qwen-code",
-        "kimi-k2_5"
-      ],
-      "routing_hints": [
-        "ui-ux-composition"
-      ]
-    },
-    {
-      "tool_name": "refine_screen",
-      "intent_class": "contract-only branch analysis",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "branch": {
-            "type": "string"
-          },
-          "mode": {
-            "type": "string"
-          },
-          "current_structure": {
-            "type": "object"
-          },
-          "known_problems": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "constraints": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "requested_outputs": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "additionalProperties": false
-      },
-      "side_effects": "read-only",
-      "approval_required": false,
-      "mcp_compatible": false,
-      "providers": [
-        "openai-codex",
-        "anthropic-claude",
-        "qwen-code",
-        "kimi-k2_5"
-      ],
-      "routing_hints": [
-        "ui-ux-composition"
-      ]
-    },
-    {
-      "tool_name": "analyze-content-semantics-for-design",
-      "intent_class": "read-only semantic analysis",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "input": {
-            "type": "string"
-          },
-          "text": {
             "type": "string"
           },
           "json": {
@@ -671,47 +338,20 @@
         "kimi-k2_5"
       ],
       "routing_hints": [
+        "readiness-check",
         "ui-ux-composition"
       ]
     },
     {
-      "tool_name": "generate-visual-direction-contract",
-      "intent_class": "read-only contract generation",
+      "tool_name": "compare-render-breakpoints",
+      "intent_class": "read-only responsive comparison",
       "schema": {
         "type": "object",
         "properties": {
           "input": {
             "type": "string"
           },
-          "json": {
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "input"
-        ],
-        "additionalProperties": false
-      },
-      "side_effects": "read-only",
-      "approval_required": false,
-      "mcp_compatible": false,
-      "providers": [
-        "openai-codex",
-        "anthropic-claude",
-        "qwen-code",
-        "kimi-k2_5"
-      ],
-      "routing_hints": [
-        "ui-ux-composition"
-      ]
-    },
-    {
-      "tool_name": "lint-semantic-design-contracts",
-      "intent_class": "read-only validation",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "input": {
+          "mode": {
             "type": "string"
           },
           "json": {
@@ -769,6 +409,44 @@
       ]
     },
     {
+      "tool_name": "detect-skill-overlap",
+      "intent_class": "read-only overlap analysis",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "include_agents": {
+            "type": "boolean"
+          },
+          "json": {
+            "type": "boolean"
+          },
+          "name_threshold": {
+            "type": "number"
+          },
+          "boundary_threshold": {
+            "type": "number"
+          },
+          "ambiguity_threshold": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "repo-audit",
+        "migration-planner"
+      ]
+    },
+    {
       "tool_name": "eval-semantic-layout-decisions",
       "intent_class": "read-only evaluation",
       "schema": {
@@ -792,6 +470,576 @@
       "routing_hints": [
         "readiness-check",
         "ui-ux-composition"
+      ]
+    },
+    {
+      "tool_name": "generate_layout_blueprint",
+      "intent_class": "contract-only branch analysis",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "branch": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "page_goal": {
+            "type": "string"
+          },
+          "content_blocks": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "product_context": {
+            "type": "object"
+          },
+          "device_targets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "ui-ux-composition"
+      ]
+    },
+    {
+      "tool_name": "generate-visual-direction-contract",
+      "intent_class": "read-only contract generation",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string"
+          },
+          "json": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "input"
+        ],
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "ui-ux-composition"
+      ]
+    },
+    {
+      "tool_name": "git-diff-explainer",
+      "intent_class": "read-only diff summary",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "cached": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "repo-audit",
+        "migration-planner"
+      ]
+    },
+    {
+      "tool_name": "lint-semantic-design-contracts",
+      "intent_class": "read-only validation",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string"
+          },
+          "json": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "input"
+        ],
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "ui-ux-composition",
+        "readiness-check"
+      ]
+    },
+    {
+      "tool_name": "lint-skill-contracts",
+      "intent_class": "read-only skill-contract validation",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "include_agents": {
+            "type": "boolean"
+          },
+          "json": {
+            "type": "boolean"
+          },
+          "strict_core_warnings": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "readiness-check",
+        "repo-audit"
+      ]
+    },
+    {
+      "tool_name": "lint-wcag-structure",
+      "intent_class": "read-only accessibility structure lint",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "json": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "input"
+        ],
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "ui-ux-composition",
+        "readiness-check"
+      ]
+    },
+    {
+      "tool_name": "refine_screen",
+      "intent_class": "contract-only branch analysis",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "branch": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "current_structure": {
+            "type": "object"
+          },
+          "known_problems": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "constraints": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requested_outputs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "ui-ux-composition"
+      ]
+    },
+    {
+      "tool_name": "render-page-snapshots",
+      "intent_class": "read-only render evidence capture",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "output_dir": {
+            "type": "string"
+          },
+          "repeat": {
+            "type": "number"
+          },
+          "json": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "input"
+        ],
+        "additionalProperties": false
+      },
+      "side_effects": "writes screenshot artifacts only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "ui-ux-composition",
+        "readiness-check"
+      ]
+    },
+    {
+      "tool_name": "repo-structure-scanner",
+      "intent_class": "read-only inventory",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "root": {
+            "type": "string"
+          },
+          "json": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "repo-audit",
+        "migration-planner",
+        "readiness-check"
+      ]
+    },
+    {
+      "tool_name": "run-axe-accessibility-audit",
+      "intent_class": "read-only accessibility evaluation",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "json": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "input"
+        ],
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "ui-ux-composition",
+        "readiness-check"
+      ]
+    },
+    {
+      "tool_name": "run-certification-evals",
+      "intent_class": "read-only evaluation runner",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "suite": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "readiness-check"
+      ]
+    },
+    {
+      "tool_name": "run-lighthouse-page-audit",
+      "intent_class": "read-only page audit evaluation",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "json": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "input"
+        ],
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "ui-ux-composition",
+        "readiness-check"
+      ]
+    },
+    {
+      "tool_name": "spec-compliance-checker",
+      "intent_class": "read-only validation",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string"
+          },
+          "mustContain": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "file",
+          "mustContain"
+        ],
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "repo-audit",
+        "readiness-check",
+        "long-document-to-knowledge-asset"
+      ]
+    },
+    {
+      "tool_name": "synthesize_design_tokens",
+      "intent_class": "contract-only branch analysis",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "branch": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "current_structure": {
+            "type": "object"
+          },
+          "design_tokens": {
+            "type": "object"
+          },
+          "density_modes": {
+            "type": "object"
+          },
+          "brand_constraints": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "ui-ux-composition"
+      ]
+    },
+    {
+      "tool_name": "validate-provider-neutral-core",
+      "intent_class": "read-only validation",
+      "schema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "readiness-check",
+        "migration-planner"
+      ]
+    },
+    {
+      "tool_name": "validate-repo-surface",
+      "intent_class": "read-only validation",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "strict": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "readiness-check",
+        "repo-audit"
+      ]
+    },
+    {
+      "tool_name": "validate-shared-core-scaffold",
+      "intent_class": "read-only validation",
+      "schema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "side_effects": "read-only",
+      "approval_required": false,
+      "mcp_compatible": false,
+      "providers": [
+        "openai-codex",
+        "anthropic-claude",
+        "qwen-code",
+        "kimi-k2_5"
+      ],
+      "routing_hints": [
+        "migration-planner",
+        "readiness-check"
       ]
     }
   ]
