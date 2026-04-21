@@ -37,6 +37,12 @@ Provider-neutral shared-core repository for governed agent workflow artifacts. C
 - `docs/model-agnostic-core-prompt-system.md` is the canonical prompt-system reference when working on layered prompt architecture.
 - `docs/shared-with-local-inputs.md`, `docs/repo-intake-skill-contract.md`, and `docs/runtime-policy-skill-contract.md` define the contract-bound skill surfaces.
 
+## Artifact Policy
+
+- Source-controlled truth lives in versioned source directories (`core/`, `skills/`, `contracts/`, `providers/`, `docs/`, `scripts/`, `templates/`, `examples/`).
+- Portable archive bundles (`*.zip`) are non-canonical packaging artifacts and should not be treated as authoritative workflow state.
+- If a release bundle is required, generate it from tagged source rather than maintaining ad hoc root-level archives.
+
 ## Operational Commands
 
 - `npm run validate` to validate the repo surface
