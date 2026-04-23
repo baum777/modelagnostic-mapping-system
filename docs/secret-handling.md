@@ -37,6 +37,9 @@ Secret classes are defined in `policies/secret-classes.yaml`.
 6. Compatibility exports may project security metadata, but they must not become the authority source.
 7. If a secret boundary cannot be proven, validators and audit flows must fail closed.
 8. Secret leak scans across docs/examples/templates/evals/policies/provider exports are part of boundary enforcement, not advisory-only checks.
+9. Class `B` material must carry active revocation/rotation posture whenever it is exposed, recoverable, or stored outside its approved boundary.
+10. Class `C` material must inherit the same revocation/rotation posture whenever it is reasonably attributable to active credentials, account access, session recoverability, or live provider access. If live-access attribution cannot be ruled out, handling must fail closed.
+11. Across provider switch, only `redacted_summary` and `contract_bounded_outcome_summary` may persist or transfer. Raw request payloads, raw response payloads, verbose JSON blobs, technical traces, full-context replay artifacts, and provider-specific diagnostic payloads are forbidden.
 
 ## Tool Contract Expectations
 
@@ -61,7 +64,9 @@ Each provider row in `core/contracts/provider-capabilities.json` must declare a 
 
 - Traces are operational evidence, not a sink for secrets.
 - Memory is durable context and therefore a high-risk persistence surface; raw or reconstructable secrets are forbidden.
-- Eval fixtures must use synthetic or redacted values only.
+- Eval fixtures must use redacted values or explicitly synthetic placeholders only.
+- Synthetic placeholders must use approved artificial prefixes (`SYNTH_SECRET_`, `SAFE_TEST_SECRET_`) and are allowed only under `evals/fixtures/`.
+- Synthetic placeholder prefixes are forbidden outside approved fixture paths.
 - Secret-boundary evals must prove both pass and fail cases deterministically.
 
 ## Fallback And Failure Posture

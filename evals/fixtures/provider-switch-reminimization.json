@@ -12,7 +12,11 @@
       "sample": {
         "from_provider": "openai-codex",
         "to_provider": "anthropic-claude",
-        "context_policy": "re-minimize"
+        "context_policy": "re-minimize",
+        "artifact_classes": [
+          "redacted_summary",
+          "contract_bounded_outcome_summary"
+        ]
       }
     },
     {
@@ -22,7 +26,11 @@
       "sample": {
         "from_provider": "openai-codex",
         "to_provider": "anthropic-claude",
-        "context_policy": "reuse-full-context"
+        "context_policy": "reuse-full-context",
+        "artifact_classes": [
+          "raw_request_payload",
+          "technical_trace"
+        ]
       }
     }
   ]
