@@ -13,6 +13,10 @@ For the `C:\workspace\main_projects` workspace, the canonical local portfolio go
 
 `C:\workspace\main_projects\portfolio`
 
+First-stop operational frontdoor:
+
+`C:\workspace\main_projects\portfolio\WORKSPACE-OPERATING-SOT.md`
+
 ## Authority Boundary
 
 - Shared core remains canonical for portable reusable capabilities:
@@ -28,15 +32,17 @@ For the `C:\workspace\main_projects` workspace, the canonical local portfolio go
   - commit-linked semantic reverse-analysis rules
   - local prompt/orchestration overlay requirements
 
-## Required Portfolio Files Before Portfolio-Level or Cross-Repo Work
+## Required Portfolio Files Before Portfolio-Level Or Cross-Repo Work
 
 - `C:\workspace\main_projects\portfolio\operating-contract.md`
-- `C:\workspace\main_projects\portfolio\index.md`
+- `C:\workspace\main_projects\portfolio\WORKSPACE-OPERATING-SOT.md`
 - `C:\workspace\main_projects\portfolio\working-rules.md`
 - `C:\workspace\main_projects\portfolio\context.md`
 - `C:\workspace\main_projects\portfolio\repo-audit.md`
 - `C:\workspace\main_projects\portfolio\implementation-plan.md`
 - `C:\workspace\main_projects\portfolio\system-prompt-overlay.md`
+
+Use `C:\workspace\main_projects\portfolio\index.md` when you need the portfolio directory map or truth-plane summary.
 
 If prior changes are relevant, also inspect:
 
