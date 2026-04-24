@@ -25,6 +25,10 @@
     "fixtures/semantic-layout-decisions.json",
     "fixtures/render-layout-cases.json",
     "fixtures/wcag-a11y-cases.json",
-    "fixtures/static-vs-dynamic-rendering-advisor.json"
+    "fixtures/static-vs-dynamic-rendering-advisor.json",
+    "fixtures/obs-contract-rules.json",
+    "fixtures/pbc-contract-rules.json",
+    "fixtures/wmc-contract-rules.json",
+    "fixtures/mahp-contract-rules.json"
   ]
 }

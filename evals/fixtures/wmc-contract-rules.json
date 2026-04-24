@@ -1,0 +1,146 @@
+{
+  "id": "wmc-contract-rules",
+  "kind": "wmc",
+  "blocking": true,
+  "target": {
+    "name": "workflow-memory-contract"
+  },
+  "expectations": {
+    "blockingRules": [
+      "WMC-V01",
+      "WMC-V02",
+      "WMC-V03",
+      "WMC-V05",
+      "WMC-V06",
+      "WMC-V07"
+    ],
+    "deferredRules": [
+      "WMC-V04"
+    ],
+    "optInOnly": true
+  },
+  "cases": [
+    {
+      "id": "wmc-v01-pass-ttl-persistent",
+      "ruleId": "WMC-V01",
+      "expectedPass": true,
+      "payload": {
+        "wmc_version": "1.0.0",
+        "entry_id": "entry-1",
+        "scope": "persistent",
+        "ttl_seconds": 7200
+      }
+    },
+    {
+      "id": "wmc-v01-fail-ttl-missing-shared",
+      "ruleId": "WMC-V01",
+      "expectedPass": false,
+      "payload": {
+        "wmc_version": "1.0.0",
+        "entry_id": "entry-2",
+        "scope": "shared"
+      }
+    },
+    {
+      "id": "wmc-v02-pass-observed-verification-ref",
+      "ruleId": "WMC-V02",
+      "expectedPass": true,
+      "payload": {
+        "provenance": {
+          "claim_status": "observed",
+          "verification_reference": "validator://obs-check-001"
+        }
+      }
+    },
+    {
+      "id": "wmc-v02-fail-observed-missing-verification-ref",
+      "ruleId": "WMC-V02",
+      "expectedPass": false,
+      "payload": {
+        "provenance": {
+          "claim_status": "observed"
+        }
+      }
+    },
+    {
+      "id": "wmc-v03-pass-inferred-derived-from",
+      "ruleId": "WMC-V03",
+      "expectedPass": true,
+      "payload": {
+        "provenance": {
+          "claim_status": "inferred",
+          "derived_from": [
+            "entry-7"
+          ]
+        }
+      }
+    },
+    {
+      "id": "wmc-v03-fail-inferred-empty-derived-from",
+      "ruleId": "WMC-V03",
+      "expectedPass": false,
+      "payload": {
+        "provenance": {
+          "claim_status": "inferred",
+          "derived_from": []
+        }
+      }
+    },
+    {
+      "id": "wmc-v05-pass-key-pattern",
+      "ruleId": "WMC-V05",
+      "expectedPass": true,
+      "payload": {
+        "key": "repo-audit.summary_v1"
+      }
+    },
+    {
+      "id": "wmc-v05-fail-key-pattern",
+      "ruleId": "WMC-V05",
+      "expectedPass": false,
+      "payload": {
+        "key": "Repo Audit Summary"
+      }
+    },
+    {
+      "id": "wmc-v06-pass-shared-read-access",
+      "ruleId": "WMC-V06",
+      "expectedPass": true,
+      "payload": {
+        "scope": "shared",
+        "read_access": {
+          "level": "cross-workflow",
+          "allowed_skill_ids": [
+            "core.repo-audit"
+          ]
+        }
+      }
+    },
+    {
+      "id": "wmc-v06-fail-shared-read-access-missing",
+      "ruleId": "WMC-V06",
+      "expectedPass": false,
+      "payload": {
+        "scope": "shared"
+      }
+    },
+    {
+      "id": "wmc-v07-pass-value-type",
+      "ruleId": "WMC-V07",
+      "expectedPass": true,
+      "payload": {
+        "value_type": "number",
+        "value": 42
+      }
+    },
+    {
+      "id": "wmc-v07-fail-value-type",
+      "ruleId": "WMC-V07",
+      "expectedPass": false,
+      "payload": {
+        "value_type": "number",
+        "value": "42"
+      }
+    }
+  ]
+}

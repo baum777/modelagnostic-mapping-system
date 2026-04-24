@@ -16,6 +16,11 @@ Provide a bounded compatibility contract so consumer repositories can adopt shar
   - `core/contracts/workflow-routing-map.json`
   - `core/contracts/core-registry.json`
   - `core/contracts/provider-capabilities.json`
+  - `core/contracts/observability-spine.json`
+  - `core/contracts/permission-boundary.json`
+  - `core/contracts/workflow-memory-contract.json`
+  - `core/contracts/handoff-protocol.json`
+  - `core/contracts/handoff-patterns.json`
 - Compatibility/export mirrors:
   - `contracts/core-registry.json`
   - `contracts/provider-capabilities.json`
@@ -31,6 +36,14 @@ Compatibility/export surfaces are derived projections and must not become the so
 2. Treat compatibility/export surfaces as projections for legacy consumers.
 3. If semantics change, update canonical contracts first, then regenerate mirrors and exports.
 4. Fail closed when canonical and compatibility surfaces drift.
+
+Current extension posture for `core/contracts/observability-spine.json`: contract-backed and opt-in; no new consumer-blocking validation gate is introduced by this contract alone.
+Current extension posture for `core/contracts/permission-boundary.json` and `core/contracts/workflow-memory-contract.json`: contract-backed and opt-in; no new consumer-blocking validation gate is introduced by these contracts alone.
+Current extension posture for `core/contracts/handoff-protocol.json` and `core/contracts/handoff-patterns.json`: contract-backed and opt-in; no new consumer-blocking validation gate is introduced by these contracts alone.
+Validator-backed and runtime-implemented maturity for PBC/WMC remain deferred and blocked pending dedicated eval/validator slices and consumer runtime evidence.
+Targeted validator-backed candidate eval slices now exist for OBS/PBC/WMC (`eval:obs`, `eval:pbc`, `eval:wmc`) and are module-scoped checks; this does not create a mandatory migration or automatic blocking gate for existing consumers.
+`eval:mahp` is a minimal MAHP envelope-rule candidate slice only. MAHP defines no transport and no authorization engine; authorization remains in PBC scope, and runtime handoff orchestration remains blocked pending consumer evidence.
+MAHP may reference adjacent OBS/WMC/PBC contract surfaces in future consumer integrations, but this slice does not introduce cross-module runtime orchestration or mandatory consumer migration.
 
 ## Bounded Migration And Handoff
 

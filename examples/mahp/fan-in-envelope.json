@@ -1,0 +1,64 @@
+{
+  "mahp_version": "1.0.0",
+  "envelope_id": "mahp-fanin-001",
+  "emitter": {
+    "skill_id": "core.repo-audit",
+    "run_id": "run-fanin-merge-001",
+    "agent_role": "subagent",
+    "execution_status": "verified"
+  },
+  "receiver": {
+    "skill_id": "core.readiness-check",
+    "agent_role": "primary-agent",
+    "instance": "merge-review"
+  },
+  "execution_context": {
+    "objective": "Merge parallel review outputs into one readiness decision handoff.",
+    "applied_steps": [
+      {
+        "step_id": "step-1",
+        "description": "Merged branch-a findings into consolidated review packet.",
+        "execution_status": "verified",
+        "artifact": {
+          "artifact_ref": "examples/codex-workflow/review-summary-example.md",
+          "artifact_type": "example"
+        },
+        "verification_reference": "review://merge-check-001"
+      }
+    ],
+    "current_state_summary": "Parallel review outputs were consolidated for final readiness evaluation.",
+    "state_claim_status": "observed"
+  },
+  "provenance_chain": [
+    {
+      "sequence": 1,
+      "relationship": "origin",
+      "envelope_id": "mahp-fanout-001",
+      "skill_id": "core.spec-to-task-breakdown",
+      "run_id": "run-fanout-001"
+    },
+    {
+      "sequence": 2,
+      "relationship": "handoff-parent",
+      "envelope_id": "mahp-fanin-001",
+      "skill_id": "core.repo-audit",
+      "run_id": "run-fanin-merge-001"
+    }
+  ],
+  "open_gaps": [
+    {
+      "gap_id": "gap-1",
+      "description": "One residual non-blocking clarification remains for release notes.",
+      "severity": "informational"
+    }
+  ],
+  "acceptance_criteria": [
+    {
+      "criterion_id": "ac-1",
+      "description": "Receiver can trace the merge group and verified merge artifact.",
+      "verification_method": "provenance-and-verification-check"
+    }
+  ],
+  "composition_pattern": "fan-in",
+  "fan_out_group_id": "group-fanout-001"
+}

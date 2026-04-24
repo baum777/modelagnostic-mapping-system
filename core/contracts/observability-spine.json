@@ -1,0 +1,487 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "core/contracts/observability-spine.json",
+  "schemaVersion": "1.0.0",
+  "canonicalOwner": "core/contracts/observability-spine.json",
+  "scope": "portable-core",
+  "maturityLabel": "contract-backed",
+  "validatorStatus": "deferred",
+  "runtimeStatus": "deferred",
+  "adoptionMode": "opt-in",
+  "title": "Observability Spine Contract",
+  "description": "Provider-neutral workflow event envelope for observability claims and fail-closed outcome reporting.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_id",
+    "event_name",
+    "event_family",
+    "timestamp",
+    "workflow",
+    "actor",
+    "correlation",
+    "provenance",
+    "outcome"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_name": {
+      "type": "string",
+      "enum": [
+        "workflow.started",
+        "workflow.completed",
+        "workflow.blocked",
+        "skill.completed",
+        "skill.blocked",
+        "skill.error",
+        "validation.started",
+        "validation.completed",
+        "permission.check",
+        "memory.read",
+        "memory.write",
+        "resource.budget_check",
+        "resource.budget_exceeded",
+        "trigger.evaluated",
+        "handoff.emitted",
+        "handoff.received"
+      ]
+    },
+    "event_family": {
+      "type": "string",
+      "enum": [
+        "workflow.lifecycle",
+        "workflow.validation",
+        "workflow.permission",
+        "workflow.memory",
+        "workflow.resource",
+        "workflow.trigger",
+        "workflow.handoff",
+        "workflow.error"
+      ]
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "workflow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "workflow_class",
+        "run_id"
+      ],
+      "properties": {
+        "workflow_class": {
+          "type": "string",
+          "minLength": 1
+        },
+        "run_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "step_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "actor_type",
+        "actor_id"
+      ],
+      "properties": {
+        "actor_type": {
+          "type": "string",
+          "enum": [
+            "human",
+            "agent",
+            "validator",
+            "scheduler",
+            "system"
+          ]
+        },
+        "actor_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "skill_name": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "correlation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "trace_id",
+        "span_id"
+      ],
+      "properties": {
+        "trace_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "span_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "parent_span_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "envelope_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "entry_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "trigger_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claim_state",
+        "source",
+        "captured_at"
+      ],
+      "properties": {
+        "claim_state": {
+          "type": "string",
+          "enum": [
+            "observed",
+            "inferred"
+          ]
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "origin_type",
+            "origin_ref"
+          ],
+          "properties": {
+            "origin_type": {
+              "type": "string",
+              "enum": [
+                "command",
+                "file",
+                "validator",
+                "eval-fixture",
+                "human-input",
+                "external-system"
+              ]
+            },
+            "origin_ref": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "captured_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "promotion": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "from_state",
+            "to_state"
+          ],
+          "properties": {
+            "from_state": {
+              "type": "string",
+              "enum": [
+                "inferred",
+                "observed"
+              ]
+            },
+            "to_state": {
+              "type": "string",
+              "enum": [
+                "inferred",
+                "observed"
+              ]
+            }
+          }
+        },
+        "reverification": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "verification_artifact",
+            "verified_at"
+          ],
+          "properties": {
+            "verification_artifact": {
+              "type": "string",
+              "minLength": 1
+            },
+            "verified_at": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        }
+      }
+    },
+    "outcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "SUCCESS",
+            "BLOCKED",
+            "FAILED"
+          ]
+        },
+        "blocking_reasons": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "MISSING_REQUIRED_FIELDS",
+              "BUDGET_EXHAUSTED",
+              "PERMISSION_DENIED",
+              "MISSING_PROVENANCE",
+              "POLICY_BLOCKED",
+              "VALIDATION_FAILED"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "duration_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "input_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "output_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "cost_microunits": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "error": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "error_class",
+        "message"
+      ],
+      "properties": {
+        "error_class": {
+          "type": "string",
+          "enum": [
+            "validation",
+            "permission",
+            "memory",
+            "resource",
+            "provider",
+            "transport",
+            "unknown"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1
+        },
+        "code": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "attributes": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z0-9_-]+\\.[a-z0-9_.:-]+$": {
+          "type": [
+            "string",
+            "number",
+            "boolean",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "resource_usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "budget_scope": {
+          "type": "string",
+          "enum": [
+            "run",
+            "workflow",
+            "global"
+          ]
+        },
+        "budget_limit": {
+          "type": "number",
+          "minimum": 0
+        },
+        "budget_used": {
+          "type": "number",
+          "minimum": 0
+        },
+        "unit": {
+          "type": "string",
+          "enum": [
+            "tokens",
+            "cost",
+            "calls",
+            "seconds"
+          ]
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "event_name": {
+            "enum": [
+              "skill.completed",
+              "skill.blocked"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "metrics"
+        ],
+        "properties": {
+          "metrics": {
+            "required": [
+              "duration_ms"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event_name": {
+            "const": "skill.error"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "error"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event_name": {
+            "const": "resource.budget_exceeded"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "resource_usage"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "provenance": {
+            "required": [
+              "promotion"
+            ],
+            "properties": {
+              "promotion": {
+                "required": [
+                  "from_state",
+                  "to_state"
+                ],
+                "properties": {
+                  "from_state": {
+                    "const": "inferred"
+                  },
+                  "to_state": {
+                    "const": "observed"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "provenance": {
+            "required": [
+              "reverification"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "outcome": {
+            "properties": {
+              "status": {
+                "const": "BLOCKED"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "outcome": {
+            "required": [
+              "blocking_reasons"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

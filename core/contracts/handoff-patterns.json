@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "1.0.0",
+  "canonicalOwner": "core/contracts/handoff-patterns.json",
+  "scope": "portable-core",
+  "maturityLabel": "contract-backed",
+  "validatorStatus": "deferred",
+  "runtimeStatus": "deferred",
+  "adoptionMode": "opt-in",
+  "title": "Multi-Agent Handoff Pattern Catalog",
+  "description": "Canonical MAHP composition-pattern and rule catalog. This surface defines no transport, queue, broker, retry runtime, or authorization engine.",
+  "protocolContractPath": "core/contracts/handoff-protocol.json",
+  "boundaries": {
+    "transport": "out-of-scope",
+    "authorization": "pbc-domain",
+    "memory": "wmc-domain",
+    "observability": "obs-domain",
+    "runtimeOrchestration": "deferred"
+  },
+  "patterns": [
+    {
+      "pattern_id": "sequential",
+      "composition_pattern": "sequential",
+      "fanOutGroupRequired": false,
+      "summary": "One emitter hands off to one receiver in ordered sequence."
+    },
+    {
+      "pattern_id": "fan-out",
+      "composition_pattern": "fan-out",
+      "fanOutGroupRequired": true,
+      "summary": "One emitter fans work out to multiple receivers that share a grouping identifier."
+    },
+    {
+      "pattern_id": "fan-in",
+      "composition_pattern": "fan-in",
+      "fanOutGroupRequired": true,
+      "summary": "Multiple prior envelopes converge into a merge-oriented receiving step using a shared grouping identifier."
+    },
+    {
+      "pattern_id": "parallel",
+      "composition_pattern": "parallel",
+      "fanOutGroupRequired": false,
+      "summary": "Independent handoffs proceed in parallel without implied merge semantics."
+    },
+    {
+      "pattern_id": "null",
+      "composition_pattern": null,
+      "fanOutGroupRequired": false,
+      "summary": "No explicit composition pattern is declared."
+    }
+  ],
+  "validationRules": [
+    {
+      "rule_id": "MAHP-V01",
+      "status": "contract-backed",
+      "blocking": true,
+      "summary": "acceptance_criteria must be non-empty."
+    },
+    {
+      "rule_id": "MAHP-V02",
+      "status": "contract-backed",
+      "blocking": true,
+      "summary": "applied_steps with execution_status verified require verification_reference."
+    },
+    {
+      "rule_id": "MAHP-V03",
+      "status": "contract-backed",
+      "blocking": true,
+      "summary": "provenance_chain must be non-empty and include an origin entry."
+    },
+    {
+      "rule_id": "MAHP-V04",
+      "status": "contract-backed",
+      "blocking": true,
+      "summary": "fan_out_group_id is required when composition_pattern is fan-out or fan-in."
+    },
+    {
+      "rule_id": "MAHP-V05",
+      "status": "contract-only",
+      "blocking": true,
+      "summary": "open_gaps with severity blocking should force BLOCKED receiver handling.",
+      "implementationNote": "Documented as receiver-side contract semantics only in this slice; no runtime receiver enforcement is implemented."
+    },
+    {
+      "rule_id": "MAHP-V06",
+      "status": "contract-backed",
+      "blocking": true,
+      "summary": "state_claim_status observed requires at least one verified applied step."
+    },
+    {
+      "rule_id": "MAHP-V07",
+      "status": "contract-backed",
+      "blocking": true,
+      "summary": "emitter.execution_status must be applied or verified to emit."
+    }
+  ]
+}

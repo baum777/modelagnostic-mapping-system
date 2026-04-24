@@ -1,0 +1,53 @@
+{
+  "mahp_version": "1.0.0",
+  "envelope_id": "mahp-fanout-001",
+  "emitter": {
+    "skill_id": "core.spec-to-task-breakdown",
+    "run_id": "run-fanout-001",
+    "agent_role": "primary-agent",
+    "execution_status": "applied"
+  },
+  "receiver": {
+    "skill_id": "core.repo-audit",
+    "agent_role": "subagent",
+    "instance": "branch-a"
+  },
+  "execution_context": {
+    "objective": "Fan out review tasks to parallel receivers with shared scope context.",
+    "applied_steps": [
+      {
+        "step_id": "step-1",
+        "description": "Prepared bounded review packet for parallel handling.",
+        "execution_status": "applied",
+        "artifact": "examples/codex-workflow/planning-slice-example.md"
+      }
+    ],
+    "current_state_summary": "Parallel receivers should process distinct review packets within one fan-out group.",
+    "state_claim_status": "inferred"
+  },
+  "provenance_chain": [
+    {
+      "sequence": 1,
+      "relationship": "origin",
+      "envelope_id": "mahp-fanout-001",
+      "skill_id": "core.spec-to-task-breakdown",
+      "run_id": "run-fanout-001"
+    }
+  ],
+  "open_gaps": [
+    {
+      "gap_id": "gap-1",
+      "description": "Downstream reviewers still need to confirm coverage completeness.",
+      "severity": "advisory"
+    }
+  ],
+  "acceptance_criteria": [
+    {
+      "criterion_id": "ac-1",
+      "description": "Receiver can identify the shared fan-out group.",
+      "verification_method": "group-id-check"
+    }
+  ],
+  "composition_pattern": "fan-out",
+  "fan_out_group_id": "group-fanout-001"
+}

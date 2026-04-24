@@ -9,6 +9,10 @@ import { evaluateSemanticLayoutDecisionsFixture } from './eval-semantic-layout-d
 import { evaluateStaticVsDynamicRenderingAdvisorFixture } from './eval-static-vs-dynamic-rendering-advisor.mjs';
 import { evaluateRenderLayoutFixture } from './eval-render-layout-cases.mjs';
 import { evaluateWcagA11yFixture } from './eval-wcag-a11y-cases.mjs';
+import { evaluateObsContractFixture } from './eval-obs-contract.mjs';
+import { evaluatePbcContractFixture } from './eval-pbc-contract.mjs';
+import { evaluateWmcContractFixture } from './eval-wmc-contract.mjs';
+import { evaluateMahpContractFixture } from './eval-mahp-contract.mjs';
 
 function normalize(filePath) {
   return path.resolve(filePath).replace(/\\/g, '/');
@@ -1181,6 +1185,22 @@ async function evaluateFixture(root, registry, providerExports, outputContractCa
     result.issues.push(...check.issues);
   } else if (fixture.kind === 'rendering-posture') {
     const check = evaluateStaticVsDynamicRenderingAdvisorFixture(fixture);
+    result.passed = check.passed;
+    result.issues.push(...check.issues);
+  } else if (fixture.kind === 'obs') {
+    const check = evaluateObsContractFixture(fixture);
+    result.passed = check.passed;
+    result.issues.push(...check.issues);
+  } else if (fixture.kind === 'pbc') {
+    const check = evaluatePbcContractFixture(fixture);
+    result.passed = check.passed;
+    result.issues.push(...check.issues);
+  } else if (fixture.kind === 'wmc') {
+    const check = evaluateWmcContractFixture(fixture);
+    result.passed = check.passed;
+    result.issues.push(...check.issues);
+  } else if (fixture.kind === 'mahp') {
+    const check = evaluateMahpContractFixture(fixture);
     result.passed = check.passed;
     result.issues.push(...check.issues);
   } else if (fixture.kind === 'secret-boundary') {

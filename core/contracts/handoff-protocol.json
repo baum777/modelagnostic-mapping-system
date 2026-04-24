@@ -1,0 +1,407 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "core/contracts/handoff-protocol.json",
+  "schemaVersion": "1.0.0",
+  "canonicalOwner": "core/contracts/handoff-protocol.json",
+  "scope": "portable-core",
+  "maturityLabel": "contract-backed",
+  "validatorStatus": "deferred",
+  "runtimeStatus": "deferred",
+  "adoptionMode": "opt-in",
+  "title": "Multi-Agent Handoff Protocol Envelope",
+  "description": "Provider-neutral handoff envelope contract for structured agent-to-agent transfers. This contract defines no transport, queue, broker, retry system, or authorization engine.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "mahp_version",
+    "envelope_id",
+    "emitter",
+    "receiver",
+    "execution_context",
+    "provenance_chain",
+    "open_gaps",
+    "acceptance_criteria",
+    "composition_pattern",
+    "fan_out_group_id"
+  ],
+  "properties": {
+    "mahp_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "envelope_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "emitter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "skill_id",
+        "run_id",
+        "agent_role",
+        "execution_status"
+      ],
+      "properties": {
+        "skill_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "run_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "agent_role": {
+          "type": "string",
+          "enum": [
+            "primary-agent",
+            "subagent",
+            "validator",
+            "scheduler",
+            "human"
+          ]
+        },
+        "execution_status": {
+          "type": "string",
+          "enum": [
+            "applied",
+            "verified"
+          ]
+        }
+      }
+    },
+    "receiver": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "skill_id",
+        "agent_role"
+      ],
+      "properties": {
+        "skill_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "agent_role": {
+          "type": "string",
+          "enum": [
+            "primary-agent",
+            "subagent",
+            "validator",
+            "scheduler",
+            "human"
+          ]
+        },
+        "instance": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "execution_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "objective",
+        "applied_steps",
+        "current_state_summary",
+        "state_claim_status"
+      ],
+      "properties": {
+        "objective": {
+          "type": "string",
+          "minLength": 1
+        },
+        "applied_steps": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/appliedStep"
+          }
+        },
+        "current_state_summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "state_claim_status": {
+          "type": "string",
+          "enum": [
+            "observed",
+            "inferred"
+          ]
+        }
+      }
+    },
+    "provenance_chain": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/provenanceEntry"
+      },
+      "contains": {
+        "type": "object",
+        "properties": {
+          "relationship": {
+            "const": "origin"
+          }
+        },
+        "required": [
+          "relationship"
+        ]
+      }
+    },
+    "open_gaps": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/openGap"
+      }
+    },
+    "acceptance_criteria": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/acceptanceCriterion"
+      }
+    },
+    "composition_pattern": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "sequential",
+        "fan-out",
+        "fan-in",
+        "parallel",
+        null
+      ]
+    },
+    "fan_out_group_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    }
+  },
+  "$defs": {
+    "artifactReference": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "artifact_ref"
+          ],
+          "properties": {
+            "artifact_ref": {
+              "type": "string",
+              "minLength": 1
+            },
+            "artifact_type": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    },
+    "appliedStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "step_id",
+        "description",
+        "execution_status",
+        "artifact"
+      ],
+      "properties": {
+        "step_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "execution_status": {
+          "type": "string",
+          "enum": [
+            "applied",
+            "verified"
+          ]
+        },
+        "artifact": {
+          "$ref": "#/$defs/artifactReference"
+        },
+        "verification_reference": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "execution_status": {
+                "const": "verified"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "verification_reference"
+            ]
+          }
+        }
+      ]
+    },
+    "provenanceEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sequence",
+        "relationship",
+        "envelope_id",
+        "skill_id",
+        "run_id"
+      ],
+      "properties": {
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "relationship": {
+          "type": "string",
+          "enum": [
+            "origin",
+            "handoff-parent",
+            "handoff-ancestor"
+          ]
+        },
+        "envelope_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "skill_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "run_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "openGap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "gap_id",
+        "description",
+        "severity"
+      ],
+      "properties": {
+        "gap_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "blocking",
+            "advisory",
+            "informational"
+          ]
+        }
+      }
+    },
+    "acceptanceCriterion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "criterion_id",
+        "description",
+        "verification_method"
+      ],
+      "properties": {
+        "criterion_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verification_method": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "composition_pattern": {
+            "enum": [
+              "fan-out",
+              "fan-in"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "fan_out_group_id": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "execution_context": {
+            "properties": {
+              "state_claim_status": {
+                "const": "observed"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "execution_context": {
+            "properties": {
+              "applied_steps": {
+                "contains": {
+                  "type": "object",
+                  "properties": {
+                    "execution_status": {
+                      "const": "verified"
+                    }
+                  },
+                  "required": [
+                    "execution_status"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

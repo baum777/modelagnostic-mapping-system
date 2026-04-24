@@ -1,0 +1,242 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "core/contracts/workflow-memory-contract.json",
+  "schemaVersion": "1.0.0",
+  "canonicalOwner": "core/contracts/workflow-memory-contract.json",
+  "scope": "portable-core",
+  "maturityLabel": "contract-backed",
+  "validatorStatus": "deferred",
+  "runtimeStatus": "deferred",
+  "adoptionMode": "opt-in",
+  "title": "Workflow Memory Contract",
+  "description": "Provider-neutral declarative memory-entry contract for workflow claims. This contract does not define storage or runtime enforcement.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "wmc_version",
+    "entry_id",
+    "scope",
+    "written_by",
+    "key",
+    "value",
+    "value_type",
+    "provenance"
+  ],
+  "properties": {
+    "wmc_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "entry_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "type": "string",
+      "enum": [
+        "ephemeral",
+        "session",
+        "persistent",
+        "shared"
+      ]
+    },
+    "written_by": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "skill_id",
+        "run_id",
+        "agent_role"
+      ],
+      "properties": {
+        "skill_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "run_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "agent_role": {
+          "type": "string",
+          "enum": [
+            "primary-agent",
+            "subagent",
+            "validator",
+            "scheduler",
+            "human"
+          ]
+        }
+      }
+    },
+    "ttl_seconds": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "^[a-z0-9][a-z0-9_.:-]*$"
+    },
+    "value": {
+      "type": [
+        "string",
+        "number",
+        "boolean",
+        "object",
+        "array",
+        "null"
+      ]
+    },
+    "value_type": {
+      "type": "string",
+      "enum": [
+        "string",
+        "number",
+        "boolean",
+        "object",
+        "array",
+        "json",
+        "reference",
+        "binary-hash"
+      ]
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claim_status"
+      ],
+      "properties": {
+        "claim_status": {
+          "type": "string",
+          "enum": [
+            "observed",
+            "inferred"
+          ]
+        },
+        "verification_reference": {
+          "type": "string",
+          "minLength": 1
+        },
+        "derived_from": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "read_access": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "level"
+      ],
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": [
+            "own-run",
+            "own-workflow",
+            "cross-workflow",
+            "global"
+          ]
+        },
+        "allowed_skill_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "scope": {
+            "enum": [
+              "persistent",
+              "shared"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "ttl_seconds"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "scope": {
+            "const": "shared"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "read_access"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "provenance": {
+            "properties": {
+              "claim_status": {
+                "const": "observed"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "provenance": {
+            "required": [
+              "verification_reference"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "provenance": {
+            "properties": {
+              "claim_status": {
+                "const": "inferred"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "provenance": {
+            "required": [
+              "derived_from"
+            ],
+            "properties": {
+              "derived_from": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

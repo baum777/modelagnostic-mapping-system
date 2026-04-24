@@ -1,0 +1,218 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "core/contracts/permission-boundary.json",
+  "schemaVersion": "1.0.0",
+  "canonicalOwner": "core/contracts/permission-boundary.json",
+  "scope": "portable-core",
+  "maturityLabel": "contract-backed",
+  "validatorStatus": "deferred",
+  "runtimeStatus": "deferred",
+  "adoptionMode": "opt-in",
+  "title": "Permission Boundary Contract",
+  "description": "Provider-neutral declarative claim surface for skill permissions. This contract does not implement enforcement.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "pbc_version",
+    "skill_id",
+    "skill_type",
+    "denied_by_default",
+    "permissions"
+  ],
+  "properties": {
+    "pbc_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "skill_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "skill_type": {
+      "type": "string",
+      "enum": [
+        "generic",
+        "handoff-emitter",
+        "handoff-receiver",
+        "memory-reader",
+        "memory-writer",
+        "orchestrator"
+      ]
+    },
+    "denied_by_default": {
+      "type": "boolean",
+      "default": true
+    },
+    "exception_rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "permissions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/permissionGrant"
+      }
+    },
+    "optional_permissions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/optionalPermissionGrant"
+      }
+    },
+    "denied_by_default_permissions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/permissionCategory"
+      },
+      "uniqueItems": true
+    },
+    "consumer_policy_schema_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "permissionCategory": {
+      "type": "string",
+      "enum": [
+        "memory.read",
+        "memory.write",
+        "handoff.emit",
+        "handoff.receive",
+        "subagent.spawn",
+        "external.http",
+        "external.mcp",
+        "filesystem.read",
+        "filesystem.write",
+        "human_gate.request",
+        "provider.model_call",
+        "provider.tool_call"
+      ]
+    },
+    "scopeLevel": {
+      "type": "string",
+      "enum": [
+        "own-run",
+        "own-workflow",
+        "cross-workflow",
+        "global"
+      ]
+    },
+    "permissionGrant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "category",
+        "scope",
+        "rationale"
+      ],
+      "properties": {
+        "category": {
+          "$ref": "#/$defs/permissionCategory"
+        },
+        "scope": {
+          "$ref": "#/$defs/scopeLevel"
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 10
+        },
+        "optional": {
+          "type": "boolean"
+        },
+        "degraded_behavior": {
+          "type": "string",
+          "minLength": 1
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "optional": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "degraded_behavior"
+            ]
+          }
+        }
+      ]
+    },
+    "optionalPermissionGrant": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/permissionGrant"
+        },
+        {
+          "type": "object",
+          "required": [
+            "degraded_behavior"
+          ],
+          "properties": {
+            "degraded_behavior": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "skill_type": {
+            "const": "handoff-emitter"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "permissions": {
+            "contains": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "const": "handoff.emit"
+                }
+              },
+              "required": [
+                "category"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "denied_by_default": {
+            "const": false
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "exception_rationale"
+        ]
+      }
+    }
+  ]
+}

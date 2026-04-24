@@ -22,9 +22,18 @@ Executable certification checks live here.
   - certification mode: local fixtures only, deterministic, blocking
   - operator-evidence mode: external URLs allowed, advisory and non-blocking
 - core portable skill eval scaffolding under `evals/fixtures/core-*.json`
+- OBS contract-rule checks (`eval:obs`) for blocking rule coverage with advisory rule isolation
+- PBC contract-rule checks (`eval:pbc`) for permission-boundary blocking rule coverage with advisory/deferred rule isolation
+- WMC contract-rule checks (`eval:wmc`) for memory-contract blocking rule coverage with deferred cross-module rule isolation
+- MAHP contract-rule checks (`eval:mahp`) for handoff-envelope blocking rule coverage with deferred receiver/runtime semantics
 
 ## Gate Rule
 
 - `npm run eval` is the executable certification entrypoint.
 - Any blocking eval failure should stop release or publication.
 - Advisory-only checks should be recorded but not treated as release blockers.
+- Module-specific runs:
+  - `npm run eval:obs`
+  - `npm run eval:pbc`
+  - `npm run eval:wmc`
+  - `npm run eval:mahp`

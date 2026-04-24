@@ -12,6 +12,41 @@
     "templateAlignmentSource": "core/contracts/workflow-routing-map.json",
     "exampleAlignmentSource": "core/contracts/workflow-routing-map.json"
   },
+  "moduleContracts": {
+    "observabilitySpine": {
+      "contractPath": "core/contracts/observability-spine.json",
+      "maturityLabel": "contract-backed",
+      "validatorStatus": "deferred",
+      "runtimeStatus": "deferred",
+      "adoptionMode": "opt-in"
+    },
+    "permissionBoundary": {
+      "contractPath": "core/contracts/permission-boundary.json",
+      "maturityLabel": "contract-backed",
+      "validatorStatus": "deferred",
+      "runtimeStatus": "deferred",
+      "adoptionMode": "opt-in"
+    },
+    "workflowMemoryContract": {
+      "contractPath": "core/contracts/workflow-memory-contract.json",
+      "maturityLabel": "contract-backed",
+      "validatorStatus": "deferred",
+      "runtimeStatus": "deferred",
+      "adoptionMode": "opt-in"
+    },
+    "multiAgentHandoffProtocol": {
+      "protocolContractPath": "core/contracts/handoff-protocol.json",
+      "patternsContractPath": "core/contracts/handoff-patterns.json",
+      "maturityLabel": "contract-backed",
+      "validatorStatus": "deferred",
+      "runtimeStatus": "deferred",
+      "adoptionMode": "opt-in",
+      "declarativeSkillTypes": [
+        "handoff-emitter",
+        "handoff-receiver"
+      ]
+    }
+  },
   "skillDiscoveryOverrides": {
     "repo-audit": {
       "category": "governance-audit",

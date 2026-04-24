@@ -10,8 +10,21 @@ Canonical machine-readable contracts for the portable slice.
 - `core/contracts/provider-capabilities.json`
 - `core/contracts/core-registry.json`
 - `core/contracts/workflow-routing-map.json`
+- `core/contracts/observability-spine.json`
+- `core/contracts/permission-boundary.json`
+- `core/contracts/workflow-memory-contract.json`
+- `core/contracts/handoff-protocol.json`
+- `core/contracts/handoff-patterns.json`
 
 Execution evidence and certification artifact contracts are defined in `core/contracts/output-contracts.json`.
+
+`core/contracts/observability-spine.json` is the canonical provider-neutral OBS contract surface for Phase-10 extension adoption and is currently `contract-backed` (validator/runtime wiring deferred).
+`core/contracts/permission-boundary.json` is the canonical provider-neutral PBC claim surface and is currently `contract-backed` (validator/runtime wiring deferred).
+`core/contracts/workflow-memory-contract.json` is the canonical provider-neutral WMC claim surface and is currently `contract-backed` (validator/runtime wiring deferred).
+`core/contracts/handoff-protocol.json` and `core/contracts/handoff-patterns.json` are the canonical provider-neutral MAHP surfaces and are currently `contract-backed`; they define no transport, queueing, retries, or authorization engine.
+MAHP is adjacent to OBS, PBC, and WMC contract surfaces only. This slice does not add runtime orchestration across those modules.
+Validator-backed candidate eval slices now exist for targeted contract-rule checks (`eval:obs`, `eval:pbc`, `eval:wmc`) and remain opt-in module checks; runtime implementation is still deferred.
+`eval:mahp` is a minimal validator-backed candidate slice for core envelope-rule checks only and does not introduce runtime handoff orchestration.
 
 ## Safe Extension Flow
 

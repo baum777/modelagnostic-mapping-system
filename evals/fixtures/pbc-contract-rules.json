@@ -1,0 +1,196 @@
+{
+  "id": "pbc-contract-rules",
+  "kind": "pbc",
+  "blocking": true,
+  "target": {
+    "name": "permission-boundary"
+  },
+  "expectations": {
+    "blockingRules": [
+      "PBC-V01",
+      "PBC-V02",
+      "PBC-V04",
+      "PBC-V06"
+    ],
+    "advisoryRules": [
+      "PBC-V07"
+    ],
+    "deferredRules": [
+      "PBC-V03"
+    ],
+    "optInOnly": true
+  },
+  "cases": [
+    {
+      "id": "pbc-v01-pass-rationale-length",
+      "ruleId": "PBC-V01",
+      "expectedPass": true,
+      "payload": {
+        "pbc_version": "1.0.0",
+        "skill_id": "core.repo-audit",
+        "skill_type": "generic",
+        "denied_by_default": true,
+        "permissions": [
+          {
+            "category": "memory.read",
+            "scope": "own-workflow",
+            "rationale": "Need to reuse prior run findings."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pbc-v01-fail-rationale-too-short",
+      "ruleId": "PBC-V01",
+      "expectedPass": false,
+      "payload": {
+        "pbc_version": "1.0.0",
+        "skill_id": "core.repo-audit",
+        "skill_type": "generic",
+        "denied_by_default": true,
+        "permissions": [
+          {
+            "category": "memory.read",
+            "scope": "own-workflow",
+            "rationale": "needed"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pbc-v02-pass-optional-degraded-behavior",
+      "ruleId": "PBC-V02",
+      "expectedPass": true,
+      "payload": {
+        "pbc_version": "1.0.0",
+        "skill_id": "core.repo-audit",
+        "skill_type": "generic",
+        "denied_by_default": true,
+        "permissions": [
+          {
+            "category": "external.http",
+            "scope": "own-run",
+            "rationale": "Best-effort external enrichment for diagnostics.",
+            "optional": true,
+            "degraded_behavior": "continue without external enrichment"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pbc-v02-fail-optional-missing-degraded-behavior",
+      "ruleId": "PBC-V02",
+      "expectedPass": false,
+      "payload": {
+        "pbc_version": "1.0.0",
+        "skill_id": "core.repo-audit",
+        "skill_type": "generic",
+        "denied_by_default": true,
+        "permissions": [
+          {
+            "category": "external.http",
+            "scope": "own-run",
+            "rationale": "Best-effort external enrichment for diagnostics.",
+            "optional": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "pbc-v04-pass-handoff-emitter-has-permission",
+      "ruleId": "PBC-V04",
+      "expectedPass": true,
+      "payload": {
+        "pbc_version": "1.0.0",
+        "skill_id": "core.repo-audit",
+        "skill_type": "handoff-emitter",
+        "denied_by_default": true,
+        "permissions": [
+          {
+            "category": "handoff.emit",
+            "scope": "own-workflow",
+            "rationale": "Emit bounded handoff envelope to downstream reviewer."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pbc-v04-fail-handoff-emitter-missing-permission",
+      "ruleId": "PBC-V04",
+      "expectedPass": false,
+      "payload": {
+        "pbc_version": "1.0.0",
+        "skill_id": "core.repo-audit",
+        "skill_type": "handoff-emitter",
+        "denied_by_default": true,
+        "permissions": [
+          {
+            "category": "memory.read",
+            "scope": "own-workflow",
+            "rationale": "Read previous evidence for summary continuity."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pbc-v06-pass-no-denied-conflict",
+      "ruleId": "PBC-V06",
+      "expectedPass": true,
+      "payload": {
+        "pbc_version": "1.0.0",
+        "skill_id": "core.repo-audit",
+        "skill_type": "generic",
+        "denied_by_default": true,
+        "denied_by_default_permissions": [
+          "filesystem.write"
+        ],
+        "permissions": [
+          {
+            "category": "memory.read",
+            "scope": "own-workflow",
+            "rationale": "Read workflow findings for deterministic summaries."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pbc-v06-fail-denied-conflict",
+      "ruleId": "PBC-V06",
+      "expectedPass": false,
+      "payload": {
+        "pbc_version": "1.0.0",
+        "skill_id": "core.repo-audit",
+        "skill_type": "generic",
+        "denied_by_default": true,
+        "denied_by_default_permissions": [
+          "memory.read"
+        ],
+        "permissions": [
+          {
+            "category": "memory.read",
+            "scope": "own-workflow",
+            "rationale": "Read workflow findings for deterministic summaries."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pbc-v07-advisory-only",
+      "ruleId": "PBC-V07",
+      "expectedPass": false,
+      "payload": {
+        "pbc_version": "1.0.0",
+        "skill_id": "core.repo-audit",
+        "skill_type": "generic",
+        "denied_by_default": true,
+        "permissions": [
+          {
+            "category": "provider.model_call",
+            "scope": "global",
+            "rationale": "Advisory example for least-privilege review."
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,140 @@
+{
+  "id": "obs-contract-rules",
+  "kind": "obs",
+  "blocking": true,
+  "target": {
+    "name": "observability-spine"
+  },
+  "expectations": {
+    "blockingRules": [
+      "OBS-V01",
+      "OBS-V02",
+      "OBS-V03",
+      "OBS-V04",
+      "OBS-V06"
+    ],
+    "advisoryRules": [
+      "OBS-V05"
+    ],
+    "optInOnly": true
+  },
+  "cases": [
+    {
+      "id": "obs-v01-pass-duration-required",
+      "ruleId": "OBS-V01",
+      "expectedPass": true,
+      "payload": {
+        "event_name": "skill.completed",
+        "metrics": {
+          "duration_ms": 152
+        }
+      }
+    },
+    {
+      "id": "obs-v01-fail-duration-missing",
+      "ruleId": "OBS-V01",
+      "expectedPass": false,
+      "payload": {
+        "event_name": "skill.blocked"
+      }
+    },
+    {
+      "id": "obs-v02-pass-error-object",
+      "ruleId": "OBS-V02",
+      "expectedPass": true,
+      "payload": {
+        "event_name": "skill.error",
+        "error": {
+          "error_class": "validation",
+          "message": "validation failed"
+        }
+      }
+    },
+    {
+      "id": "obs-v02-fail-error-null",
+      "ruleId": "OBS-V02",
+      "expectedPass": false,
+      "payload": {
+        "event_name": "skill.error",
+        "error": null
+      }
+    },
+    {
+      "id": "obs-v03-pass-error-class",
+      "ruleId": "OBS-V03",
+      "expectedPass": true,
+      "payload": {
+        "event_name": "skill.error",
+        "error": {
+          "error_class": "resource",
+          "message": "budget exceeded"
+        }
+      }
+    },
+    {
+      "id": "obs-v03-fail-error-class",
+      "ruleId": "OBS-V03",
+      "expectedPass": false,
+      "payload": {
+        "event_name": "skill.error",
+        "error": {
+          "error_class": "budget",
+          "message": "budget exceeded"
+        }
+      }
+    },
+    {
+      "id": "obs-v04-pass-attribute-namespace",
+      "ruleId": "OBS-V04",
+      "expectedPass": true,
+      "payload": {
+        "event_name": "workflow.completed",
+        "attributes": {
+          "repo-audit.duration_ms": 50,
+          "repo-audit.step_id": "s-1"
+        }
+      }
+    },
+    {
+      "id": "obs-v04-fail-attribute-namespace",
+      "ruleId": "OBS-V04",
+      "expectedPass": false,
+      "payload": {
+        "event_name": "workflow.completed",
+        "attributes": {
+          "duration_ms": 50
+        }
+      }
+    },
+    {
+      "id": "obs-v05-advisory-only",
+      "ruleId": "OBS-V05",
+      "expectedPass": false,
+      "payload": {
+        "event_name": "workflow.completed"
+      }
+    },
+    {
+      "id": "obs-v06-pass-resource-usage",
+      "ruleId": "OBS-V06",
+      "expectedPass": true,
+      "payload": {
+        "event_name": "resource.budget_exceeded",
+        "resource_usage": {
+          "budget_scope": "run",
+          "budget_limit": 1000,
+          "budget_used": 1200,
+          "unit": "tokens"
+        }
+      }
+    },
+    {
+      "id": "obs-v06-fail-resource-usage-missing",
+      "ruleId": "OBS-V06",
+      "expectedPass": false,
+      "payload": {
+        "event_name": "resource.budget_exceeded"
+      }
+    }
+  ]
+}

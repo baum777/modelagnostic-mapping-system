@@ -1,0 +1,50 @@
+{
+  "mahp_version": "1.0.0",
+  "envelope_id": "mahp-seq-001",
+  "emitter": {
+    "skill_id": "core.repo-audit",
+    "run_id": "run-seq-001",
+    "agent_role": "primary-agent",
+    "execution_status": "verified"
+  },
+  "receiver": {
+    "skill_id": "core.readiness-check",
+    "agent_role": "validator"
+  },
+  "execution_context": {
+    "objective": "Transfer verified repo-audit findings to readiness review.",
+    "applied_steps": [
+      {
+        "step_id": "step-1",
+        "description": "Collected repo governance evidence.",
+        "execution_status": "verified",
+        "artifact": {
+          "artifact_ref": "docs/authority-matrix.md",
+          "artifact_type": "doc"
+        },
+        "verification_reference": "validator://validate-neutral"
+      }
+    ],
+    "current_state_summary": "Repo governance and contract surfaces were verified and summarized for downstream review.",
+    "state_claim_status": "observed"
+  },
+  "provenance_chain": [
+    {
+      "sequence": 1,
+      "relationship": "origin",
+      "envelope_id": "mahp-seq-001",
+      "skill_id": "core.repo-audit",
+      "run_id": "run-seq-001"
+    }
+  ],
+  "open_gaps": [],
+  "acceptance_criteria": [
+    {
+      "criterion_id": "ac-1",
+      "description": "Receiver can trace the verified evidence artifact.",
+      "verification_method": "artifact-reference-check"
+    }
+  ],
+  "composition_pattern": "sequential",
+  "fan_out_group_id": null
+}

@@ -1,0 +1,151 @@
+{
+  "id": "mahp-contract-rules",
+  "kind": "mahp",
+  "blocking": true,
+  "target": {
+    "name": "handoff-protocol"
+  },
+  "expectations": {
+    "blockingRules": [
+      "MAHP-V01",
+      "MAHP-V02",
+      "MAHP-V03",
+      "MAHP-V04",
+      "MAHP-V07"
+    ],
+    "deferredRules": [
+      "MAHP-V05",
+      "MAHP-V06"
+    ],
+    "optInOnly": true
+  },
+  "cases": [
+    {
+      "id": "mahp-v01-pass-acceptance-criteria",
+      "ruleId": "MAHP-V01",
+      "expectedPass": true,
+      "payload": {
+        "acceptance_criteria": [
+          {
+            "criterion_id": "ac-1",
+            "description": "Receiver can verify the handoff artifact.",
+            "verification_method": "artifact-check"
+          }
+        ]
+      }
+    },
+    {
+      "id": "mahp-v01-fail-acceptance-criteria-empty",
+      "ruleId": "MAHP-V01",
+      "expectedPass": false,
+      "payload": {
+        "acceptance_criteria": []
+      }
+    },
+    {
+      "id": "mahp-v02-pass-verified-step-reference",
+      "ruleId": "MAHP-V02",
+      "expectedPass": true,
+      "payload": {
+        "execution_context": {
+          "applied_steps": [
+            {
+              "step_id": "step-1",
+              "description": "Verified a contract artifact.",
+              "execution_status": "verified",
+              "artifact": "core/contracts/handoff-protocol.json",
+              "verification_reference": "validator://verify-step-1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mahp-v02-fail-verified-step-missing-reference",
+      "ruleId": "MAHP-V02",
+      "expectedPass": false,
+      "payload": {
+        "execution_context": {
+          "applied_steps": [
+            {
+              "step_id": "step-1",
+              "description": "Verified a contract artifact.",
+              "execution_status": "verified",
+              "artifact": "core/contracts/handoff-protocol.json"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mahp-v03-pass-provenance-origin",
+      "ruleId": "MAHP-V03",
+      "expectedPass": true,
+      "payload": {
+        "provenance_chain": [
+          {
+            "sequence": 1,
+            "relationship": "origin",
+            "envelope_id": "env-1",
+            "skill_id": "core.repo-audit",
+            "run_id": "run-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "mahp-v03-fail-provenance-no-origin",
+      "ruleId": "MAHP-V03",
+      "expectedPass": false,
+      "payload": {
+        "provenance_chain": [
+          {
+            "sequence": 1,
+            "relationship": "handoff-parent",
+            "envelope_id": "env-1",
+            "skill_id": "core.repo-audit",
+            "run_id": "run-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "mahp-v04-pass-fanout-group",
+      "ruleId": "MAHP-V04",
+      "expectedPass": true,
+      "payload": {
+        "composition_pattern": "fan-out",
+        "fan_out_group_id": "group-1"
+      }
+    },
+    {
+      "id": "mahp-v04-fail-fanin-group-missing",
+      "ruleId": "MAHP-V04",
+      "expectedPass": false,
+      "payload": {
+        "composition_pattern": "fan-in",
+        "fan_out_group_id": null
+      }
+    },
+    {
+      "id": "mahp-v07-pass-emitter-status",
+      "ruleId": "MAHP-V07",
+      "expectedPass": true,
+      "payload": {
+        "emitter": {
+          "execution_status": "applied"
+        }
+      }
+    },
+    {
+      "id": "mahp-v07-fail-emitter-status",
+      "ruleId": "MAHP-V07",
+      "expectedPass": false,
+      "payload": {
+        "emitter": {
+          "execution_status": "drafted"
+        }
+      }
+    }
+  ]
+}
