@@ -19,6 +19,8 @@
     "eval:pbc": "node scripts/tools/run-certification-evals.mjs --kind pbc",
     "eval:wmc": "node scripts/tools/run-certification-evals.mjs --kind wmc",
     "eval:mahp": "node scripts/tools/run-certification-evals.mjs --kind mahp",
+    "eval:rgc": "node scripts/tools/run-certification-evals.mjs --kind rgc",
+    "eval:tsc": "node scripts/tools/run-certification-evals.mjs --kind tsc",
     "eval:secret-boundary": "node scripts/tools/run-certification-evals.mjs --kind secret-boundary",
     "eval:skill-routing": "node scripts/tools/run-certification-evals.mjs --kind skill-routing",
     "eval:workflow-routing": "node scripts/tools/run-certification-evals.mjs --kind workflow-routing",

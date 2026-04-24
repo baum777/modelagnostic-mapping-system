@@ -26,6 +26,8 @@ Executable certification checks live here.
 - PBC contract-rule checks (`eval:pbc`) for permission-boundary blocking rule coverage with advisory/deferred rule isolation
 - WMC contract-rule checks (`eval:wmc`) for memory-contract blocking rule coverage with deferred cross-module rule isolation
 - MAHP contract-rule checks (`eval:mahp`) for handoff-envelope blocking rule coverage with deferred receiver/runtime semantics
+- RGC contract-rule checks (`eval:rgc`) for deterministic resource-governor blocking rule coverage with advisory/deferred rule isolation
+- TSC contract-rule checks (`eval:tsc`) for deterministic trigger/scheduling blocking rule coverage with advisory/deferred rule isolation
 
 ## Gate Rule
 
@@ -37,3 +39,5 @@ Executable certification checks live here.
   - `npm run eval:pbc`
   - `npm run eval:wmc`
   - `npm run eval:mahp`
+  - `npm run eval:rgc`
+  - `npm run eval:tsc`

@@ -1,0 +1,19 @@
+{
+  "tsc_version": "1.0.0",
+  "workflow_id": "verification-and-certification",
+  "trigger_type": "threshold",
+  "threshold_config": {
+    "metric_id": "quality.defect_rate",
+    "operator": "gt",
+    "value": 0.05,
+    "cooldown_seconds": 600
+  },
+  "preconditions": [
+    {
+      "type": "wmc-key-exists",
+      "wmc_key": "repo-audit.summary_v1",
+      "on_failure": "BLOCKED"
+    }
+  ],
+  "max_concurrent_runs": 1
+}

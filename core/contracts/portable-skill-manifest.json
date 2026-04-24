@@ -45,6 +45,20 @@
         "handoff-emitter",
         "handoff-receiver"
       ]
+    },
+    "resourceGovernor": {
+      "contractPath": "core/contracts/resource-governor.json",
+      "maturityLabel": "contract-backed",
+      "validatorStatus": "deferred",
+      "runtimeStatus": "deferred",
+      "adoptionMode": "opt-in"
+    },
+    "triggerScheduling": {
+      "contractPath": "core/contracts/trigger-scheduling.json",
+      "maturityLabel": "contract-backed",
+      "validatorStatus": "deferred",
+      "runtimeStatus": "deferred",
+      "adoptionMode": "opt-in"
     }
   },
   "skillDiscoveryOverrides": {

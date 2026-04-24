@@ -1,0 +1,26 @@
+{
+  "rgc_version": "1.0.0",
+  "skill_resource_declaration": {
+    "skill_id": "core.readiness-check",
+    "resource": {
+      "profile": "minimal",
+      "max_tokens_hint": 1500,
+      "max_latency_ms_hint": 4000,
+      "tool_calls_max": 2,
+      "retry_policy": {
+        "max_retries": 0,
+        "backoff_strategy": "none",
+        "retry_on": []
+      },
+      "idempotent": true
+    }
+  },
+  "workflow_budget_cap": {
+    "workflow_id": "verification-and-certification",
+    "total_token_budget": 48000,
+    "per_skill_token_budget": 16000,
+    "latency_slo_ms": 30000,
+    "slo_violation_action": "emit_only",
+    "on_budget_exceeded": "BLOCKED"
+  }
+}

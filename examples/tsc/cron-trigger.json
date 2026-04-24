@@ -1,0 +1,17 @@
+{
+  "tsc_version": "1.0.0",
+  "workflow_id": "verification-and-certification",
+  "trigger_type": "cron",
+  "cron_config": {
+    "expression": "0 */6 * * *",
+    "timezone": "UTC",
+    "jitter_seconds": 30
+  },
+  "preconditions": [
+    {
+      "type": "workflow-not-running",
+      "on_failure": "skip"
+    }
+  ],
+  "max_concurrent_runs": 1
+}

@@ -1,0 +1,124 @@
+{
+  "id": "tsc-contract-rules",
+  "kind": "tsc",
+  "blocking": true,
+  "target": {
+    "name": "trigger-scheduling"
+  },
+  "expectations": {
+    "blockingRules": [
+      "TSC-V01",
+      "TSC-V02",
+      "TSC-V03",
+      "TSC-V07"
+    ],
+    "advisoryRules": [
+      "TSC-V04"
+    ],
+    "deferredRules": [
+      "TSC-V05",
+      "TSC-V06"
+    ],
+    "optInOnly": true
+  },
+  "cases": [
+    {
+      "id": "tsc-v01-pass-cron-config-present",
+      "ruleId": "TSC-V01",
+      "expectedPass": true,
+      "payload": {
+        "trigger_type": "cron",
+        "cron_config": {
+          "expression": "*/5 * * * *",
+          "timezone": "UTC"
+        }
+      }
+    },
+    {
+      "id": "tsc-v01-fail-webhook-config-missing",
+      "ruleId": "TSC-V01",
+      "expectedPass": false,
+      "payload": {
+        "trigger_type": "webhook"
+      }
+    },
+    {
+      "id": "tsc-v02-pass-cron-expression",
+      "ruleId": "TSC-V02",
+      "expectedPass": true,
+      "payload": {
+        "trigger_type": "cron",
+        "cron_config": {
+          "expression": "0 3 * * 1",
+          "timezone": "UTC"
+        }
+      }
+    },
+    {
+      "id": "tsc-v02-fail-cron-expression-invalid",
+      "ruleId": "TSC-V02",
+      "expectedPass": false,
+      "payload": {
+        "trigger_type": "cron",
+        "cron_config": {
+          "expression": "@daily",
+          "timezone": "UTC"
+        }
+      }
+    },
+    {
+      "id": "tsc-v03-pass-timezone-valid",
+      "ruleId": "TSC-V03",
+      "expectedPass": true,
+      "payload": {
+        "trigger_type": "cron",
+        "cron_config": {
+          "expression": "0 9 * * *",
+          "timezone": "Europe/Berlin"
+        }
+      }
+    },
+    {
+      "id": "tsc-v03-fail-timezone-invalid",
+      "ruleId": "TSC-V03",
+      "expectedPass": false,
+      "payload": {
+        "trigger_type": "cron",
+        "cron_config": {
+          "expression": "0 9 * * *",
+          "timezone": "Mars/Phobos"
+        }
+      }
+    },
+    {
+      "id": "tsc-v07-pass-max-concurrent-runs",
+      "ruleId": "TSC-V07",
+      "expectedPass": true,
+      "payload": {
+        "max_concurrent_runs": 1
+      }
+    },
+    {
+      "id": "tsc-v07-fail-max-concurrent-runs-zero",
+      "ruleId": "TSC-V07",
+      "expectedPass": false,
+      "payload": {
+        "max_concurrent_runs": 0
+      }
+    },
+    {
+      "id": "tsc-v04-advisory-webhook-auth-none",
+      "ruleId": "TSC-V04",
+      "expectedPass": false,
+      "payload": {
+        "trigger_type": "webhook",
+        "deployment_profile": "production",
+        "webhook_config": {
+          "method": "POST",
+          "auth_scheme": "none",
+          "payload_schema_ref": "schemas/event.json"
+        }
+      }
+    }
+  ]
+}

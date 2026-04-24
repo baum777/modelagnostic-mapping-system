@@ -1,0 +1,6 @@
+{
+  "tsc_version": "1.0.0",
+  "workflow_id": "implementation-and-handoff",
+  "trigger_type": "manual",
+  "max_concurrent_runs": 1
+}

@@ -1,0 +1,251 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "core/contracts/resource-governor.json",
+  "schemaVersion": "1.0.0",
+  "canonicalOwner": "core/contracts/resource-governor.json",
+  "scope": "portable-core",
+  "maturityLabel": "contract-backed",
+  "validatorStatus": "deferred",
+  "runtimeStatus": "deferred",
+  "adoptionMode": "opt-in",
+  "title": "Resource Governor Contract",
+  "description": "Provider-neutral declaration contract for resource posture, retry policy, fallback constraints, and workflow budget overlays. This contract defines no runtime budget engine, token metering, latency enforcement, retry runtime, or fallback execution runtime.",
+  "validationRules": [
+    {
+      "rule_id": "RGC-V01",
+      "status": "deferred",
+      "blocking": true,
+      "summary": "fallback_skill_id should reference an existing skill declaration."
+    },
+    {
+      "rule_id": "RGC-V02",
+      "status": "deferred",
+      "blocking": true,
+      "summary": "referenced fallback skill should use profile minimal."
+    },
+    {
+      "rule_id": "RGC-V03",
+      "status": "deferred",
+      "blocking": true,
+      "summary": "referenced fallback skill should not declare its own fallback_skill_id."
+    },
+    {
+      "rule_id": "RGC-V04",
+      "status": "advisory",
+      "blocking": false,
+      "summary": "idempotent true should avoid known side-effectful tool calls."
+    },
+    {
+      "rule_id": "RGC-V05",
+      "status": "contract-backed",
+      "blocking": true,
+      "summary": "on_budget_exceeded fallback requires skill fallback_skill_id."
+    },
+    {
+      "rule_id": "RGC-V06",
+      "status": "advisory",
+      "blocking": false,
+      "summary": "max_tokens_hint should not exceed profile guidance ceiling unless profile is custom."
+    }
+  ],
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "rgc_version",
+    "skill_resource_declaration",
+    "workflow_budget_cap"
+  ],
+  "properties": {
+    "rgc_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "skill_resource_declaration": {
+      "$ref": "#/$defs/skillResourceDeclaration"
+    },
+    "workflow_budget_cap": {
+      "$ref": "#/$defs/workflowBudgetCap"
+    }
+  },
+  "$defs": {
+    "resourceProfile": {
+      "type": "string",
+      "enum": [
+        "minimal",
+        "standard",
+        "intensive",
+        "custom"
+      ]
+    },
+    "retryableErrorClass": {
+      "type": "string",
+      "enum": [
+        "validation",
+        "permission",
+        "memory",
+        "resource",
+        "provider",
+        "transport",
+        "unknown"
+      ]
+    },
+    "retryPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_retries",
+        "backoff_strategy",
+        "retry_on"
+      ],
+      "properties": {
+        "max_retries": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "backoff_strategy": {
+          "type": "string",
+          "enum": [
+            "none",
+            "linear",
+            "exponential"
+          ]
+        },
+        "retry_on": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/retryableErrorClass"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "resourceDeclaration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profile",
+        "idempotent"
+      ],
+      "properties": {
+        "profile": {
+          "$ref": "#/$defs/resourceProfile"
+        },
+        "max_tokens_hint": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_latency_ms_hint": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "tool_calls_max": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "retry_policy": {
+          "$ref": "#/$defs/retryPolicy"
+        },
+        "fallback_skill_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "idempotent": {
+          "type": "boolean"
+        }
+      }
+    },
+    "skillResourceDeclaration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "skill_id",
+        "resource"
+      ],
+      "properties": {
+        "skill_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resource": {
+          "$ref": "#/$defs/resourceDeclaration"
+        }
+      }
+    },
+    "workflowBudgetCap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "workflow_id",
+        "total_token_budget",
+        "per_skill_token_budget",
+        "latency_slo_ms",
+        "slo_violation_action",
+        "on_budget_exceeded"
+      ],
+      "properties": {
+        "workflow_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "total_token_budget": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "per_skill_token_budget": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "latency_slo_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "slo_violation_action": {
+          "type": "string",
+          "enum": [
+            "emit_only",
+            "BLOCKED"
+          ]
+        },
+        "on_budget_exceeded": {
+          "type": "string",
+          "enum": [
+            "BLOCKED",
+            "fallback",
+            "human_gate"
+          ]
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "workflow_budget_cap": {
+            "properties": {
+              "on_budget_exceeded": {
+                "const": "fallback"
+              }
+            },
+            "required": [
+              "on_budget_exceeded"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "skill_resource_declaration": {
+            "properties": {
+              "resource": {
+                "required": [
+                  "fallback_skill_id"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

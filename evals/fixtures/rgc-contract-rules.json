@@ -1,0 +1,145 @@
+{
+  "id": "rgc-contract-rules",
+  "kind": "rgc",
+  "blocking": true,
+  "target": {
+    "name": "resource-governor"
+  },
+  "expectations": {
+    "blockingRules": [
+      "RGC-V05"
+    ],
+    "advisoryRules": [
+      "RGC-V04",
+      "RGC-V06"
+    ],
+    "deferredRules": [
+      "RGC-V01",
+      "RGC-V02",
+      "RGC-V03"
+    ],
+    "optInOnly": true
+  },
+  "cases": [
+    {
+      "id": "rgc-v05-pass-fallback-with-skill-fallback-id",
+      "ruleId": "RGC-V05",
+      "expectedPass": true,
+      "payload": {
+        "skill_resource_declaration": {
+          "skill_id": "core.repo-audit",
+          "resource": {
+            "profile": "standard",
+            "idempotent": true,
+            "fallback_skill_id": "core.readiness-check"
+          }
+        },
+        "workflow_budget_cap": {
+          "on_budget_exceeded": "fallback"
+        }
+      }
+    },
+    {
+      "id": "rgc-v05-fail-fallback-without-skill-fallback-id",
+      "ruleId": "RGC-V05",
+      "expectedPass": false,
+      "payload": {
+        "skill_resource_declaration": {
+          "skill_id": "core.repo-audit",
+          "resource": {
+            "profile": "standard",
+            "idempotent": true
+          }
+        },
+        "workflow_budget_cap": {
+          "on_budget_exceeded": "fallback"
+        }
+      }
+    },
+    {
+      "id": "rgc-v01-deferred-registry-reference-pass",
+      "ruleId": "RGC-V01",
+      "expectedPass": true,
+      "payload": {
+        "skill_resource_declaration": {
+          "skill_id": "core.repo-audit",
+          "resource": {
+            "profile": "standard",
+            "idempotent": true,
+            "fallback_skill_id": "core.readiness-check"
+          }
+        },
+        "skill_catalog": {
+          "core.readiness-check": {
+            "resource": {
+              "profile": "minimal",
+              "idempotent": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "rgc-v02-deferred-fallback-profile-fail",
+      "ruleId": "RGC-V02",
+      "expectedPass": false,
+      "payload": {
+        "skill_resource_declaration": {
+          "skill_id": "core.repo-audit",
+          "resource": {
+            "profile": "standard",
+            "idempotent": true,
+            "fallback_skill_id": "core.readiness-check"
+          }
+        },
+        "skill_catalog": {
+          "core.readiness-check": {
+            "resource": {
+              "profile": "standard",
+              "idempotent": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "rgc-v03-deferred-fallback-chain-fail",
+      "ruleId": "RGC-V03",
+      "expectedPass": false,
+      "payload": {
+        "skill_resource_declaration": {
+          "skill_id": "core.repo-audit",
+          "resource": {
+            "profile": "standard",
+            "idempotent": true,
+            "fallback_skill_id": "core.readiness-check"
+          }
+        },
+        "skill_catalog": {
+          "core.readiness-check": {
+            "resource": {
+              "profile": "minimal",
+              "idempotent": true,
+              "fallback_skill_id": "core.repo-audit"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "rgc-v06-advisory-only-profile-ceiling",
+      "ruleId": "RGC-V06",
+      "expectedPass": false,
+      "payload": {
+        "skill_resource_declaration": {
+          "skill_id": "core.repo-audit",
+          "resource": {
+            "profile": "minimal",
+            "idempotent": true,
+            "max_tokens_hint": 4000
+          }
+        }
+      }
+    }
+  ]
+}

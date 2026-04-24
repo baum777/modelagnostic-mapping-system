@@ -13,6 +13,8 @@ import { evaluateObsContractFixture } from './eval-obs-contract.mjs';
 import { evaluatePbcContractFixture } from './eval-pbc-contract.mjs';
 import { evaluateWmcContractFixture } from './eval-wmc-contract.mjs';
 import { evaluateMahpContractFixture } from './eval-mahp-contract.mjs';
+import { evaluateRgcContractFixture } from './eval-rgc-contract.mjs';
+import { evaluateTscContractFixture } from './eval-tsc-contract.mjs';
 
 function normalize(filePath) {
   return path.resolve(filePath).replace(/\\/g, '/');
@@ -1201,6 +1203,14 @@ async function evaluateFixture(root, registry, providerExports, outputContractCa
     result.issues.push(...check.issues);
   } else if (fixture.kind === 'mahp') {
     const check = evaluateMahpContractFixture(fixture);
+    result.passed = check.passed;
+    result.issues.push(...check.issues);
+  } else if (fixture.kind === 'rgc') {
+    const check = evaluateRgcContractFixture(fixture);
+    result.passed = check.passed;
+    result.issues.push(...check.issues);
+  } else if (fixture.kind === 'tsc') {
+    const check = evaluateTscContractFixture(fixture);
     result.passed = check.passed;
     result.issues.push(...check.issues);
   } else if (fixture.kind === 'secret-boundary') {

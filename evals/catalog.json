@@ -29,6 +29,8 @@
     "fixtures/obs-contract-rules.json",
     "fixtures/pbc-contract-rules.json",
     "fixtures/wmc-contract-rules.json",
-    "fixtures/mahp-contract-rules.json"
+    "fixtures/mahp-contract-rules.json",
+    "fixtures/rgc-contract-rules.json",
+    "fixtures/tsc-contract-rules.json"
   ]
 }

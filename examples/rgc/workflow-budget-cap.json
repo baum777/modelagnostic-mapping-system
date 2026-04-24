@@ -1,0 +1,8 @@
+{
+  "workflow_id": "implementation-and-handoff",
+  "total_token_budget": 64000,
+  "per_skill_token_budget": 24000,
+  "latency_slo_ms": 45000,
+  "slo_violation_action": "BLOCKED",
+  "on_budget_exceeded": "human_gate"
+}

@@ -15,6 +15,8 @@ Canonical machine-readable contracts for the portable slice.
 - `core/contracts/workflow-memory-contract.json`
 - `core/contracts/handoff-protocol.json`
 - `core/contracts/handoff-patterns.json`
+- `core/contracts/resource-governor.json`
+- `core/contracts/trigger-scheduling.json`
 
 Execution evidence and certification artifact contracts are defined in `core/contracts/output-contracts.json`.
 
@@ -23,8 +25,11 @@ Execution evidence and certification artifact contracts are defined in `core/con
 `core/contracts/workflow-memory-contract.json` is the canonical provider-neutral WMC claim surface and is currently `contract-backed` (validator/runtime wiring deferred).
 `core/contracts/handoff-protocol.json` and `core/contracts/handoff-patterns.json` are the canonical provider-neutral MAHP surfaces and are currently `contract-backed`; they define no transport, queueing, retries, or authorization engine.
 MAHP is adjacent to OBS, PBC, and WMC contract surfaces only. This slice does not add runtime orchestration across those modules.
+`core/contracts/resource-governor.json` is the canonical provider-neutral RGC surface and is currently `contract-backed`; it defines declarative resource and budget-override claims only, not a budget runtime engine.
+`core/contracts/trigger-scheduling.json` is the canonical provider-neutral TSC surface and is currently `contract-backed`; it defines trigger/scheduling declarations only, not a scheduler runtime.
 Validator-backed candidate eval slices now exist for targeted contract-rule checks (`eval:obs`, `eval:pbc`, `eval:wmc`) and remain opt-in module checks; runtime implementation is still deferred.
 `eval:mahp` is a minimal validator-backed candidate slice for core envelope-rule checks only and does not introduce runtime handoff orchestration.
+`eval:rgc` and `eval:tsc` are minimal validator-backed candidate slices for deterministic contract-rule checks only and do not introduce budget or scheduler runtimes.
 
 ## Safe Extension Flow
 
