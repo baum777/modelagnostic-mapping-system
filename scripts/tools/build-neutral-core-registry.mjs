@@ -8,6 +8,8 @@ const DEFAULT_OUTS = [
   path.join('core', 'contracts', 'core-registry.json'),
   path.join('contracts', 'core-registry.json')
 ];
+const allowedApprovalModes = new Set(['read-only', 'approval-required']);
+const allowedActivationModes = new Set(['modelagnostic-autonomous', 'explicit-user-call-required']);
 
 function parseArgs(argv) {
   const args = {
@@ -173,6 +175,27 @@ function deriveWorkflowSupport(skillName, workflows) {
   };
 }
 
+function deriveActivationMode(skillName, approvalMode, safeToAutoRun) {
+  if (!allowedApprovalModes.has(approvalMode)) {
+    throw new Error(`Skill ${skillName} has unsupported approvalMode ${approvalMode || '<missing>'}.`);
+  }
+  if (typeof safeToAutoRun !== 'boolean') {
+    throw new Error(`Skill ${skillName} must provide safeToAutoRun as a boolean.`);
+  }
+  if (approvalMode === 'approval-required' && safeToAutoRun) {
+    throw new Error(`Skill ${skillName} has invalid activation policy: approval-required cannot be combined with safeToAutoRun=true.`);
+  }
+
+  const activationMode = approvalMode === 'approval-required'
+    ? 'explicit-user-call-required'
+    : (safeToAutoRun ? 'modelagnostic-autonomous' : 'explicit-user-call-required');
+
+  if (!allowedActivationModes.has(activationMode)) {
+    throw new Error(`Skill ${skillName} produced invalid activationMode ${activationMode}.`);
+  }
+  return activationMode;
+}
+
 function buildSkillRecords(root, providerCapabilities, workflows = []) {
   const manifest = loadPortableSkillManifest(root);
   const contracts = manifest.contracts;
@@ -206,6 +229,7 @@ function buildSkillRecords(root, providerCapabilities, workflows = []) {
       const classification = frontmatter.classification || contract.classification || 'unknown';
       const safeToAutoRun = frontmatter.safe_to_auto_run === true;
       const approvalMode = contract.approvalMode || (safeToAutoRun ? 'read-only' : 'approval-required');
+      const activationMode = deriveActivationMode(name, approvalMode, safeToAutoRun);
       const outputHeadings = extractOutputHeadings(fs.readFileSync(skillPath, 'utf8'));
       const sourcePath = `${skillRoot.startsWith(path.join(root, 'core')) ? 'core/skills' : 'skills'}/${entry.name}/SKILL.md`;
       const discoveryOverride = manifest.discoveryOverrides[name] || {};
@@ -238,6 +262,7 @@ function buildSkillRecords(root, providerCapabilities, workflows = []) {
         mcpPosture,
         toolUsagePosture,
         approvalMode,
+        activationMode,
         subagentPolicy: contract.subagentPolicy || (classification === 'shared-with-local-inputs' ? 'forbid' : 'allow'),
         requiredTools,
         optionalTools,

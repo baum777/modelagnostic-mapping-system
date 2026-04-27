@@ -61,6 +61,30 @@
       "adoptionMode": "opt-in"
     }
   },
+  "activationPolicy": {
+    "field": "activationMode",
+    "sourceOfTruth": [
+      "skills[].approvalMode",
+      "core/skills/*/SKILL.md frontmatter safe_to_auto_run",
+      "skills/*/SKILL.md frontmatter safe_to_auto_run"
+    ],
+    "allowedValues": [
+      "modelagnostic-autonomous",
+      "explicit-user-call-required"
+    ],
+    "derivationRules": [
+      "approvalMode=approval-required -> explicit-user-call-required",
+      "approvalMode=read-only and safeToAutoRun=true -> modelagnostic-autonomous",
+      "approvalMode=read-only and safeToAutoRun=false -> explicit-user-call-required"
+    ],
+    "invalidCombinations": [
+      "approvalMode=approval-required and safeToAutoRun=true"
+    ],
+    "expectedDistribution": {
+      "modelagnostic-autonomous": 14,
+      "explicit-user-call-required": 1
+    }
+  },
   "skillDiscoveryOverrides": {
     "repo-audit": {
       "category": "governance-audit",

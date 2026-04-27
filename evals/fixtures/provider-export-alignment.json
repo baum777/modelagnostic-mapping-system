@@ -37,6 +37,7 @@
       "maturityLabel",
       "mcpPosture",
       "toolUsagePosture",
+      "activationMode",
       "workflowSupport"
     ],
     "requiredWorkflowFields": [

@@ -54,15 +54,26 @@ function validateFixtureShape(fixture, issues) {
 }
 
 function caseAxeReport(report, caseId) {
-  return report.evidence.caseReports.find((entry) => entry.caseId === caseId) || null;
+  const caseReports = Array.isArray(report?.evidence?.caseReports)
+    ? report.evidence.caseReports
+    : Array.isArray(report?.evidence?.cases)
+      ? report.evidence.cases
+      : [];
+  return caseReports.find((entry) => entry.caseId === caseId) || null;
 }
 
 function caseLighthouseReport(report, caseId) {
-  return report.evidence.caseReports.find((entry) => entry.caseId === caseId) || null;
+  const caseReports = Array.isArray(report?.evidence?.caseReports)
+    ? report.evidence.caseReports
+    : Array.isArray(report?.evidence?.cases)
+      ? report.evidence.cases
+      : [];
+  return caseReports.find((entry) => entry.caseId === caseId) || null;
 }
 
 function caseStructureFindings(report, caseId) {
-  return report.findings.filter((entry) => String(entry.path || '').startsWith(caseId));
+  const findings = Array.isArray(report?.findings) ? report.findings : [];
+  return findings.filter((entry) => String(entry.path || '').startsWith(caseId));
 }
 
 function hasConfirmedFinding(findings) {
@@ -87,24 +98,48 @@ export async function evaluateWcagA11yFixture(fixture, options = {}) {
     baseRoot: options.baseRoot || process.cwd(),
     mode: 'certification'
   });
-  if (!Array.isArray(axeReport.evidence?.caseReports) || axeReport.evidence.caseReports.length === 0) {
+  const axeCaseReports = Array.isArray(axeReport.evidence?.caseReports)
+    ? axeReport.evidence.caseReports
+    : Array.isArray(axeReport.evidence?.cases)
+      ? axeReport.evidence.cases
+      : [];
+  if (axeCaseReports.length === 0) {
     issues.push('run-axe-accessibility-audit did not produce case reports.');
+    for (const finding of axeReport.findings || []) {
+      issues.push(`runtime: ${finding.message || finding.code || 'unknown-runtime-failure'}`);
+    }
   }
 
   const lighthouseReport = await runLighthousePageAudit(payload, {
     baseRoot: options.baseRoot || process.cwd(),
     mode: 'certification'
   });
-  if (!Array.isArray(lighthouseReport.evidence?.caseReports) || lighthouseReport.evidence.caseReports.length === 0) {
+  const lighthouseCaseReports = Array.isArray(lighthouseReport.evidence?.caseReports)
+    ? lighthouseReport.evidence.caseReports
+    : Array.isArray(lighthouseReport.evidence?.cases)
+      ? lighthouseReport.evidence.cases
+      : [];
+  if (lighthouseCaseReports.length === 0) {
     issues.push('run-lighthouse-page-audit did not produce case reports.');
+    for (const finding of lighthouseReport.findings || []) {
+      issues.push(`runtime: ${finding.message || finding.code || 'unknown-runtime-failure'}`);
+    }
   }
 
   const structureReport = await lintWcagStructure(payload, {
     baseRoot: options.baseRoot || process.cwd(),
     mode: 'certification'
   });
-  if (!Array.isArray(structureReport.evidence?.caseReports) || structureReport.evidence.caseReports.length === 0) {
+  const structureCaseReports = Array.isArray(structureReport.evidence?.caseReports)
+    ? structureReport.evidence.caseReports
+    : Array.isArray(structureReport.evidence?.cases)
+      ? structureReport.evidence.cases
+      : [];
+  if (structureCaseReports.length === 0) {
     issues.push('lint-wcag-structure did not produce case reports.');
+    for (const finding of structureReport.findings || []) {
+      issues.push(`runtime: ${finding.message || finding.code || 'unknown-runtime-failure'}`);
+    }
   }
 
   const caseResults = [];

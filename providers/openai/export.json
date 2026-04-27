@@ -95,6 +95,7 @@
       "requiresRepoInputs": false,
       "safeToAutoRun": true,
       "approvalMode": "read-only",
+      "activationMode": "modelagnostic-autonomous",
       "subagentPolicy": "allow",
       "requiredTools": [],
       "optionalTools": [],
@@ -176,6 +177,7 @@
       "requiresRepoInputs": false,
       "safeToAutoRun": true,
       "approvalMode": "read-only",
+      "activationMode": "modelagnostic-autonomous",
       "subagentPolicy": "allow",
       "requiredTools": [],
       "optionalTools": [],
@@ -268,6 +270,7 @@
       "requiresRepoInputs": false,
       "safeToAutoRun": true,
       "approvalMode": "read-only",
+      "activationMode": "modelagnostic-autonomous",
       "subagentPolicy": "allow",
       "requiredTools": [
         "failure-mode-enumerator",
@@ -335,6 +338,7 @@
       "requiresRepoInputs": false,
       "safeToAutoRun": true,
       "approvalMode": "read-only",
+      "activationMode": "modelagnostic-autonomous",
       "subagentPolicy": "allow",
       "requiredTools": [
         "spec-compliance-checker",
@@ -403,6 +407,7 @@
       "requiresRepoInputs": false,
       "safeToAutoRun": false,
       "approvalMode": "approval-required",
+      "activationMode": "explicit-user-call-required",
       "subagentPolicy": "allow",
       "requiredTools": [],
       "optionalTools": [],
@@ -462,6 +467,7 @@
       "requiresRepoInputs": false,
       "safeToAutoRun": true,
       "approvalMode": "read-only",
+      "activationMode": "modelagnostic-autonomous",
       "subagentPolicy": "allow",
       "requiredTools": [
         "planning-slice-builder",
@@ -567,6 +573,7 @@
       "requiresRepoInputs": false,
       "safeToAutoRun": true,
       "approvalMode": "read-only",
+      "activationMode": "modelagnostic-autonomous",
       "subagentPolicy": "allow",
       "requiredTools": [
         "repo-structure-scanner",
@@ -632,6 +639,7 @@
       "requiresRepoInputs": false,
       "safeToAutoRun": true,
       "approvalMode": "read-only",
+      "activationMode": "modelagnostic-autonomous",
       "subagentPolicy": "allow",
       "requiredTools": [],
       "optionalTools": [],
@@ -727,6 +735,7 @@
       "requiresRepoInputs": false,
       "safeToAutoRun": true,
       "approvalMode": "read-only",
+      "activationMode": "modelagnostic-autonomous",
       "subagentPolicy": "allow",
       "requiredTools": [],
       "optionalTools": [],
@@ -806,6 +815,7 @@
       "requiresRepoInputs": false,
       "safeToAutoRun": true,
       "approvalMode": "read-only",
+      "activationMode": "modelagnostic-autonomous",
       "subagentPolicy": "allow",
       "requiredTools": [],
       "optionalTools": [],
@@ -887,6 +897,7 @@
       "requiresRepoInputs": true,
       "safeToAutoRun": true,
       "approvalMode": "read-only",
+      "activationMode": "modelagnostic-autonomous",
       "subagentPolicy": "allow",
       "requiredTools": [
         "validate-repo-surface",
@@ -987,6 +998,7 @@
       "requiresRepoInputs": false,
       "safeToAutoRun": true,
       "approvalMode": "read-only",
+      "activationMode": "modelagnostic-autonomous",
       "subagentPolicy": "allow",
       "requiredTools": [],
       "optionalTools": [],
@@ -1073,6 +1085,7 @@
       "requiresRepoInputs": true,
       "safeToAutoRun": true,
       "approvalMode": "read-only",
+      "activationMode": "modelagnostic-autonomous",
       "subagentPolicy": "forbid",
       "requiredTools": [
         "repo-structure-scanner",
@@ -1162,6 +1175,7 @@
       "requiresRepoInputs": true,
       "safeToAutoRun": true,
       "approvalMode": "read-only",
+      "activationMode": "modelagnostic-autonomous",
       "subagentPolicy": "forbid",
       "requiredTools": [],
       "optionalTools": [],
@@ -1238,6 +1252,7 @@
       "requiresRepoInputs": false,
       "safeToAutoRun": true,
       "approvalMode": "read-only",
+      "activationMode": "modelagnostic-autonomous",
       "subagentPolicy": "allow",
       "requiredTools": [
         "repo-structure-scanner",
@@ -1308,6 +1323,7 @@
       "requiresRepoInputs": true,
       "safeToAutoRun": true,
       "approvalMode": "read-only",
+      "activationMode": "modelagnostic-autonomous",
       "subagentPolicy": "forbid",
       "requiredTools": [],
       "optionalTools": [],
@@ -1366,6 +1382,7 @@
       "requiresRepoInputs": true,
       "safeToAutoRun": true,
       "approvalMode": "read-only",
+      "activationMode": "modelagnostic-autonomous",
       "subagentPolicy": "forbid",
       "requiredTools": [
         "validate-secret-boundaries",
@@ -1465,6 +1482,7 @@
       "requiresRepoInputs": false,
       "safeToAutoRun": true,
       "approvalMode": "read-only",
+      "activationMode": "modelagnostic-autonomous",
       "subagentPolicy": "allow",
       "requiredTools": [
         "repo-structure-scanner",
@@ -1579,6 +1597,7 @@
       "requiresRepoInputs": false,
       "safeToAutoRun": true,
       "approvalMode": "read-only",
+      "activationMode": "modelagnostic-autonomous",
       "subagentPolicy": "allow",
       "requiredTools": [
         "planning-slice-builder",
@@ -1671,6 +1690,7 @@
       "requiresRepoInputs": false,
       "safeToAutoRun": true,
       "approvalMode": "read-only",
+      "activationMode": "modelagnostic-autonomous",
       "subagentPolicy": "allow",
       "requiredTools": [
         "repo-structure-scanner",
@@ -1739,6 +1759,7 @@
       "requiresRepoInputs": true,
       "safeToAutoRun": false,
       "approvalMode": "approval-required",
+      "activationMode": "explicit-user-call-required",
       "subagentPolicy": "forbid",
       "requiredTools": [
         "supabase",
@@ -1810,6 +1831,7 @@
       "requiresRepoInputs": false,
       "safeToAutoRun": true,
       "approvalMode": "read-only",
+      "activationMode": "modelagnostic-autonomous",
       "subagentPolicy": "allow",
       "requiredTools": [],
       "optionalTools": [],
@@ -1905,6 +1927,7 @@
       "requiresRepoInputs": false,
       "safeToAutoRun": true,
       "approvalMode": "read-only",
+      "activationMode": "modelagnostic-autonomous",
       "subagentPolicy": "allow",
       "requiredTools": [
         "repo-structure-scanner",
@@ -1973,6 +1996,7 @@
       "requiresRepoInputs": false,
       "safeToAutoRun": true,
       "approvalMode": "read-only",
+      "activationMode": "modelagnostic-autonomous",
       "subagentPolicy": "allow",
       "requiredTools": [
         "repo-structure-scanner",
@@ -2046,6 +2070,7 @@
       "requiresRepoInputs": false,
       "safeToAutoRun": true,
       "approvalMode": "read-only",
+      "activationMode": "modelagnostic-autonomous",
       "subagentPolicy": "allow",
       "requiredTools": [
         "repo-structure-scanner",
@@ -2114,6 +2139,7 @@
       "requiresRepoInputs": false,
       "safeToAutoRun": false,
       "approvalMode": "approval-required",
+      "activationMode": "explicit-user-call-required",
       "subagentPolicy": "allow",
       "requiredTools": [],
       "optionalTools": [],

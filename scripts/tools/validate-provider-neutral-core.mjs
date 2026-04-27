@@ -94,6 +94,8 @@ const allowedAdvisoryGatePolicies = new Set(['record-only']);
 const allowedEvidencePolicies = new Set(['all-required-evidence-artifacts-present']);
 const allowedWorkflowCoverageLabels = new Set(['covered', 'partial', 'planned', 'out-of-scope']);
 const allowedProviderCapabilityStates = new Set(['native', 'adapter', 'unsupported']);
+const allowedApprovalModes = new Set(['read-only', 'approval-required']);
+const allowedActivationModes = new Set(['modelagnostic-autonomous', 'explicit-user-call-required']);
 const compatibilityToolCatalogSourcePath = 'core/contracts/tool-contracts/catalog.json';
 const requiredExecutionStatuses = new Set(['proposed', 'drafted', 'applied', 'verified']);
 const requiredValidationOutcomes = new Set(['PASS', 'BLOCKED']);
@@ -126,6 +128,47 @@ const requiredWorkflowTemplateContracts = new Set([
   'workflow-validation-summary-v1',
   'workflow-certification-summary-v1'
 ]);
+
+function deriveActivationMode(approvalMode, safeToAutoRun) {
+  if (!allowedApprovalModes.has(approvalMode)) {
+    return null;
+  }
+  if (typeof safeToAutoRun !== 'boolean') {
+    return null;
+  }
+  if (approvalMode === 'approval-required' && safeToAutoRun) {
+    return null;
+  }
+  if (approvalMode === 'approval-required') {
+    return 'explicit-user-call-required';
+  }
+  return safeToAutoRun ? 'modelagnostic-autonomous' : 'explicit-user-call-required';
+}
+
+function validateSkillActivationPolicy(skill, contextLabel, issues) {
+  const skillName = skill.name || skill.skillId || '<unnamed>';
+
+  if (!allowedApprovalModes.has(skill.approvalMode)) {
+    issues.push(`${contextLabel} skill ${skillName} has invalid approvalMode ${skill.approvalMode || '<missing>'}.`);
+  }
+  if (typeof skill.safeToAutoRun !== 'boolean') {
+    issues.push(`${contextLabel} skill ${skillName} must declare safeToAutoRun as a boolean.`);
+  }
+  if (skill.approvalMode === 'approval-required' && skill.safeToAutoRun === true) {
+    issues.push(`${contextLabel} skill ${skillName} has invalid activation policy: approval-required cannot be combined with safeToAutoRun=true.`);
+  }
+
+  const expectedActivationMode = deriveActivationMode(skill.approvalMode, skill.safeToAutoRun);
+  if (!allowedActivationModes.has(skill.activationMode)) {
+    issues.push(`${contextLabel} skill ${skillName} has invalid activationMode ${skill.activationMode || '<missing>'}.`);
+    return null;
+  }
+  if (expectedActivationMode && skill.activationMode !== expectedActivationMode) {
+    issues.push(`${contextLabel} skill ${skillName} activationMode must be ${expectedActivationMode} for approvalMode=${skill.approvalMode} and safeToAutoRun=${skill.safeToAutoRun}.`);
+  }
+
+  return skill.activationMode;
+}
 
 function validateWorkflowRunSummaryContract(outputContractCatalog) {
   const issues = [];
@@ -253,6 +296,7 @@ function validateProviderNeutralCore(baseRoot = repoRoot()) {
   const compatibilityRegistryPath = path.join(root, 'contracts', 'core-registry.json');
   const providerCapabilitiesPath = path.join(root, 'core', 'contracts', 'provider-capabilities.json');
   const compatibilityProviderCapabilitiesPath = path.join(root, 'contracts', 'provider-capabilities.json');
+  const portableSkillManifestPath = path.join(root, 'core', 'contracts', 'portable-skill-manifest.json');
   const workflowRoutingPath = path.join(root, 'core', 'contracts', 'workflow-routing-map.json');
   const outputContractsPath = path.join(root, 'core', 'contracts', 'output-contracts.json');
   const toolCatalogPath = path.join(root, 'core', 'contracts', 'tool-contracts', 'catalog.json');
@@ -278,6 +322,18 @@ function validateProviderNeutralCore(baseRoot = repoRoot()) {
   if (fs.existsSync(compatibilityRegistryPath) && JSON.stringify(readJson(compatibilityRegistryPath), null, 2) !== JSON.stringify(generatedRegistry, null, 2)) {
     issues.push('contracts/core-registry.json does not match the generated neutral registry snapshot.');
   }
+
+  const portableSkillManifest = fs.existsSync(portableSkillManifestPath)
+    ? readJson(portableSkillManifestPath)
+    : null;
+  const activationPolicy = portableSkillManifest?.activationPolicy || null;
+  const portableManifestSkillNames = new Set(
+    Array.isArray(portableSkillManifest?.skills)
+      ? portableSkillManifest.skills
+        .filter((entry) => entry && typeof entry.name === 'string')
+        .map((entry) => entry.name)
+      : []
+  );
 
   const capabilities = providerCapabilities(root);
   const providerNames = Array.isArray(capabilities.providers) ? capabilities.providers.map((provider) => provider.name) : [];
@@ -432,11 +488,12 @@ function validateProviderNeutralCore(baseRoot = repoRoot()) {
       issues.push(`providers/${provider}/export.json must declare certification.requiredEvidenceSource as workflow.requiredEvidenceArtifacts.`);
     }
     for (const skill of committedExport.skills || []) {
-      for (const field of ['skillId', 'manifestPath', 'category', 'status', 'maturityLabel', 'mcpPosture', 'toolUsagePosture', 'workflowSupport']) {
+      for (const field of ['skillId', 'manifestPath', 'category', 'status', 'maturityLabel', 'mcpPosture', 'toolUsagePosture', 'safeToAutoRun', 'approvalMode', 'activationMode', 'workflowSupport']) {
         if (skill[field] == null) {
           issues.push(`providers/${provider}/export.json skill ${skill.name || '<unnamed>'} is missing ${field}.`);
         }
       }
+      validateSkillActivationPolicy(skill, `providers/${provider}/export.json`, issues);
       if (!skill.workflowSupport || typeof skill.workflowSupport !== 'object') {
         issues.push(`providers/${provider}/export.json skill ${skill.name || '<unnamed>'} must declare workflowSupport as an object.`);
       } else {
@@ -565,12 +622,17 @@ function validateProviderNeutralCore(baseRoot = repoRoot()) {
   const outputContractCatalog = fs.existsSync(outputContractsPath) ? readJson(outputContractsPath) : { contracts: [] };
   issues.push(...validateWorkflowRunSummaryContract(outputContractCatalog));
   const outputContractIds = new Set((outputContractCatalog.contracts || []).map((entry) => entry.contract_id));
+  const activationDistribution = new Map();
 
   for (const skill of committedRegistry.skills || []) {
-    for (const field of ['skillId', 'skillPath', 'manifestPath', 'category', 'mcpPosture', 'maturityLabel', 'toolUsagePosture']) {
+    for (const field of ['skillId', 'skillPath', 'manifestPath', 'category', 'mcpPosture', 'maturityLabel', 'toolUsagePosture', 'safeToAutoRun', 'approvalMode', 'activationMode']) {
       if (skill[field] == null || skill[field] === '') {
         issues.push(`Skill ${skill.name || '<unnamed>'} must declare ${field}.`);
       }
+    }
+    const activationMode = validateSkillActivationPolicy(skill, 'core/contracts/core-registry.json', issues);
+    if (allowedActivationModes.has(activationMode) && portableManifestSkillNames.has(skill.name)) {
+      activationDistribution.set(activationMode, (activationDistribution.get(activationMode) || 0) + 1);
     }
     if (skill.mcpPosture && !allowedMcpPostures.has(skill.mcpPosture)) {
       issues.push(`Skill ${skill.name} has invalid mcpPosture ${skill.mcpPosture}.`);
@@ -613,6 +675,24 @@ function validateProviderNeutralCore(baseRoot = repoRoot()) {
       issues.push(`Skill ${skill.name} must declare outputHeadings.`);
     } else if (JSON.stringify(skill.outputHeadings) !== JSON.stringify(outputHeadings)) {
       issues.push(`Skill ${skill.name} outputHeadings do not match the SKILL.md output contract.`);
+    }
+  }
+
+  if (activationPolicy?.expectedDistribution && typeof activationPolicy.expectedDistribution === 'object') {
+    const expectedDistribution = activationPolicy.expectedDistribution;
+    for (const [activationMode, expectedCount] of Object.entries(expectedDistribution)) {
+      if (!allowedActivationModes.has(activationMode)) {
+        issues.push(`portable-skill-manifest activationPolicy.expectedDistribution includes unsupported activation mode ${activationMode}.`);
+        continue;
+      }
+      if (!Number.isInteger(expectedCount) || expectedCount < 0) {
+        issues.push(`portable-skill-manifest activationPolicy.expectedDistribution.${activationMode} must be a non-negative integer.`);
+        continue;
+      }
+      const actualCount = activationDistribution.get(activationMode) || 0;
+      if (actualCount !== expectedCount) {
+        issues.push(`Activation distribution drift for ${activationMode}: expected ${expectedCount}, found ${actualCount}.`);
+      }
     }
   }
 

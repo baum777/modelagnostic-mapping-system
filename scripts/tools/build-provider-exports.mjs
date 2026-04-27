@@ -112,6 +112,7 @@ function createProviderExport(root, registry, provider) {
       requiresRepoInputs: skill.requiresRepoInputs,
       safeToAutoRun: skill.safeToAutoRun,
       approvalMode: skill.approvalMode,
+      activationMode: skill.activationMode,
       subagentPolicy: skill.subagentPolicy,
       requiredTools: skill.requiredTools,
       optionalTools: skill.optionalTools,

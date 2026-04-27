@@ -82,6 +82,25 @@ export async function evaluateRenderLayoutFixture(fixture, options = {}) {
 
   if (!Array.isArray(snapshotsReport.evidence?.snapshots) || snapshotsReport.evidence.snapshots.length === 0) {
     issues.push('render-page-snapshots did not produce snapshot evidence.');
+    for (const finding of snapshotsReport.findings || []) {
+      issues.push(`runtime: ${finding.message || finding.code || 'unknown-runtime-failure'}`);
+    }
+    return {
+      passed: false,
+      issues,
+      casesChecked: fixture.cases.length,
+      caseResults: fixture.cases.map((entry) => ({
+        id: entry.id,
+        class: entry.class,
+        passed: false,
+        issues: ['No snapshots produced for case.']
+      })),
+      evidence: {
+        snapshots: snapshotsReport,
+        breakpoints: null,
+        contract: null
+      }
+    };
   }
 
   const breakpointReport = compareRenderBreakpoints({
