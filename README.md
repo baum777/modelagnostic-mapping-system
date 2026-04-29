@@ -39,6 +39,54 @@ Primary audiences:
 
 Important: the class model (`canonical`, `operational`, `derived`, `archive`) is logical only. It does not imply a physical directory split by class.
 
+## Local Root Representation And Data Flow
+
+This is an orientation view of this repository root as the active shared-core node under `C:\workspace\main_projects`. It does not replace the authority model in `AGENTS.md`, `WORKFLOW.md`, `docs/architecture.md`, or `docs/authority-matrix.md`.
+
+```mermaid
+flowchart TD
+  Workspace["C:/workspace/main_projects"]
+  Portfolio["portfolio/\nworkspace-local governance and evidence"]
+  RepoRoot["model-agnostic-workflow-system/\nshared-core repo root"]
+
+  Governance["AGENTS.md + WORKFLOW.md\nrepo governance and workflow entry"]
+  Docs["docs/\narchitecture, authority, compatibility, usage"]
+  Core["core/\nportable semantics and skill surfaces"]
+  Contracts["core/contracts/\ncanonical machine-readable contracts"]
+  Skills["core/skills/ + skills/\nportable and compatibility skills"]
+  Validators["scripts/tools/ + evals/\nvalidators, builders, certification fixtures"]
+  Mirrors["contracts/ + legacy provider dirs + docs/tool-contracts/catalog.json\ncompatibility mirrors"]
+  Exports["providers/*/export.json\nprovider-specific export projections"]
+  Templates["templates/ + examples/\nadoption and reference artifacts"]
+  Consumers["consumer repos\nlocal overlays and .codex manifests"]
+
+  Workspace --> Portfolio
+  Workspace --> RepoRoot
+  Portfolio -. "external governance pointer only" .-> RepoRoot
+  RepoRoot --> Governance
+  Governance --> Docs
+  Governance --> Core
+  Core --> Contracts
+  Core --> Skills
+  Contracts --> Validators
+  Contracts --> Mirrors
+  Contracts --> Exports
+  Templates --> Consumers
+  Exports --> Consumers
+  Skills --> Consumers
+  Validators --> RepoRoot
+```
+
+Data flow:
+
+1. Work enters through `AGENTS.md` and `WORKFLOW.md`, which identify the governing sources, workflow class, validation posture, and stop conditions.
+2. Canonical shared semantics are changed in `core/contracts/*`, `core/skills/*`, and policy surfaces when the change is reusable and provider-neutral.
+3. Registry and compatibility projections are regenerated through the builder scripts when canonical contract inputs change.
+4. Provider exports under `providers/*/export.json` are derived packaging projections, not second canonical sources.
+5. Consumer repositories adopt the shared core through local overlays, `.codex` manifests, and repo-local documentation while keeping their own product, runtime, and evidence authority.
+6. Validators and evals check repository consistency and certification fixtures; they do not create runtime readiness unless a concrete runnable path or generated artifact proves it.
+7. The external portfolio layer may route workspace-local governance and evidence back to this repo, but portfolio rules remain outside this shared-core repository.
+
 ## Repository Structure (Meaning Of The Main Directories)
 
 - `core/`  
