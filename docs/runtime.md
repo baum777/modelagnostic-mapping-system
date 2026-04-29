@@ -235,6 +235,14 @@ Phase 10 service action artifacts persist local simulation receipts into run evi
 - replay reports service action coverage from artifacts only
 - HTTP, MCP, remote transport, daemon, and service start remain disabled
 
+Next gate, not implemented in the accepted runtime baseline:
+
+- Phase 11 local service API design gate
+- endpoint specification only
+- no listener
+- map endpoint -> service action -> identity-bound claim
+- fail closed for unbound endpoints
+
 Use the repo-wide gates for shared-core integrity:
 
 ```bash

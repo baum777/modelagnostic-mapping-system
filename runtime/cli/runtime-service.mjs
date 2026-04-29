@@ -4,12 +4,15 @@ import { fileURLToPath } from 'node:url';
 import { validateServiceModeRequest } from '../service/service-readiness.mjs';
 import { runServicePreflight } from '../service/service-preflight.mjs';
 import { expectedClaimForAction, simulateServiceAction } from '../service/service-actions.mjs';
+import { resolveServiceEndpoint, validateServiceApiDesign } from '../service/service-api-design.mjs';
 import { resolveAuthContext } from '../auth/auth-context.mjs';
 
 function parseServiceArgs(argv = process.argv.slice(2)) {
   const requestedTransports = [];
   let identity = null;
   let simulateAction = null;
+  let endpointMethod = null;
+  let endpointPath = null;
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === '--http') {
@@ -24,6 +27,10 @@ function parseServiceArgs(argv = process.argv.slice(2)) {
     } else if (arg === '--simulate-action') {
       simulateAction = argv[index + 1] ?? null;
       index += 1;
+    } else if (arg === '--resolve-endpoint') {
+      endpointMethod = argv[index + 1] ?? null;
+      endpointPath = argv[index + 2] ?? null;
+      index += 2;
     }
   }
 
@@ -33,12 +40,21 @@ function parseServiceArgs(argv = process.argv.slice(2)) {
     daemonRequested: argv.includes('--daemon'),
     requestedTransports,
     identity,
-    simulateAction
+    simulateAction,
+    validateApiDesign: argv.includes('--validate-api-design'),
+    endpointMethod,
+    endpointPath
   };
 }
 
 function runRuntimeService({ argv = process.argv.slice(2) } = {}) {
   const args = parseServiceArgs(argv);
+  if (args.validateApiDesign) {
+    return validateServiceApiDesign();
+  }
+  if (args.endpointMethod || args.endpointPath) {
+    return resolveServiceEndpoint({ method: args.endpointMethod, path: args.endpointPath });
+  }
   if (args.simulateAction) {
     const auth = resolveAuthContext({ cliIdentity: args.identity });
     if (!auth.ok) {
