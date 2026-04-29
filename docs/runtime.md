@@ -29,6 +29,7 @@ It does not implement:
 - handoff transport
 - HTTP service
 - MCP server
+- remote transport
 - remote queue
 - background daemon
 - autonomous agent loop
@@ -80,6 +81,18 @@ npm run runtime:scheduler -- --daemon
 ```
 
 Fails closed. Phase 6 has no scheduler daemon.
+
+```bash
+npm run runtime:service
+```
+
+Fails closed. Phase 7 service-mode readiness requires an explicit `--enable-service-mode` flag and still does not start a listener.
+
+```bash
+npm run runtime:service -- --enable-service-mode --http --mcp
+```
+
+Fails closed. HTTP and MCP service transports remain deferred until a local auth/permission model is implemented and validated.
 
 ```bash
 npm run memory:validate
@@ -175,6 +188,13 @@ Phase 6 scheduler validation is limited to explicit local evidence:
 - manual triggers have `autoStart: false`, `backgroundJobs: false`, and `httpMcp: false`
 - cron validation accepts or blocks declaration shape only
 - no cron runner, daemon, HTTP/MCP surface, queue consumer, file watcher, threshold monitor, or background job is started
+
+Phase 7 service-mode readiness is a specification gate, not a service runtime:
+
+- service start is blocked without an explicit `--enable-service-mode` flag
+- HTTP and MCP service transports remain deferred behind local auth and permission model readiness
+- remote transport remains blocked before local auth/permission model readiness
+- no HTTP listener, MCP server, remote transport, background service, or daemon is started
 
 Use the repo-wide gates for shared-core integrity:
 

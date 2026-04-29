@@ -38,6 +38,7 @@
     "runtime:run": "node runtime/cli/runtime-run.mjs",
     "runtime:status": "node runtime/cli/runtime-status.mjs",
     "runtime:scheduler": "node runtime/cli/runtime-scheduler.mjs",
+    "runtime:service": "node runtime/cli/runtime-service.mjs",
     "runtime:replay": "node runtime/cli/runtime-replay.mjs",
     "runtime:validate": "node runtime/cli/runtime-validate.mjs",
     "memory:validate": "node runtime/cli/runtime-validate.mjs --memory",
