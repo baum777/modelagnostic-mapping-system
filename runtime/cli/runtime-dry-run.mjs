@@ -10,6 +10,8 @@ import { createEventWriter } from '../observability/event-writer.mjs';
 import { writePermissionLog, writeRunManifest } from '../observability/run-manifest.mjs';
 import { writeValidationReceipt } from '../observability/validation-receipt.mjs';
 import { writeRuntimeMemoryEntry } from '../memory/memory-writer.mjs';
+import { writeHandoffEnvelope } from '../handoff/handoff-writer.mjs';
+import { createResourceGovernor } from '../resources/resource-governor.mjs';
 
 function runRuntimeDryRun({ repoRoot = process.cwd() } = {}) {
   const context = createRunContext({
@@ -106,6 +108,24 @@ function runRuntimeDryRun({ repoRoot = process.cwd() } = {}) {
   checks.push({
     name: 'runtime_memory_written',
     result: memoryWrite.ok ? 'pass' : 'blocked'
+  });
+
+  const handoffWrite = writeHandoffEnvelope({
+    context,
+    objective: 'Transfer local runtime run state to the next operator.',
+    currentStateSummary: 'Runtime dry-run artifacts were produced and validated locally.'
+  });
+  checks.push({
+    name: 'handoff_envelope_written',
+    result: handoffWrite.ok ? 'pass' : 'blocked',
+    details: handoffWrite.issues
+  });
+
+  const resourceGovernor = createResourceGovernor({ context, timeoutMs: 5000, budgetCap: 10 });
+  const resourceReport = resourceGovernor.writeReport({ startedAtMs: Date.parse(context.createdAt), nowMs: Date.now(), plannedActions: 3 });
+  checks.push({
+    name: 'resource_governor_active',
+    result: resourceReport.ok ? 'pass' : 'blocked'
   });
 
   const finalReceipt = writeValidationReceipt(context, checks).receipt;

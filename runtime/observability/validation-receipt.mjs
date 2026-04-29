@@ -3,6 +3,7 @@ import path from 'node:path';
 
 const PHASE_1_ARTIFACTS = ['manifest.json', 'events.jsonl', 'permissions.jsonl', 'validation-receipt.json'];
 const PHASE_3_ARTIFACTS = ['memory.jsonl'];
+const PHASE_5_ARTIFACTS = ['handoff-envelope.json', 'resources.json'];
 const VALIDATION_RECEIPT_VERSION = '1.0.0';
 
 function writeValidationReceipt(context, checks) {
@@ -165,6 +166,45 @@ function validateMemoryShape(entry, index, runId) {
   return issues;
 }
 
+function validateHandoffShape(envelope, runId) {
+  const issues = [];
+  if (envelope.mahp_version !== '1.0.0') {
+    issues.push('handoff envelope mahp_version must be 1.0.0.');
+  }
+  if (envelope.emitter?.run_id !== runId) {
+    issues.push('handoff envelope emitter run_id must match manifest runId.');
+  }
+  if (!Array.isArray(envelope.provenance_chain) || !envelope.provenance_chain.some((entry) => entry.relationship === 'origin' && entry.run_id === runId)) {
+    issues.push('handoff envelope provenance_chain must contain origin for runId.');
+  }
+  if (!Array.isArray(envelope.acceptance_criteria) || envelope.acceptance_criteria.length === 0) {
+    issues.push('handoff envelope acceptance_criteria must be non-empty.');
+  }
+  return issues;
+}
+
+function validateResourceShape(resources, runId) {
+  const issues = [];
+  if (resources.runId !== runId) {
+    issues.push('resources runId must match manifest runId.');
+  }
+  if (!['pass', 'blocked'].includes(resources.result)) {
+    issues.push('resources result must be pass or blocked.');
+  }
+  if (!Array.isArray(resources.checks) || resources.checks.length === 0) {
+    issues.push('resources checks must be a non-empty array.');
+  }
+  for (const check of resources.checks ?? []) {
+    if (!['timeout', 'budget', 'cancellation'].includes(check.check)) {
+      issues.push(`resources check ${check.check || '<missing>'} is unknown.`);
+    }
+    if (!['pass', 'blocked'].includes(check.result)) {
+      issues.push(`resources check ${check.check || '<missing>'} result must be pass or blocked.`);
+    }
+  }
+  return issues;
+}
+
 function validateRuntimeRun({ repoRoot = process.cwd(), runId, latest = false } = {}) {
   const root = path.resolve(repoRoot);
   const runDir = latest
@@ -197,6 +237,8 @@ function validateRuntimeRun({ repoRoot = process.cwd(), runId, latest = false } 
   let events;
   let permissions;
   let memoryEntries = [];
+  let handoffEnvelope = null;
+  let resources = null;
   try {
     manifest = readJson(path.join(runDir, 'manifest.json'));
     receipt = readJson(path.join(runDir, 'validation-receipt.json'));
@@ -204,6 +246,12 @@ function validateRuntimeRun({ repoRoot = process.cwd(), runId, latest = false } 
     permissions = readJsonLines(path.join(runDir, 'permissions.jsonl'));
     if (fs.existsSync(path.join(runDir, 'memory.jsonl'))) {
       memoryEntries = readJsonLines(path.join(runDir, 'memory.jsonl'));
+    }
+    if (fs.existsSync(path.join(runDir, 'handoff-envelope.json'))) {
+      handoffEnvelope = readJson(path.join(runDir, 'handoff-envelope.json'));
+    }
+    if (fs.existsSync(path.join(runDir, 'resources.json'))) {
+      resources = readJson(path.join(runDir, 'resources.json'));
     }
   } catch (error) {
     return { ok: false, issues: [`Runtime artifact parse failed: ${error.message}`], runDir };
@@ -240,6 +288,12 @@ function validateRuntimeRun({ repoRoot = process.cwd(), runId, latest = false } 
       issues.push(...validateMemoryShape(entry, index, manifest.runId));
     }
   }
+  if (handoffEnvelope) {
+    issues.push(...validateHandoffShape(handoffEnvelope, manifest.runId));
+  }
+  if (resources) {
+    issues.push(...validateResourceShape(resources, manifest.runId));
+  }
 
   return {
     ok: issues.length === 0,
@@ -249,13 +303,16 @@ function validateRuntimeRun({ repoRoot = process.cwd(), runId, latest = false } 
     receipt,
     events,
     permissions,
-    memoryEntries
+    memoryEntries,
+    handoffEnvelope,
+    resources
   };
 }
 
 export {
   PHASE_1_ARTIFACTS,
   PHASE_3_ARTIFACTS,
+  PHASE_5_ARTIFACTS,
   VALIDATION_RECEIPT_VERSION,
   findLatestRunDir,
   readJson,

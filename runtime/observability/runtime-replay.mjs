@@ -28,6 +28,12 @@ function replayRuntimeRun({ repoRoot = process.cwd(), runId, latest = false } = 
     const events = readJsonLines(path.join(runDir, 'events.jsonl'));
     const permissions = readJsonLines(path.join(runDir, 'permissions.jsonl'));
     const memory = readJsonLines(path.join(runDir, 'memory.jsonl'));
+    const handoff = fs.existsSync(path.join(runDir, 'handoff-envelope.json'))
+      ? readJson(path.join(runDir, 'handoff-envelope.json'))
+      : null;
+    const resources = fs.existsSync(path.join(runDir, 'resources.json'))
+      ? readJson(path.join(runDir, 'resources.json'))
+      : null;
     const validationReceipt = readJson(path.join(runDir, 'validation-receipt.json'));
     const resolvedRunId = manifest.runId ?? path.basename(runDir);
 
@@ -47,8 +53,12 @@ function replayRuntimeRun({ repoRoot = process.cwd(), runId, latest = false } = 
         eventCount: events.length,
         permissionDecisions: permissions.length,
         memoryEntries: memory.length,
+        hasHandoff: Boolean(handoff),
+        resourceResult: resources?.result ?? null,
         validationResult: validationReceipt.result
-      }
+      },
+      handoff,
+      resources
     };
   } catch (error) {
     return {

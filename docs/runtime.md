@@ -15,6 +15,8 @@ It can:
 - write OBS-style events
 - exercise a deny-by-default permission gate
 - write controlled runtime-scoped memory entries to local JSONL
+- write a local handoff envelope
+- evaluate timeout, budget, and cancellation resource checks
 - validate Phase 1 run artifacts
 
 It does not implement:
@@ -30,6 +32,7 @@ It does not implement:
 - automatic canonical promotion
 - SQLite storage
 - remote memory
+- scheduler
 
 ## Commands
 
@@ -86,6 +89,8 @@ artifacts/runtime-runs/<runId>/
   events.jsonl
   permissions.jsonl
   memory.jsonl
+  handoff-envelope.json
+  resources.json
   validation-receipt.json
 ```
 
@@ -140,6 +145,13 @@ Phase 3 memory write validation is limited to:
 - promotion status remains `none`
 
 Phase 4 replay reads artifacts only. It does not re-execute runtime actions.
+
+Phase 5 handoff and resource validation is limited to local artifacts:
+
+- `handoff-envelope.json` follows the local MAHP envelope shape and points to the run ID
+- `resources.json` records timeout, budget, and cancellation checks
+- cancellation uses a local `CANCEL` marker file in the active run directory
+- no scheduler, queue, service mode, or remote handoff transport exists
 
 Use the repo-wide gates for shared-core integrity:
 
