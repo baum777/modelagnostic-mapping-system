@@ -34,6 +34,9 @@ function replayRuntimeRun({ repoRoot = process.cwd(), runId, latest = false } = 
     const resources = fs.existsSync(path.join(runDir, 'resources.json'))
       ? readJson(path.join(runDir, 'resources.json'))
       : null;
+    const trigger = fs.existsSync(path.join(runDir, 'trigger.json'))
+      ? readJson(path.join(runDir, 'trigger.json'))
+      : null;
     const validationReceipt = readJson(path.join(runDir, 'validation-receipt.json'));
     const resolvedRunId = manifest.runId ?? path.basename(runDir);
 
@@ -55,10 +58,12 @@ function replayRuntimeRun({ repoRoot = process.cwd(), runId, latest = false } = 
         memoryEntries: memory.length,
         hasHandoff: Boolean(handoff),
         resourceResult: resources?.result ?? null,
+        triggerType: trigger?.trigger_type ?? null,
         validationResult: validationReceipt.result
       },
       handoff,
-      resources
+      resources,
+      trigger
     };
   } catch (error) {
     return {

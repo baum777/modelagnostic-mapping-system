@@ -4,6 +4,7 @@ import path from 'node:path';
 const PHASE_1_ARTIFACTS = ['manifest.json', 'events.jsonl', 'permissions.jsonl', 'validation-receipt.json'];
 const PHASE_3_ARTIFACTS = ['memory.jsonl'];
 const PHASE_5_ARTIFACTS = ['handoff-envelope.json', 'resources.json'];
+const PHASE_6_ARTIFACTS = ['trigger.json'];
 const VALIDATION_RECEIPT_VERSION = '1.0.0';
 
 function writeValidationReceipt(context, checks) {
@@ -205,6 +206,35 @@ function validateResourceShape(resources, runId) {
   return issues;
 }
 
+function validateTriggerShape(trigger, runId) {
+  const issues = [];
+  if (trigger.tsc_version !== '1.0.0') {
+    issues.push('trigger tsc_version must be 1.0.0.');
+  }
+  if (trigger.runId !== runId) {
+    issues.push('trigger runId must match manifest runId.');
+  }
+  if (trigger.trigger_type !== 'manual') {
+    issues.push('trigger_type must be manual in Phase 6 runtime artifacts.');
+  }
+  if (!hasString(trigger.workflow_id)) {
+    issues.push('trigger workflow_id must be a non-empty string.');
+  }
+  if (!Number.isInteger(trigger.max_concurrent_runs) || trigger.max_concurrent_runs < 1) {
+    issues.push('trigger max_concurrent_runs must be an integer >= 1.');
+  }
+  if (trigger.autoStart !== false) {
+    issues.push('trigger autoStart must be false.');
+  }
+  if (trigger.backgroundJobs !== false) {
+    issues.push('trigger backgroundJobs must be false.');
+  }
+  if (trigger.httpMcp !== false) {
+    issues.push('trigger httpMcp must be false.');
+  }
+  return issues;
+}
+
 function validateRuntimeRun({ repoRoot = process.cwd(), runId, latest = false } = {}) {
   const root = path.resolve(repoRoot);
   const runDir = latest
@@ -239,6 +269,7 @@ function validateRuntimeRun({ repoRoot = process.cwd(), runId, latest = false } 
   let memoryEntries = [];
   let handoffEnvelope = null;
   let resources = null;
+  let trigger = null;
   try {
     manifest = readJson(path.join(runDir, 'manifest.json'));
     receipt = readJson(path.join(runDir, 'validation-receipt.json'));
@@ -252,6 +283,9 @@ function validateRuntimeRun({ repoRoot = process.cwd(), runId, latest = false } 
     }
     if (fs.existsSync(path.join(runDir, 'resources.json'))) {
       resources = readJson(path.join(runDir, 'resources.json'));
+    }
+    if (fs.existsSync(path.join(runDir, 'trigger.json'))) {
+      trigger = readJson(path.join(runDir, 'trigger.json'));
     }
   } catch (error) {
     return { ok: false, issues: [`Runtime artifact parse failed: ${error.message}`], runDir };
@@ -294,6 +328,9 @@ function validateRuntimeRun({ repoRoot = process.cwd(), runId, latest = false } 
   if (resources) {
     issues.push(...validateResourceShape(resources, manifest.runId));
   }
+  if (trigger) {
+    issues.push(...validateTriggerShape(trigger, manifest.runId));
+  }
 
   return {
     ok: issues.length === 0,
@@ -305,7 +342,8 @@ function validateRuntimeRun({ repoRoot = process.cwd(), runId, latest = false } 
     permissions,
     memoryEntries,
     handoffEnvelope,
-    resources
+    resources,
+    trigger
   };
 }
 
@@ -313,6 +351,7 @@ export {
   PHASE_1_ARTIFACTS,
   PHASE_3_ARTIFACTS,
   PHASE_5_ARTIFACTS,
+  PHASE_6_ARTIFACTS,
   VALIDATION_RECEIPT_VERSION,
   findLatestRunDir,
   readJson,

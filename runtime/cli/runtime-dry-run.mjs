@@ -12,6 +12,7 @@ import { writeValidationReceipt } from '../observability/validation-receipt.mjs'
 import { writeRuntimeMemoryEntry } from '../memory/memory-writer.mjs';
 import { writeHandoffEnvelope } from '../handoff/handoff-writer.mjs';
 import { createResourceGovernor } from '../resources/resource-governor.mjs';
+import { runManualTrigger } from '../scheduler/manual-trigger.mjs';
 
 function runRuntimeDryRun({ repoRoot = process.cwd() } = {}) {
   const context = createRunContext({
@@ -126,6 +127,13 @@ function runRuntimeDryRun({ repoRoot = process.cwd() } = {}) {
   checks.push({
     name: 'resource_governor_active',
     result: resourceReport.ok ? 'pass' : 'blocked'
+  });
+
+  const triggerWrite = runManualTrigger({ context, workflowId: 'runtime-dry-run' });
+  checks.push({
+    name: 'manual_trigger_written',
+    result: triggerWrite.ok ? 'pass' : 'blocked',
+    details: triggerWrite.issues
   });
 
   const finalReceipt = writeValidationReceipt(context, checks).receipt;

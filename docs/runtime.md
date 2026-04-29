@@ -1,11 +1,11 @@
 # Runtime
 
 Class: operational.
-Use rule: use this as the local Phase 1 runtime command guide; canonical contract truth remains in `core/contracts/*` and claim status remains in `docs/authority-matrix.md`.
+Use rule: use this as the local runtime command guide; canonical contract truth remains in `core/contracts/*` and claim status remains in `docs/authority-matrix.md`.
 
 ## Scope
 
-The Phase 1 runtime is local-only and artifact-oriented.
+The runtime is local-only and artifact-oriented.
 
 It can:
 
@@ -17,13 +17,16 @@ It can:
 - write controlled runtime-scoped memory entries to local JSONL
 - write a local handoff envelope
 - evaluate timeout, budget, and cancellation resource checks
-- validate Phase 1 run artifacts
+- write an explicit local manual trigger artifact
+- validate cron trigger configuration without starting a scheduler
+- validate local run artifacts
 
 It does not implement:
 
-- scheduler runtime
+- scheduler daemon
+- auto-start scheduling
+- background scheduler jobs
 - handoff transport
-- resource governor runtime
 - HTTP service
 - MCP server
 - remote queue
@@ -32,7 +35,7 @@ It does not implement:
 - automatic canonical promotion
 - SQLite storage
 - remote memory
-- scheduler
+- autonomous scheduler loop
 
 ## Commands
 
@@ -40,19 +43,19 @@ It does not implement:
 npm run runtime:dry-run
 ```
 
-Creates a local Phase 1 runtime run.
+Creates a local runtime dry-run.
 
 ```bash
 npm run runtime:validate -- --latest
 ```
 
-Validates the latest local Phase 1 runtime run artifact.
+Validates the latest local runtime run artifact.
 
 ```bash
 npm run runtime:validate -- --runId <runId>
 ```
 
-Validates a specific local Phase 1 runtime run artifact.
+Validates a specific local runtime run artifact.
 
 ```bash
 npm run runtime:replay -- --runId <runId>
@@ -67,12 +70,24 @@ npm run runtime:replay -- --latest
 Replays the latest valid local runtime run. Latest-run resolution ignores malformed run directories and orders valid runs by manifest `createdAt`.
 
 ```bash
+npm run runtime:scheduler -- --validate-cron --expression "0 9 * * 1" --timezone UTC
+```
+
+Validates a cron trigger declaration shape locally. This command does not start a cron runner, daemon, HTTP/MCP surface, queue consumer, or background job.
+
+```bash
+npm run runtime:scheduler -- --daemon
+```
+
+Fails closed. Phase 6 has no scheduler daemon.
+
+```bash
 npm run memory:validate
 ```
 
 Validates the Phase 2 memory skeleton. This checks structure, schemas, policy markers, and disabled-capability posture only.
 
-The following commands intentionally fail closed in Phase 1:
+The following commands intentionally fail closed in the current local runtime slice:
 
 ```bash
 npm run runtime:run
@@ -91,6 +106,7 @@ artifacts/runtime-runs/<runId>/
   memory.jsonl
   handoff-envelope.json
   resources.json
+  trigger.json
   validation-receipt.json
 ```
 
@@ -108,7 +124,7 @@ That file is ignored local evidence. It is not canonical truth.
 
 Runtime consumes contracts; it does not promote, rewrite, or replace them.
 
-Required Phase 1 contract inputs:
+Required runtime contract inputs:
 
 - `core/contracts/workflow-routing-map.json`
 - `core/contracts/permission-boundary.json`
@@ -119,7 +135,7 @@ If a required contract is missing or invalid JSON, the runtime blocks.
 
 ## Validation
 
-Phase 1 validation is limited to local run artifact consistency:
+Runtime validation is limited to local run artifact consistency:
 
 - `manifest.json` exists and matches the run directory
 - `events.jsonl` contains at least one event
@@ -152,6 +168,13 @@ Phase 5 handoff and resource validation is limited to local artifacts:
 - `resources.json` records timeout, budget, and cancellation checks
 - cancellation uses a local `CANCEL` marker file in the active run directory
 - no scheduler, queue, service mode, or remote handoff transport exists
+
+Phase 6 scheduler validation is limited to explicit local evidence:
+
+- `trigger.json` records a manual trigger for the active run
+- manual triggers have `autoStart: false`, `backgroundJobs: false`, and `httpMcp: false`
+- cron validation accepts or blocks declaration shape only
+- no cron runner, daemon, HTTP/MCP surface, queue consumer, file watcher, threshold monitor, or background job is started
 
 Use the repo-wide gates for shared-core integrity:
 
