@@ -14,11 +14,11 @@ It can:
 - write local run artifacts under `artifacts/runtime-runs/<runId>/`
 - write OBS-style events
 - exercise a deny-by-default permission gate
+- write controlled runtime-scoped memory entries to local JSONL
 - validate Phase 1 run artifacts
 
 It does not implement:
 
-- memory storage
 - scheduler runtime
 - handoff transport
 - resource governor runtime
@@ -27,6 +27,9 @@ It does not implement:
 - remote queue
 - background daemon
 - autonomous agent loop
+- automatic canonical promotion
+- SQLite storage
+- remote memory
 
 ## Commands
 
@@ -71,10 +74,19 @@ artifacts/runtime-runs/<runId>/
   manifest.json
   events.jsonl
   permissions.jsonl
+  memory.jsonl
   validation-receipt.json
 ```
 
 `artifacts/runtime-runs/<runId>/` is ignored local evidence. Only `artifacts/runtime-runs/.gitkeep` is tracked.
+
+Controlled runtime memory writes also append to:
+
+```text
+memory/stores/jsonl/runtime-memory.jsonl
+```
+
+That file is ignored local evidence. It is not canonical truth.
 
 ## Authority Boundary
 
@@ -103,7 +115,16 @@ Phase 2 memory validation is limited to skeleton consistency:
 - required `memory/` docs, scopes, policies, and schemas exist
 - schema files parse as JSON and declare required fields
 - policies preserve secret exclusion, known scopes, and review-only promotion
-- runtime memory writes, canonical promotion, SQLite, and scheduler remain disabled
+- runtime memory writes are enabled only for controlled `runtime` scope
+- canonical promotion, SQLite, and scheduler remain disabled
+
+Phase 3 memory write validation is limited to:
+
+- memory entries use `runtime` scope
+- provenance points to `artifacts/runtime-runs/<runId>/validation-receipt.json`
+- secret-like content is blocked before write
+- unknown or non-runtime scope is blocked
+- promotion status remains `none`
 
 Use the repo-wide gates for shared-core integrity:
 

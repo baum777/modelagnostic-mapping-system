@@ -12,13 +12,14 @@ const REQUIRED_MEMORY_FILES = [
   'memory/policies/secret-exclusion-policy.md',
   'memory/policies/promotion-policy.md',
   'memory/policies/scope-policy.md',
+  'memory/stores/jsonl/README.md',
   'memory/schemas/memory-entry.schema.json',
   'memory/schemas/memory-query.schema.json',
   'memory/schemas/memory-promotion.schema.json'
 ];
 
 const REQUIRED_POLICY_MARKERS = new Map([
-  ['memory/MEMORY_CONTRACT.md', ['non-canonical', 'No runtime memory writes', 'No automatic canonical promotion']],
+  ['memory/MEMORY_CONTRACT.md', ['non-canonical', 'Controlled runtime memory writes', 'No automatic canonical promotion']],
   ['memory/policies/secret-exclusion-policy.md', ['secrets', 'tokens', 'private keys', 'BLOCKED']],
   ['memory/policies/promotion-policy.md', ['review', 'SOT.md', 'DECISIONS.md', 'core/contracts/*']],
   ['memory/policies/scope-policy.md', ['runtime', 'project', 'operator', 'decision-candidate']]
@@ -91,7 +92,7 @@ function validateMemorySkeleton({ repoRoot = process.cwd() } = {}) {
     issues,
     checkedFiles: REQUIRED_MEMORY_FILES,
     capabilities: {
-      runtimeMemoryWrites: false,
+      runtimeMemoryWrites: true,
       canonicalPromotion: false,
       sqlite: false,
       scheduler: false

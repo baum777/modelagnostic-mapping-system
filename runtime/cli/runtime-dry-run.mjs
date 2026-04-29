@@ -9,6 +9,7 @@ import { createPermissionEngine } from '../permissions/permission-engine.mjs';
 import { createEventWriter } from '../observability/event-writer.mjs';
 import { writePermissionLog, writeRunManifest } from '../observability/run-manifest.mjs';
 import { writeValidationReceipt } from '../observability/validation-receipt.mjs';
+import { writeRuntimeMemoryEntry } from '../memory/memory-writer.mjs';
 
 function runRuntimeDryRun({ repoRoot = process.cwd() } = {}) {
   const context = createRunContext({
@@ -85,8 +86,30 @@ function runRuntimeDryRun({ repoRoot = process.cwd() } = {}) {
       : 'blocked'
   });
 
-  const { receipt } = writeValidationReceipt(context, checks);
-  return { ok: receipt.result === 'pass', context, checks, receipt };
+  const { receipt, receiptPath } = writeValidationReceipt(context, checks);
+  const memoryWrite = writeRuntimeMemoryEntry({
+    context,
+    summary: 'Runtime dry-run completed with permission gate active.',
+    details: {
+      mode: context.mode,
+      permissionGate: 'deny-by-default',
+      contractSources: loadedContracts.requiredSources.map((source) => source.relativePath)
+    },
+    provenancePath: receiptPath
+  });
+
+  checks.push({
+    name: 'memory_policy_enforced',
+    result: memoryWrite.ok ? 'pass' : 'blocked',
+    details: memoryWrite.issues
+  });
+  checks.push({
+    name: 'runtime_memory_written',
+    result: memoryWrite.ok ? 'pass' : 'blocked'
+  });
+
+  const finalReceipt = writeValidationReceipt(context, checks).receipt;
+  return { ok: finalReceipt.result === 'pass', context, checks, receipt: finalReceipt };
 }
 
 const isMain = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);

@@ -14,4 +14,6 @@ Use rule: memory entries must use a known scope.
 
 Unknown scope is `BLOCKED`.
 
-Known scope does not imply write permission. Phase 2 defines the scope vocabulary only.
+Known scope does not imply write permission.
+
+Runtime writes are allowed only for `runtime` scope. Non-runtime write attempts are `BLOCKED`.

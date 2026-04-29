@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const PHASE_1_ARTIFACTS = ['manifest.json', 'events.jsonl', 'permissions.jsonl', 'validation-receipt.json'];
+const PHASE_3_ARTIFACTS = ['memory.jsonl'];
 
 function writeValidationReceipt(context, checks) {
   const result = checks.every((check) => check.result === 'pass') ? 'pass' : 'blocked';
@@ -72,11 +73,15 @@ function validateRuntimeRun({ repoRoot = process.cwd(), runId, latest = false } 
   let receipt;
   let events;
   let permissions;
+  let memoryEntries = [];
   try {
     manifest = readJson(path.join(runDir, 'manifest.json'));
     receipt = readJson(path.join(runDir, 'validation-receipt.json'));
     events = readJsonLines(path.join(runDir, 'events.jsonl'));
     permissions = readJsonLines(path.join(runDir, 'permissions.jsonl'));
+    if (fs.existsSync(path.join(runDir, 'memory.jsonl'))) {
+      memoryEntries = readJsonLines(path.join(runDir, 'memory.jsonl'));
+    }
   } catch (error) {
     return { ok: false, issues: [`Runtime artifact parse failed: ${error.message}`], runDir };
   }
@@ -99,6 +104,22 @@ function validateRuntimeRun({ repoRoot = process.cwd(), runId, latest = false } 
   if (!permissions.some((permission) => permission.claim === 'external.http' && permission.decision === 'deny')) {
     issues.push('permissions.jsonl must contain a denied external.http decision.');
   }
+  if (memoryEntries.length > 0) {
+    for (const entry of memoryEntries) {
+      if (entry.scope !== 'runtime') {
+        issues.push('memory.jsonl entries must use runtime scope.');
+      }
+      if (entry.provenance?.runId !== manifest.runId) {
+        issues.push('memory.jsonl entry provenance runId must match manifest runId.');
+      }
+      if (entry.provenance?.path !== `artifacts/runtime-runs/${manifest.runId}/validation-receipt.json`) {
+        issues.push('memory.jsonl entry provenance path must point to validation-receipt.json.');
+      }
+      if (entry.promotion?.status !== 'none') {
+        issues.push('memory.jsonl entries must not promote canonically.');
+      }
+    }
+  }
 
   return {
     ok: issues.length === 0,
@@ -107,8 +128,9 @@ function validateRuntimeRun({ repoRoot = process.cwd(), runId, latest = false } 
     manifest,
     receipt,
     events,
-    permissions
+    permissions,
+    memoryEntries
   };
 }
 
-export { PHASE_1_ARTIFACTS, findLatestRunDir, validateRuntimeRun, writeValidationReceipt };
+export { PHASE_1_ARTIFACTS, PHASE_3_ARTIFACTS, findLatestRunDir, validateRuntimeRun, writeValidationReceipt };

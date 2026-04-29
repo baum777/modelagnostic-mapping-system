@@ -73,27 +73,19 @@ test('permission engine allows only active run artifact writes and denies extern
 });
 
 test('runtime dry-run creates Phase 1 artifacts that validate by latest run', () => {
-  const before = fs.existsSync(path.join(repoRoot, 'artifacts', 'runtime-runs'))
-    ? new Set(fs.readdirSync(path.join(repoRoot, 'artifacts', 'runtime-runs')))
-    : new Set();
-
-  execFileSync('node', ['runtime/cli/runtime-dry-run.mjs'], {
+  const output = execFileSync('node', ['runtime/cli/runtime-dry-run.mjs'], {
     cwd: repoRoot,
     encoding: 'utf8',
     stdio: 'pipe'
   });
+  const parsed = JSON.parse(output);
 
-  const runRoot = path.join(repoRoot, 'artifacts', 'runtime-runs');
-  const created = fs.readdirSync(runRoot).filter((entry) => entry.startsWith('run_') && !before.has(entry));
-
-  assert.equal(created.length, 1);
-
-  const runDir = path.join(runRoot, created[0]);
+  const runDir = parsed.runDir;
   for (const artifact of ['manifest.json', 'events.jsonl', 'permissions.jsonl', 'validation-receipt.json']) {
     assert.equal(fs.existsSync(path.join(runDir, artifact)), true, `${artifact} should exist`);
   }
 
-  const validation = validateRuntimeRun({ repoRoot, latest: true });
+  const validation = validateRuntimeRun({ repoRoot, runId: parsed.runId });
   assert.equal(validation.ok, true);
   assert.equal(validation.receipt.result, 'pass');
 });

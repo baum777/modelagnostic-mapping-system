@@ -20,12 +20,12 @@ test('validateMemorySkeleton blocks when required memory skeleton files are miss
   assert.ok(result.issues.some((issue) => issue.includes('memory/MEMORY_CONTRACT.md')));
 });
 
-test('validateMemorySkeleton accepts the repo memory skeleton without enabling runtime writes', () => {
+test('validateMemorySkeleton accepts controlled runtime writes without enabling promotion or SQLite', () => {
   const result = validateMemorySkeleton({ repoRoot });
 
   assert.equal(result.ok, true);
   assert.deepEqual(result.issues, []);
-  assert.equal(result.capabilities.runtimeMemoryWrites, false);
+  assert.equal(result.capabilities.runtimeMemoryWrites, true);
   assert.equal(result.capabilities.canonicalPromotion, false);
   assert.equal(result.capabilities.sqlite, false);
 });

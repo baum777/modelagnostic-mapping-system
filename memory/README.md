@@ -16,9 +16,12 @@ It may describe:
 - operator preferences
 - decision candidates
 
+It enables:
+
+- controlled runtime memory writes for runtime-scoped validated run facts
+
 It does not enable:
 
-- runtime memory writes
 - automatic canonical promotion
 - SQLite storage
 - scheduler behavior
@@ -43,4 +46,4 @@ memory/
   schemas/
 ```
 
-Stores and examples are intentionally deferred until a later slice.
+The JSONL runtime store is local-only and non-canonical.

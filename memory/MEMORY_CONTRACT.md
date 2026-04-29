@@ -29,9 +29,12 @@ Memory entries may support review, handoff, replay, and local operational awaren
 - contract replacements
 - SOT replacements
 
-## Phase 2 Boundaries
+## Runtime Write Boundary
 
-- No runtime memory writes.
+- Controlled runtime memory writes are allowed only for runtime-scoped validated run facts.
+- Runtime memory writes must point provenance to the active run artifacts.
+- Unknown scope is blocked.
+- Secret-bearing content is blocked.
 - No automatic canonical promotion.
 - No SQLite.
 - No scheduler.
