@@ -107,6 +107,18 @@ npm run runtime:service -- --simulate-action run --identity local-user
 Simulates a Phase 9 service-capable action locally. The action must have an explicit identity-bound claim and still does not start a listener.
 
 ```bash
+npm run runtime:service -- --validate-api-design
+```
+
+Validates Phase 11 local service API design gate. Endpoints are spec-only and map to service action claims; no listener is started.
+
+```bash
+npm run runtime:service -- --resolve-endpoint POST /runtime/service/run
+```
+
+Resolves a spec-only endpoint to a service action and claim. Unbound endpoints fail closed.
+
+```bash
 npm run memory:validate
 ```
 
@@ -235,13 +247,13 @@ Phase 10 service action artifacts persist local simulation receipts into run evi
 - replay reports service action coverage from artifacts only
 - HTTP, MCP, remote transport, daemon, and service start remain disabled
 
-Next gate, not implemented in the accepted runtime baseline:
+Phase 11 local service API design gate defines spec-only endpoints without opening a service surface:
 
-- Phase 11 local service API design gate
-- endpoint specification only
-- no listener
-- map endpoint -> service action -> identity-bound claim
-- fail closed for unbound endpoints
+- endpoints are spec-only and do not create handlers, listeners, routes, HTTP servers, or MCP surfaces
+- each endpoint maps to one service action and its explicit claim
+- endpoint coverage must include `run`, `status`, `replay`, and `cancel`
+- unbound endpoints fail closed
+- validation returns no listener, no HTTP/MCP, no remote transport, and no daemon
 
 Use the repo-wide gates for shared-core integrity:
 
