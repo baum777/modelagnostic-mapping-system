@@ -119,6 +119,12 @@ npm run runtime:service -- --resolve-endpoint POST /runtime/service/run
 Resolves a spec-only endpoint to a service action and claim. Unbound endpoints fail closed.
 
 ```bash
+npm run runtime:service -- --validate-request POST /runtime/service/run --identity local-user
+```
+
+Validates a Phase 12 local service request envelope. The request maps endpoint -> action -> identity-bound claim and still reports `serviceStartAllowed: false`.
+
+```bash
 npm run memory:validate
 ```
 
@@ -254,6 +260,14 @@ Phase 11 local service API design gate defines spec-only endpoints without openi
 - endpoint coverage must include `run`, `status`, `replay`, and `cancel`
 - unbound endpoints fail closed
 - validation returns no listener, no HTTP/MCP, no remote transport, and no daemon
+
+Phase 12 local service request envelope gate validates planned service requests without opening a service surface:
+
+- each local request envelope includes request ID, controlled identity, endpoint, action, and claim
+- request validation maps `local request envelope -> endpoint -> action -> identity-bound claim`
+- missing identity, unknown identity, unbound endpoint, and claim mismatch block
+- `--http`, `--mcp`, `--remote`, and `--daemon` remain blocked
+- successful validation returns `requestValidated: true`, `transport: local-only`, and `serviceStartAllowed: false`
 
 Use the repo-wide gates for shared-core integrity:
 

@@ -5,6 +5,7 @@ import { validateServiceModeRequest } from '../service/service-readiness.mjs';
 import { runServicePreflight } from '../service/service-preflight.mjs';
 import { expectedClaimForAction, simulateServiceAction } from '../service/service-actions.mjs';
 import { resolveServiceEndpoint, validateServiceApiDesign } from '../service/service-api-design.mjs';
+import { validateServiceRequest } from '../service/service-request-validation.mjs';
 import { resolveAuthContext } from '../auth/auth-context.mjs';
 
 function parseServiceArgs(argv = process.argv.slice(2)) {
@@ -13,6 +14,8 @@ function parseServiceArgs(argv = process.argv.slice(2)) {
   let simulateAction = null;
   let endpointMethod = null;
   let endpointPath = null;
+  let requestMethod = null;
+  let requestPath = null;
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === '--http') {
@@ -31,6 +34,10 @@ function parseServiceArgs(argv = process.argv.slice(2)) {
       endpointMethod = argv[index + 1] ?? null;
       endpointPath = argv[index + 2] ?? null;
       index += 2;
+    } else if (arg === '--validate-request') {
+      requestMethod = argv[index + 1] ?? null;
+      requestPath = argv[index + 2] ?? null;
+      index += 2;
     }
   }
 
@@ -43,7 +50,9 @@ function parseServiceArgs(argv = process.argv.slice(2)) {
     simulateAction,
     validateApiDesign: argv.includes('--validate-api-design'),
     endpointMethod,
-    endpointPath
+    endpointPath,
+    requestMethod,
+    requestPath
   };
 }
 
@@ -54,6 +63,15 @@ function runRuntimeService({ argv = process.argv.slice(2) } = {}) {
   }
   if (args.endpointMethod || args.endpointPath) {
     return resolveServiceEndpoint({ method: args.endpointMethod, path: args.endpointPath });
+  }
+  if (args.requestMethod || args.requestPath) {
+    return validateServiceRequest({
+      method: args.requestMethod,
+      path: args.requestPath,
+      cliIdentity: args.identity,
+      requestedTransports: args.requestedTransports,
+      daemonRequested: args.daemonRequested
+    });
   }
   if (args.simulateAction) {
     const auth = resolveAuthContext({ cliIdentity: args.identity });
